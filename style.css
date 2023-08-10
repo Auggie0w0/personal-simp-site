@@ -75,9 +75,9 @@ header {
     height: 100vh;
     top: 0;
     right: 0;
-    justify-content: center;
+    justify-content:space-evenly;
     align-items: center;
-    margin-left: -100%;
+    margin-left: -100%; 
   }
 
   .nav-links .menulogo {
