@@ -29,3 +29,10 @@ window.onmousemove = e => {
         }, {duration:1200, fill:"forwards"});
     }
 }
+
+const menulogo = document.querySelector(".menulogo")
+const navLinks = document.querySelector(".nav-links")
+
+menulogo.addEventListener('click', ()=>(
+    navLinks.classList.toggle('mobile-menu')
+))
