@@ -221,3 +221,67 @@ function updateThemeIcon(theme) {
         themeIcon.textContent = '☀️';
     }
 }
+
+// Modal functionality for adding characters
+const addNewCharacter = document.getElementById('addNewCharacter');
+const addCharacterModal = document.getElementById('addCharacterModal');
+const closeModal = document.getElementById('closeModal');
+const cancelAdd = document.getElementById('cancelAdd');
+const addCharacterForm = document.getElementById('addCharacterForm');
+
+// Open modal
+if (addNewCharacter) {
+    addNewCharacter.addEventListener('click', () => {
+        addCharacterModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+}
+
+// Close modal functions
+function closeModalFunction() {
+    addCharacterModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    addCharacterForm.reset();
+}
+
+if (closeModal) {
+    closeModal.addEventListener('click', closeModalFunction);
+}
+
+if (cancelAdd) {
+    cancelAdd.addEventListener('click', closeModalFunction);
+}
+
+// Close modal when clicking outside
+if (addCharacterModal) {
+    addCharacterModal.addEventListener('click', (e) => {
+        if (e.target === addCharacterModal) {
+            closeModalFunction();
+        }
+    });
+}
+
+// Handle form submission
+if (addCharacterForm) {
+    addCharacterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('characterName').value,
+            series: document.getElementById('characterSeries').value,
+            age: document.getElementById('characterAge').value,
+            role: document.getElementById('characterRole').value,
+            personality: document.getElementById('characterPersonality').value,
+            image: document.getElementById('characterImage').value,
+            description: document.getElementById('characterDescription').value,
+            analysis: document.getElementById('characterAnalysis').value,
+            reasons: document.getElementById('characterReasons').value
+        };
+        
+        // For now, we'll just show an alert with the data
+        // In a real implementation, this would save to a database or localStorage
+        alert(`Character "${formData.name}" from "${formData.series}" has been added to your collection!\n\nThis is a demo - in a real implementation, this would create a new character page.`);
+        
+        closeModalFunction();
+    });
+}

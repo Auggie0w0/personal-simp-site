@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Character List - Anime Gallery</title>
+    <title>Character List - Simp Gallery</title>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <a href="index.html" class="logo">Anime Gallery</a>
+            <a href="index.html" class="logo">Simp Gallery</a>
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -32,7 +32,7 @@
     <main class="main-content">
         <div class="hero-section">
             <h1 class="hero-title">Character List</h1>
-            <p class="hero-subtitle">Build your simp profiles for these amazing characters</p>
+            <p class="hero-subtitle">Here are I am planning to build profiles for! More to come!</p>
         </div>
 
         <div class="character-list-container">
@@ -133,14 +133,14 @@
             <div class="list-section">
                 <h2>More Characters</h2>
                 <div class="character-grid">
-                    <div class="list-character-card add-new">
+                    <div class="list-character-card add-new" id="addNewCharacter">
                         <div class="character-avatar">
                             <span class="avatar-placeholder">+</span>
                         </div>
                         <div class="character-info">
                             <h3>Add New Character</h3>
                             <p>Click to add your favorite</p>
-                            <span class="status">Coming soon</span>
+                            <span class="status">Click to add!</span>
                         </div>
                     </div>
                 </div>
@@ -159,6 +159,69 @@
             </ul>
         </div>
     </main>
+
+    <!-- Add Character Modal -->
+    <div class="modal-overlay" id="addCharacterModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Character</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="addCharacterForm">
+                <div class="form-group">
+                    <label class="form-label" for="characterName">Character Name *</label>
+                    <input type="text" id="characterName" class="form-input" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="characterSeries">Series/Source *</label>
+                        <input type="text" id="characterSeries" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="characterAge">Age</label>
+                        <input type="text" id="characterAge" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="characterRole">Role</label>
+                        <input type="text" id="characterRole" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="characterPersonality">Personality</label>
+                        <input type="text" id="characterPersonality" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="characterImage">Image URL</label>
+                    <input type="url" id="characterImage" class="form-input" placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="characterDescription">Description *</label>
+                    <textarea id="characterDescription" class="form-textarea" required placeholder="Tell us about this character..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="characterAnalysis">Character Analysis</label>
+                    <textarea id="characterAnalysis" class="form-textarea" placeholder="Your personal analysis of the character..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="characterReasons">Why You Love This Character</label>
+                    <textarea id="characterReasons" class="form-textarea" placeholder="List the reasons you love this character (one per line)..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAdd">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Character</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>    
 </body>
