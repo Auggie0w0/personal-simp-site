@@ -228,6 +228,7 @@ async function loadCarouselCharacters() {
             link: 'pages/characters/minho.html'
         },
         {
+<<<<<<< HEAD
             id: 'saja',
             name: 'Saja',
             series: 'K-pop Demon Hunters',
@@ -235,6 +236,8 @@ async function loadCarouselCharacters() {
             link: 'pages/characters/saja.html'
         },
         {
+=======
+>>>>>>> parent of 90711d0 (comments)
             id: 'huntrix',
             name: 'Huntrix',
             series: 'K-pop Demon Hunters',
@@ -525,43 +528,12 @@ function addCharacter(characterData) {
     // Create character page
     createCharacterPage(newCharacter);
     
-    // Add to static characters array for carousel and gallery
-    const staticCharacter = {
-        id: newCharacter.id,
-        name: newCharacter.name,
-        series: newCharacter.series,
-        image: newCharacter.image,
-        link: `${newCharacter.id}.html`,
-        createdAt: newCharacter.createdAt
-    };
-    
-    // Add to staticCharacters array (this will be used by carousel and gallery)
-    if (typeof staticCharacters !== 'undefined') {
-        staticCharacters.push(staticCharacter);
-    }
-    
-    // Refresh displays if on relevant pages
-    refreshCharacterDisplays();
-    
-    return newCharacter;
-}
-
-// Function to refresh character displays on all pages
-function refreshCharacterDisplays() {
     // Refresh character list if on character list page
     if (typeof loadDynamicCharacters === 'function') {
         loadDynamicCharacters();
     }
     
-    // Refresh carousel if on home page
-    if (typeof loadCarouselCharacters === 'function') {
-        loadCarouselCharacters();
-    }
-    
-    // Refresh gallery if on home page
-    if (typeof loadGalleryCharacters === 'function') {
-        loadGalleryCharacters();
-    }
+    return newCharacter;
 }
 
 // Update existing character
@@ -696,12 +668,12 @@ function createCharacterPage(character) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>${character.name} - August's Simp Gallery</title>
+    <title>${character.name} - Simp Gallery</title>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <a href="index.html" class="logo">August's Simp Gallery</a>
+            <a href="index.html" class="logo">Simp Gallery</a>
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -720,87 +692,94 @@ function createCharacterPage(character) {
     </header>
 
     <main class="main-content">
-        <div class="character-hero">
-            <div class="character-image">
-                <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='">
-            </div>
-            <div class="character-info">
-                <h1>${character.name}</h1>
-                <p class="character-series">From ${character.series}</p>
-                <p class="character-description">
-                    ${character.description || 'A wonderful character with unique qualities and personality.'}
-                </p>
-                <div class="character-stats">
-                    <div class="stat">
-                        <span class="stat-label">Age</span>
-                        <span class="stat-value">${character.age || 'Unknown'}</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Role</span>
-                        <span class="stat-value">${character.role || 'Unknown'}</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Personality</span>
-                        <span class="stat-value">${character.personality || 'Unknown'}</span>
-                    </div>
+        <div class="character-profile">
+            <div class="character-header">
+                <div class="character-image">
+                    <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='">
                 </div>
-            </div>
-        </div>
-
-        <div class="character-details">
-            ${character.analysis ? `
-            <h2>Character Analysis</h2>
-            <p>${character.analysis}</p>
-            ` : ''}
-            
-            ${character.reasons ? `
-            <h3>Why I Love This Character</h3>
-            <ul class="character-reasons">
-                ${character.reasons.split('\\n').filter(reason => reason.trim()).map(reason => `<li>${reason.trim()}</li>`).join('')}
-            </ul>
-            ` : ''}
-        </div>
-
-        <div class="rating-section">
-            <h2>Rating</h2>
-            <div id="rating-${character.id}" class="rating-container">
-                <div class="rating-display">
-                    <span class="stars">${'★'.repeat(Math.floor(character.rating || 0))}${'☆'.repeat(5 - Math.floor(character.rating || 0))}</span>
-                    <span class="rating-text">${(character.rating || 0).toFixed(1)}/5 (${character.ratingCount || 0} votes)</span>
-                </div>
-                <div class="rating-buttons">
-                    ${[1,2,3,4,5].map(star => `
-                        <button onclick="rateCharacter('${character.id}', ${star})" class="star-btn">${star}★</button>
-                    `).join('')}
-                </div>
-            </div>
-        </div>
-
-        <div class="gallery-section">
-            <h2>${character.name} Gallery</h2>
-            <div class="gallery-container">
-                <div class="image-gallery">
-                    <div class="gallery-image">
-                        <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}">
-                    </div>
-                    ${character.galleryImages ? character.galleryImages.map(img => `
-                        <div class="gallery-image">
-                            <img src="${img}" alt="${character.name}">
+                <div class="character-info">
+                    <h1 class="character-name">${character.name}</h1>
+                    <p class="character-series">${character.series}</p>
+                    <div class="character-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Age</span>
+                            <span class="stat-value">${character.age || 'Unknown'}</span>
                         </div>
-                    `).join('') : ''}
+                        <div class="stat-box">
+                            <span class="stat-label">Role</span>
+                            <span class="stat-value">${character.role || 'Unknown'}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Personality</span>
+                            <span class="stat-value">${character.personality || 'Unknown'}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="character-content">
+                <div class="content-section">
+                    <h2>Description</h2>
+                    <p>${character.description}</p>
+                </div>
+                
+                ${character.analysis ? `
+                <div class="content-section">
+                    <h2>Character Analysis</h2>
+                    <p>${character.analysis}</p>
+                </div>
+                ` : ''}
+                
+                ${character.reasons ? `
+                <div class="content-section">
+                    <h2>Why I Love This Character</h2>
+                    <ul class="reasons-list">
+                        ${character.reasons.split('\n').filter(reason => reason.trim()).map(reason => `<li>${reason.trim()}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                
+                <div class="content-section">
+                    <h2>Rating</h2>
+                    <div id="rating-${character.id}" class="rating-section">
+                        <div class="rating-display">
+                            <span class="stars">${'★'.repeat(Math.floor(character.rating || 0))}${'☆'.repeat(5 - Math.floor(character.rating || 0))}</span>
+                            <span class="rating-text">${(character.rating || 0).toFixed(1)}/5 (${character.ratingCount || 0} votes)</span>
+                        </div>
+                        <div class="rating-buttons">
+                            ${[1,2,3,4,5].map(star => `
+                                <button onclick="rateCharacter('${character.id}', ${star})" class="star-btn">${star}★</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2>Comments</h2>
+                    <div id="comments-${character.id}" class="comments-section">
+                        <!-- Comments will be loaded here -->
+                    </div>
+                    <form id="comment-form-${character.id}" class="comment-form" onsubmit="event.preventDefault(); addComment('${character.id}', document.getElementById('comment-text-${character.id}').value, document.getElementById('comment-author-${character.id}').value);">
+                        <input type="text" id="comment-author-${character.id}" placeholder="Your name (optional)" class="comment-author">
+                        <textarea id="comment-text-${character.id}" placeholder="Write a comment..." class="comment-text" required></textarea>
+                        <button type="submit" class="comment-submit">Add Comment</button>
+                    </form>
                 </div>
             </div>
         </div>
     </main>
 
+
+
     <script src="script.js"></script>
-    <script src="comment-system.js"></script>
-    <script src="security-patch.js"></script>
     <script>
         // Load comments on page load
         document.addEventListener('DOMContentLoaded', () => {
             loadComments('${character.id}');
         });
+        
+
     </script>
 </body>
 </html>`;
