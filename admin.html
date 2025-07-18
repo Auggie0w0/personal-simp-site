@@ -124,12 +124,12 @@
             // Load character stats
             const characters = JSON.parse(localStorage.getItem('characters') || '[]');
             const staticCharacters = [
-                { name: 'Izumi Miyamura', gender: 'male', series: 'Horimiya', status: 'Complete' },
-                { name: 'Yamada', gender: 'male', series: 'Yamada-kun and the Seven Witches', status: 'Complete' },
-                { name: 'Minho', gender: 'male', series: 'The Maze Runner', status: 'Complete' },
-                { name: 'Axel Gilberto', gender: 'male', series: 'Lazarus', status: 'Planned' },
-                { name: 'Huntrix', gender: 'female', series: 'K-pop Demon Hunters', status: 'Planned' },
-                { name: 'Saja', gender: 'male', series: 'K-pop Demon Hunters', status: 'Planned' }
+                { id: 'miyamura', name: 'Izumi Miyamura', gender: 'male', series: 'Horimiya', status: 'Complete' },
+                { id: 'yamada', name: 'Yamada', gender: 'male', series: 'Yamada-kun and the Seven Witches', status: 'Complete' },
+                { id: 'minho', name: 'Minho', gender: 'male', series: 'The Maze Runner', status: 'Complete' },
+                { id: 'axel-gilberto', name: 'Axel Gilberto', gender: 'male', series: 'Lazarus', status: 'Planned' },
+                { id: 'huntrix', name: 'Huntrix', gender: 'female', series: 'K-pop Demon Hunters', status: 'Planned' },
+                { id: 'saja', name: 'Saja', gender: 'male', series: 'K-pop Demon Hunters', status: 'Planned' }
             ];
 
             const allCharacters = [...staticCharacters, ...characters];
@@ -188,8 +188,8 @@
                             <small>${char.createdAt ? 'Created: ' + new Date(char.createdAt).toLocaleDateString() : 'Static Character'} - ${char.status || 'Complete'}</small>
                         </div>
                         <div class="character-actions">
-                            <button class="btn btn-secondary" onclick="editCharacter('${char.id || char.name.toLowerCase().replace(/\s+/g, '-')}')">Edit</button>
-                            ${char.id ? `<button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>` : ''}
+                            <button class="btn btn-secondary" onclick="editCharacter('${char.id}')">Edit</button>
+                            ${char.id && !char.status ? `<button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>` : ''}
                         </div>
                     </div>
                 `).join('');
