@@ -53,27 +53,45 @@
                         <p id="totalCharacters">0</p>
                     </div>
                     <div class="stat-card">
-                        <h3>Static Characters</h3>
-                        <p>3</p>
+                        <h3>Male Characters</h3>
+                        <p id="maleCharacters">0</p>
                     </div>
                     <div class="stat-card">
-                        <h3>Dynamic Characters</h3>
-                        <p id="dynamicCharacters">0</p>
+                        <h3>Female Characters</h3>
+                        <p id="femaleCharacters">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Other Characters</h3>
+                        <p id="otherCharacters">0</p>
                     </div>
                 </div>
             </div>
 
             <div class="dashboard-section">
-                <h2>Dynamic Characters</h2>
-                <div id="characterList" class="character-management-list">
-                    <p class="no-characters">No dynamic characters added yet.</p>
+                <h2>Male Characters</h2>
+                <div id="maleCharacterList" class="character-management-list">
+                    <p class="no-characters">No male characters added yet.</p>
                 </div>
             </div>
 
             <div class="dashboard-section">
-                <h2>Static Character Updates</h2>
-                <div id="staticUpdates" class="static-updates-list">
-                    <p class="no-updates">No pending updates for static characters.</p>
+                <h2>Female Characters</h2>
+                <div id="femaleCharacterList" class="character-management-list">
+                    <p class="no-characters">No female characters added yet.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Other Characters</h2>
+                <div id="otherCharacterList" class="character-management-list">
+                    <p class="no-characters">No other characters added yet.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Character Updates</h2>
+                <div id="characterUpdates" class="character-updates-list">
+                    <p class="no-updates">No pending character updates.</p>
                 </div>
             </div>
 
@@ -105,39 +123,41 @@
 
             // Load character stats
             const characters = JSON.parse(localStorage.getItem('characters') || '[]');
-            document.getElementById('totalCharacters').textContent = characters.length + 3; // +3 for static characters
-            document.getElementById('dynamicCharacters').textContent = characters.length;
+            const staticCharacters = [
+                { name: 'Izumi Miyamura', gender: 'male', series: 'Horimiya' },
+                { name: 'Yamada', gender: 'male', series: 'Yamada-kun and the Seven Witches' },
+                { name: 'Minho', gender: 'male', series: 'The Maze Runner' },
+                { name: 'Axel Gilberto', gender: 'male', series: 'Lazarus' },
+                { name: 'Huntrix', gender: 'female', series: 'K-pop Demon Hunters' },
+                { name: 'Saja', gender: 'male', series: 'K-pop Demon Hunters' }
+            ];
 
-            // Load dynamic characters
-            const characterList = document.getElementById('characterList');
-            if (characters.length === 0) {
-                characterList.innerHTML = '<p class="no-characters">No dynamic characters added yet.</p>';
-            } else {
-                characterList.innerHTML = characters.map(char => `
-                    <div class="character-item">
-                        <div class="character-info">
-                            <h3>${char.name}</h3>
-                            <p>${char.series}</p>
-                            <small>Created: ${new Date(char.createdAt).toLocaleDateString()}</small>
-                        </div>
-                        <div class="character-actions">
-                            <button class="btn btn-secondary" onclick="editCharacter('${char.id}')">Edit</button>
-                            <button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
+            const allCharacters = [...staticCharacters, ...characters];
+            
+            const maleCharacters = allCharacters.filter(char => char.gender === 'male');
+            const femaleCharacters = allCharacters.filter(char => char.gender === 'female');
+            const otherCharacters = allCharacters.filter(char => !char.gender || char.gender === 'other');
 
-            // Load static character updates
-            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
-            const staticUpdatesList = document.getElementById('staticUpdates');
-            const updateKeys = Object.keys(staticUpdates);
+            document.getElementById('totalCharacters').textContent = allCharacters.length;
+            document.getElementById('maleCharacters').textContent = maleCharacters.length;
+            document.getElementById('femaleCharacters').textContent = femaleCharacters.length;
+            document.getElementById('otherCharacters').textContent = otherCharacters.length;
+
+            // Load characters by gender
+            loadCharacterList('maleCharacterList', maleCharacters);
+            loadCharacterList('femaleCharacterList', femaleCharacters);
+            loadCharacterList('otherCharacterList', otherCharacters);
+
+            // Load character updates
+            const characterUpdates = JSON.parse(localStorage.getItem('characterUpdates') || '{}');
+            const updatesList = document.getElementById('characterUpdates');
+            const updateKeys = Object.keys(characterUpdates);
             
             if (updateKeys.length === 0) {
-                staticUpdatesList.innerHTML = '<p class="no-updates">No pending updates for static characters.</p>';
+                updatesList.innerHTML = '<p class="no-updates">No pending character updates.</p>';
             } else {
-                staticUpdatesList.innerHTML = updateKeys.map(key => {
-                    const update = staticUpdates[key];
+                updatesList.innerHTML = updateKeys.map(key => {
+                    const update = characterUpdates[key];
                     return `
                         <div class="update-item">
                             <div class="update-info">
@@ -155,13 +175,34 @@
             }
         }
 
+        function loadCharacterList(containerId, characters) {
+            const container = document.getElementById(containerId);
+            if (characters.length === 0) {
+                container.innerHTML = '<p class="no-characters">No characters in this category yet.</p>';
+            } else {
+                container.innerHTML = characters.map(char => `
+                    <div class="character-item">
+                        <div class="character-info">
+                            <h3>${char.name}</h3>
+                            <p>${char.series}</p>
+                            <small>${char.createdAt ? 'Created: ' + new Date(char.createdAt).toLocaleDateString() : 'Static Character'}</small>
+                        </div>
+                        <div class="character-actions">
+                            <button class="btn btn-secondary" onclick="editCharacter('${char.id || char.name.toLowerCase().replace(/\s+/g, '-')}')">Edit</button>
+                            ${char.id ? `<button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
         function exportCharacters() {
             const characters = JSON.parse(localStorage.getItem('characters') || '[]');
-            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+            const characterUpdates = JSON.parse(localStorage.getItem('characterUpdates') || '{}');
             
             const exportData = {
-                dynamicCharacters: characters,
-                staticUpdates: staticUpdates,
+                characters: characters,
+                updates: characterUpdates,
                 exportedAt: new Date().toISOString()
             };
             
@@ -179,7 +220,7 @@
         function clearAllData() {
             if (confirm('Are you sure you want to clear all character data? This action cannot be undone.')) {
                 localStorage.removeItem('characters');
-                localStorage.removeItem('staticCharacterUpdates');
+                localStorage.removeItem('characterUpdates');
                 localStorage.removeItem('isAdmin');
                 alert('All data cleared successfully!');
                 loadDashboard();
@@ -187,18 +228,18 @@
         }
 
         function viewUpdate(characterId) {
-            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
-            const update = staticUpdates[characterId];
+            const characterUpdates = JSON.parse(localStorage.getItem('characterUpdates') || '{}');
+            const update = characterUpdates[characterId];
             
             if (update) {
-                alert(`Character: ${update.name}\nSeries: ${update.series}\nAge: ${update.age}\nRole: ${update.role}\nPersonality: ${update.personality}\n\nDescription: ${update.description}\n\nAnalysis: ${update.analysis}\n\nReasons: ${update.reasons}`);
+                alert(`Character: ${update.name}\nSeries: ${update.series}\nGender: ${update.gender || 'Not specified'}\nAge: ${update.age}\nRole: ${update.role}\nPersonality: ${update.personality}\n\nDescription: ${update.description}\n\nAnalysis: ${update.analysis}\n\nReasons: ${update.reasons}`);
             }
         }
 
         function clearUpdate(characterId) {
-            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
-            delete staticUpdates[characterId];
-            localStorage.setItem('staticCharacterUpdates', JSON.stringify(staticUpdates));
+            const characterUpdates = JSON.parse(localStorage.getItem('characterUpdates') || '{}');
+            delete characterUpdates[characterId];
+            localStorage.setItem('characterUpdates', JSON.stringify(characterUpdates));
             loadDashboard();
         }
 

@@ -277,6 +277,7 @@ if (addCharacterForm) {
             age: document.getElementById('characterAge').value,
             role: document.getElementById('characterRole').value,
             personality: document.getElementById('characterPersonality').value,
+            gender: document.getElementById('characterGender').value,
             image: document.getElementById('characterImage').value,
             description: document.getElementById('characterDescription').value,
             analysis: document.getElementById('characterAnalysis').value,
@@ -290,9 +291,12 @@ if (addCharacterForm) {
     });
 }
 
-// Access Control System
-const ADMIN_PASSWORD = 'SIMP2025'; // You can change this password
+// Access Control System - Enhanced Security
+const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // SHA-256 hash of 'password'
 let isAdmin = false;
+let loginAttempts = 0;
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
 
 // Check if user is admin on page load
 function checkAdminStatus() {
@@ -305,16 +309,68 @@ function checkAdminStatus() {
     }
 }
 
-// Admin authentication
-function authenticateAdmin() {
+// SHA-256 hash function for password security
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Admin authentication with enhanced security
+async function authenticateAdmin() {
+    // Check for lockout
+    const lockoutTime = localStorage.getItem('adminLockoutTime');
+    if (lockoutTime && Date.now() < parseInt(lockoutTime)) {
+        const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000 / 60);
+        alert(`Account is locked. Please try again in ${remainingTime} minutes.`);
+        return;
+    }
+
+    // Reset lockout if time has passed
+    if (lockoutTime && Date.now() >= parseInt(lockoutTime)) {
+        localStorage.removeItem('adminLockoutTime');
+        loginAttempts = 0;
+    }
+
     const password = prompt('Enter admin password to access character management:');
-    if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
-        localStorage.setItem('isAdmin', 'true');
-        showAdminFeatures();
-        alert('Admin access granted! You can now add and edit characters.');
-    } else if (password !== null) {
-        alert('Incorrect password. Access denied.');
+    if (password === null) return; // User cancelled
+
+    try {
+        // Sanitize input to prevent injection attacks
+        const sanitizedPassword = password.trim().replace(/[<>\"'&]/g, '');
+        
+        if (sanitizedPassword.length === 0) {
+            alert('Password cannot be empty.');
+            return;
+        }
+
+        const hashedPassword = await sha256(sanitizedPassword);
+        
+        if (hashedPassword === ADMIN_PASSWORD_HASH) {
+            isAdmin = true;
+            localStorage.setItem('isAdmin', 'true');
+            loginAttempts = 0;
+            localStorage.removeItem('adminLockoutTime');
+            showAdminFeatures();
+            alert('Admin access granted! You can now add and edit characters.');
+        } else {
+            loginAttempts++;
+            const remainingAttempts = MAX_LOGIN_ATTEMPTS - loginAttempts;
+            
+            if (remainingAttempts > 0) {
+                alert(`Incorrect password. ${remainingAttempts} attempts remaining.`);
+            } else {
+                // Lock account
+                const lockoutEndTime = Date.now() + LOCKOUT_TIME;
+                localStorage.setItem('adminLockoutTime', lockoutEndTime.toString());
+                alert('Too many failed attempts. Account locked for 15 minutes.');
+            }
+        }
+    } catch (error) {
+        console.error('Authentication error:', error);
+        alert('Authentication error. Please try again.');
     }
 }
 
@@ -400,12 +456,12 @@ function updateCharacter(characterId, updatedData) {
         alert(`Character "${updatedData.name}" has been updated!\n\nNote: Since this is a static character page, you'll need to manually update the HTML file to see the changes. The form data has been saved for reference.`);
         
         // Save the updated data to localStorage for reference
-        const staticCharacterUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
-        staticCharacterUpdates[characterId] = {
+        const characterUpdates = JSON.parse(localStorage.getItem('characterUpdates') || '{}');
+        characterUpdates[characterId] = {
             ...updatedData,
             updatedAt: new Date().toISOString()
         };
-        localStorage.setItem('staticCharacterUpdates', JSON.stringify(staticCharacterUpdates));
+        localStorage.setItem('characterUpdates', JSON.stringify(characterUpdates));
         
         return { id: characterId, ...updatedData };
     } else {
@@ -795,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 age: document.getElementById('editCharacterAge').value,
                 role: document.getElementById('editCharacterRole').value,
                 personality: document.getElementById('editCharacterPersonality').value,
+                gender: document.getElementById('editCharacterGender') ? document.getElementById('editCharacterGender').value : 'male',
                 image: document.getElementById('editCharacterImage').value,
                 description: document.getElementById('editCharacterDescription').value,
                 analysis: document.getElementById('editCharacterAnalysis').value,

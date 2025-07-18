@@ -1353,12 +1353,14 @@ html {
 }
 
 .dashboard-section {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--black);
+    color: var(--white);
     padding: 25px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight);
     margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-section h2 {
@@ -1366,6 +1368,7 @@ html {
     font-size: 1.8rem;
     color: var(--highlight);
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .admin-stats {
@@ -1375,13 +1378,19 @@ html {
 }
 
 .stat-card {
-    background: var(--black);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--white);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 .stat-card h3 {
@@ -1396,10 +1405,11 @@ html {
     font-size: 2rem;
     font-weight: bold;
     margin: 0;
+    color: var(--white);
 }
 
 .character-management-list,
-.static-updates-list {
+.character-updates-list {
     display: grid;
     gap: 15px;
 }
@@ -1414,9 +1424,16 @@ html {
     align-items: center;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
-.character-info,
+.character-item:hover,
+.update-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.character-info h3,
 .update-info h3 {
     font-family: 'Luckiest Guy', cursive;
     font-size: 1.2rem;
@@ -1428,7 +1445,7 @@ html {
 .update-info p {
     font-family: 'DM Serif Text', serif;
     font-size: 1rem;
-    color: var(--text);
+    color: var(--white);
     margin-bottom: 5px;
 }
 
@@ -1463,6 +1480,10 @@ html {
     font-size: 1.1rem;
     color: var(--other-highlight);
     font-style: italic;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px dashed var(--other-highlight);
 }
 
 .quick-actions {
@@ -1484,28 +1505,4 @@ html {
 
 .quick-actions .btn:hover {
     transform: translateY(-2px);
-}
-
-/* Responsive Design for Admin Dashboard */
-@media (max-width: 768px) {
-    .admin-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .character-item,
-    .update-item {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .character-actions,
-    .update-actions {
-        justify-content: center;
-    }
-    
-    .quick-actions {
-        flex-direction: column;
-        align-items: center;
-    }
 }
