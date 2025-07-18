@@ -355,9 +355,9 @@ if (addCharacterForm) {
 }
 
 // Access Control System - Enhanced Security
-const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // SHA-256 hash of 'password'
+const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // SHA-256 hash of 'password' (the actual password is "password")
 let isAdmin = false;
-let loginAttempts = 0;
+let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
 
@@ -395,6 +395,7 @@ async function authenticateAdmin() {
     if (lockoutTime && Date.now() >= parseInt(lockoutTime)) {
         localStorage.removeItem('adminLockoutTime');
         loginAttempts = 0;
+        localStorage.setItem('loginAttempts', '0');
     }
 
     const password = prompt('Enter admin password to access character management:');
@@ -415,11 +416,13 @@ async function authenticateAdmin() {
             isAdmin = true;
             localStorage.setItem('isAdmin', 'true');
             loginAttempts = 0;
+            localStorage.setItem('loginAttempts', '0');
             localStorage.removeItem('adminLockoutTime');
             showAdminFeatures();
             alert('Admin access granted! You can now add and edit characters.');
         } else {
             loginAttempts++;
+            localStorage.setItem('loginAttempts', loginAttempts.toString());
             const remainingAttempts = MAX_LOGIN_ATTEMPTS - loginAttempts;
             
             if (remainingAttempts > 0) {

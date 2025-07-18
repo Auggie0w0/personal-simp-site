@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Test - Simp Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #0056b3; }
+        .password-info {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔐 Authentication Test</h1>
+        
+        <div class="password-info">
+            <strong>Correct Password:</strong> <code>password</code><br>
+            <small>This is the password that should work with the authentication system.</small>
+        </div>
+        
+        <h2>Test Steps:</h2>
+        <ol>
+            <li>Click the "Test Authentication" button below</li>
+            <li>When prompted, enter: <strong>password</strong></li>
+            <li>Check the result below</li>
+        </ol>
+        
+        <button onclick="testAuthentication()">Test Authentication</button>
+        <button onclick="clearAll()">Clear All Data</button>
+        
+        <div id="result"></div>
+        
+        <h3>Current Status:</h3>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        // Copy the authentication functions from script.js
+        const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8';
+        let isAdmin = false;
+        let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+        const MAX_LOGIN_ATTEMPTS = 5;
+        const LOCKOUT_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        async function testAuthentication() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">Testing authentication...</div>';
+            
+            // Check for lockout
+            const lockoutTime = localStorage.getItem('adminLockoutTime');
+            if (lockoutTime && Date.now() < parseInt(lockoutTime)) {
+                const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000 / 60);
+                resultDiv.innerHTML = `<div class="error">🔒 Account is locked. Please try again in ${remainingTime} minutes.</div>`;
+                updateStatus();
+                return;
+            }
+
+            // Reset lockout if time has passed
+            if (lockoutTime && Date.now() >= parseInt(lockoutTime)) {
+                localStorage.removeItem('adminLockoutTime');
+                loginAttempts = 0;
+                localStorage.setItem('loginAttempts', '0');
+            }
+
+            const password = prompt('Enter admin password to access character management:');
+            if (password === null) {
+                resultDiv.innerHTML = '<div class="info">Authentication cancelled by user.</div>';
+                return;
+            }
+
+            try {
+                // Sanitize input to prevent injection attacks
+                const sanitizedPassword = password.trim().replace(/[<>\"'&]/g, '');
+                
+                if (sanitizedPassword.length === 0) {
+                    resultDiv.innerHTML = '<div class="error">❌ Password cannot be empty.</div>';
+                    updateStatus();
+                    return;
+                }
+
+                const hashedPassword = await sha256(sanitizedPassword);
+                
+                if (hashedPassword === ADMIN_PASSWORD_HASH) {
+                    isAdmin = true;
+                    localStorage.setItem('isAdmin', 'true');
+                    loginAttempts = 0;
+                    localStorage.setItem('loginAttempts', '0');
+                    localStorage.removeItem('adminLockoutTime');
+                    resultDiv.innerHTML = '<div class="success">✅ Authentication successful! Admin access granted.</div>';
+                } else {
+                    loginAttempts++;
+                    localStorage.setItem('loginAttempts', loginAttempts.toString());
+                    const remainingAttempts = MAX_LOGIN_ATTEMPTS - loginAttempts;
+                    
+                    if (remainingAttempts > 0) {
+                        resultDiv.innerHTML = `<div class="error">❌ Incorrect password. ${remainingAttempts} attempts remaining.</div>`;
+                    } else {
+                        // Lock account
+                        const lockoutEndTime = Date.now() + LOCKOUT_TIME;
+                        localStorage.setItem('adminLockoutTime', lockoutEndTime.toString());
+                        resultDiv.innerHTML = '<div class="error">🔒 Too many failed attempts. Account locked for 15 minutes.</div>';
+                    }
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                resultDiv.innerHTML = '<div class="error">❌ Authentication error. Please try again.</div>';
+            }
+            
+            updateStatus();
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all authentication data?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('adminLockoutTime');
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('characters');
+                localStorage.removeItem('characterUpdates');
+                isAdmin = false;
+                loginAttempts = 0;
+                document.getElementById('result').innerHTML = '<div class="info">✅ All authentication data cleared.</div>';
+                updateStatus();
+            }
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const lockoutTime = localStorage.getItem('adminLockoutTime');
+            const loginAttempts = localStorage.getItem('loginAttempts') || '0';
+            
+            let statusHtml = '';
+            
+            if (isAdmin) {
+                statusHtml += '<div class="success">✅ Admin access is currently active</div>';
+            } else {
+                statusHtml += '<div class="error">❌ Admin access is not active</div>';
+            }
+            
+            if (lockoutTime) {
+                const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000 / 60);
+                if (remainingTime > 0) {
+                    statusHtml += `<div class="error">🔒 Account is locked. ${remainingTime} minutes remaining</div>`;
+                } else {
+                    statusHtml += '<div class="info">🔓 Lockout has expired</div>';
+                }
+            } else {
+                statusHtml += '<div class="success">🔓 No lockout active</div>';
+            }
+            
+            statusHtml += `<div class="info">📊 Login attempts: ${loginAttempts}</div>`;
+            
+            statusDiv.innerHTML = statusHtml;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updateStatus);
+    </script>
+</body>
+</html> 

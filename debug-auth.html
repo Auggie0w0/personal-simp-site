@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Debug - Simp Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Authentication Debug Tool</h1>
+    
+    <div class="debug-section">
+        <h2>Current Status</h2>
+        <div id="currentStatus"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Test Authentication</h2>
+        <input type="password" id="testPassword" placeholder="Enter password to test">
+        <button onclick="testPassword()">Test Password</button>
+        <div id="testResult"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>LocalStorage Contents</h2>
+        <div id="localStorageContent"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Actions</h2>
+        <button onclick="clearLockout()">Clear Lockout</button>
+        <button onclick="clearAdminStatus()">Clear Admin Status</button>
+        <button onclick="resetAll()">Reset All Auth Data</button>
+        <button onclick="refreshStatus()">Refresh Status</button>
+    </div>
+
+    <script>
+        // SHA-256 hash function (same as in script.js)
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8';
+
+        function refreshStatus() {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const lockoutTime = localStorage.getItem('adminLockoutTime');
+            const loginAttempts = localStorage.getItem('loginAttempts') || 0;
+            
+            let statusHtml = '';
+            
+            if (isAdmin) {
+                statusHtml += '<div class="status success">✅ Admin access is currently active</div>';
+            } else {
+                statusHtml += '<div class="status error">❌ Admin access is not active</div>';
+            }
+            
+            if (lockoutTime) {
+                const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000 / 60);
+                if (remainingTime > 0) {
+                    statusHtml += `<div class="status error">🔒 Account is locked. ${remainingTime} minutes remaining</div>`;
+                } else {
+                    statusHtml += '<div class="status info">🔓 Lockout has expired</div>';
+                }
+            } else {
+                statusHtml += '<div class="status success">🔓 No lockout active</div>';
+            }
+            
+            statusHtml += `<div class="status info">📊 Login attempts: ${loginAttempts}</div>`;
+            
+            document.getElementById('currentStatus').innerHTML = statusHtml;
+            
+            // Show localStorage contents
+            const localStorageData = {
+                isAdmin: localStorage.getItem('isAdmin'),
+                adminLockoutTime: localStorage.getItem('adminLockoutTime'),
+                loginAttempts: localStorage.getItem('loginAttempts'),
+                characters: localStorage.getItem('characters'),
+                characterUpdates: localStorage.getItem('characterUpdates')
+            };
+            
+            document.getElementById('localStorageContent').innerHTML = 
+                '<pre>' + JSON.stringify(localStorageData, null, 2) + '</pre>';
+        }
+
+        async function testPassword() {
+            const password = document.getElementById('testPassword').value;
+            const resultDiv = document.getElementById('testResult');
+            
+            if (!password) {
+                resultDiv.innerHTML = '<div class="status error">Please enter a password to test</div>';
+                return;
+            }
+            
+            try {
+                const hashedPassword = await sha256(password);
+                const isCorrect = hashedPassword === ADMIN_PASSWORD_HASH;
+                
+                if (isCorrect) {
+                    resultDiv.innerHTML = '<div class="status success">✅ Password is correct!</div>';
+                } else {
+                    resultDiv.innerHTML = '<div class="status error">❌ Password is incorrect</div>';
+                }
+                
+                resultDiv.innerHTML += `<div class="status info">Hash: ${hashedPassword}</div>`;
+                resultDiv.innerHTML += `<div class="status info">Expected: ${ADMIN_PASSWORD_HASH}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="status error">Error testing password: ' + error.message + '</div>';
+            }
+        }
+
+        function clearLockout() {
+            localStorage.removeItem('adminLockoutTime');
+            localStorage.removeItem('loginAttempts');
+            alert('Lockout cleared!');
+            refreshStatus();
+        }
+
+        function clearAdminStatus() {
+            localStorage.removeItem('isAdmin');
+            alert('Admin status cleared!');
+            refreshStatus();
+        }
+
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all authentication data?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('adminLockoutTime');
+                localStorage.removeItem('loginAttempts');
+                alert('All authentication data reset!');
+                refreshStatus();
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', refreshStatus);
+    </script>
+</body>
+</html> 
