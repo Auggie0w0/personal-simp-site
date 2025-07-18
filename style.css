@@ -279,6 +279,7 @@ header {
   transform: translateY(30px);
   flex-shrink: 0;
   position: relative;
+  cursor: pointer;
 }
 
 .character-card:hover {
@@ -309,6 +310,10 @@ header {
   color: inherit;
   text-decoration: none;
   height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
 }
 
 .card-image {
@@ -316,6 +321,7 @@ header {
   height: 320px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .card-image img {
@@ -1170,165 +1176,61 @@ html {
   top: 0.5rem;
 }
 
-/* ========================================
-   GOOGLE SLIDES EMBED SECTION
-   ======================================== */
 
-.slides-section {
+
+
+
+
+
+/* Gallery Section Styles */
+.gallery-section {
   margin: 2rem 0;
   padding: 2rem 0;
-  background: linear-gradient(135deg, 
-    var(--card-bg) 0%, 
-    rgba(255, 190, 71, 0.05) 50%, 
-    var(--card-bg) 100%);
-  border-radius: 30px;
   position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, 
+    rgba(255, 190, 71, 0.05) 0%, 
+    rgba(255, 190, 71, 0.02) 50%, 
+    rgba(255, 190, 71, 0.05) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 190, 71, 0.1);
 }
 
-.slides-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, 
-    transparent 0%, 
-    rgba(255, 190, 71, 0.1) 25%, 
-    transparent 50%, 
-    rgba(45, 218, 215, 0.1) 75%, 
-    transparent 100%);
-  animation: slidesShimmer 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes slidesShimmer {
-  0%, 100% {
-    opacity: 0.3;
-    transform: translateX(-100%);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translateX(100%);
-  }
-}
-
-.slides-section h2 {
-  font-size: 3rem;
-  margin-bottom: 3rem;
+.gallery-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
   color: var(--text-primary);
   text-align: center;
   font-family: "Barriecito", system-ui;
   font-weight: 400;
   position: relative;
-  z-index: 2;
-  text-shadow: 0 2px 10px rgba(255, 190, 71, 0.3);
 }
 
-.slides-section h2::after {
-  content: '✨';
-  position: absolute;
-  right: -3rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-.slides-section h2::before {
-  content: '✨';
-  position: absolute;
-  left: -3rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  animation: sparkle 2s ease-in-out infinite reverse;
-}
-
-@keyframes sparkle {
-  0%, 100% {
-    opacity: 0.5;
-    transform: translateY(-50%) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.2);
-  }
-}
-
-.slides-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  width: 100%;
-  max-width: 98vw;
-  margin: 0 auto;
-  padding: 0 0.25rem;
-  position: relative;
-  z-index: 2;
-}
-
-.slides-container iframe {
-  width: 100%;
-  height: 90vh;
-  border-radius: 25px;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: none;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  position: relative;
-  background: var(--bg-primary);
-}
-
-.slides-container iframe::before {
+.gallery-section h2::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, 
-    transparent 0%, 
-    rgba(255, 190, 71, 0.1) 50%, 
-    transparent 100%);
-  border-radius: 25px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.slides-container iframe:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 80px rgba(255, 190, 71, 0.2);
-}
-
-.slides-container iframe:hover::before {
-  opacity: 1;
-}
-
-/* Slides loading animation */
-.slides-container::after {
-  content: 'Loading slides...';
-  position: absolute;
-  top: 50%;
+  bottom: -10px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--text-secondary);
-  font-family: "Sour Gummy", sans-serif;
-  font-size: 1.2rem;
-  opacity: 0.7;
-  animation: slidesLoading 2s ease-in-out infinite;
-  pointer-events: none;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--highlight) 50%, 
+    transparent 100%);
+  border-radius: 2px;
 }
 
-@keyframes slidesLoading {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.8;
-  }
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 2rem;
 }
+
 
 /* Image Gallery Styles */
 .image-gallery {
@@ -1337,6 +1239,35 @@ html {
   gap: 1.5rem;
   width: 100%;
   margin: 0 auto;
+}
+
+/* Slides Section Styles for Google Slides embeds */
+.slides-section {
+  width: 60%;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.slides-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.slides-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  aspect-ratio: 16/9;
+}
+
+.slides-container iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .gallery-image {
@@ -1349,20 +1280,11 @@ html {
   background: var(--card-bg);
 }
 
-.gallery-image:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 25px 60px rgba(255, 190, 71, 0.3);
-}
-
 .gallery-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.gallery-image:hover img {
-  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
 
 .gallery-image::before {
@@ -1386,11 +1308,102 @@ html {
   opacity: 1;
 }
 
+/* Gallery Modal/Lightbox Styles */
+.gallery-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  overflow: auto;
+}
+
+.gallery-modal.active {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+.gallery-modal img {
+  max-width: 95vw;
+  max-height: 95vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 20px;
+  transform: scale(0.1);
+  opacity: 0;
+}
+
+.gallery-modal.active img {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Responsive modal for mobile */
+@media screen and (max-width: 768px) {
+  .gallery-modal img {
+    max-width: 98vw;
+    max-height: 90vh;
+    margin: 10px;
+  }
+  
+  .gallery-modal-close {
+    top: 10px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+}
+
+.gallery-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001;
+}
+
+.gallery-modal-close:hover {
+  background: rgba(255, 190, 71, 0.8);
+  transform: scale(1.1);
+}
+
+/* Make gallery images clickable */
+.gallery-image {
+  cursor: pointer;
+}
+
 /* Large desktop screens for gallery */
 @media screen and (min-width: 1400px) {
   .image-gallery {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
+  }
+  
+  .gallery-section h2 {
+    font-size: 2.8rem;
   }
 }
 
@@ -1399,6 +1412,11 @@ html {
   .image-gallery {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+  }
+  
+  .gallery-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -1412,44 +1430,30 @@ html {
   .gallery-image {
     aspect-ratio: 1;
   }
+  
+  .gallery-container {
+    padding: 0 1rem;
+  }
+  
+  .gallery-section h2 {
+    font-size: 2rem;
+  }
 }
 
-/* Tablet responsive for slides */
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-  .slides-section {
-    margin: 3rem 0;
-    padding: 1.5rem 0;
-  }
-  
-  .slides-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-  }
-  
-  .slides-container {
-    max-width: 98vw;
-    gap: 2.5rem;
-    padding: 0 0.25rem;
-  }
-  
-  .slides-container iframe {
-    height: 85vh;
-  }
-}
+
+
+
+
+
 
 /* Large desktop screens */
 @media screen and (min-width: 1400px) {
-  .slides-container {
-    max-width: 99vw;
-    padding: 0 0.1rem;
-  }
-  
-  .slides-container iframe {
-    height: 95vh;
+  .image-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
   
   .slides-section h2 {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
   }
 }
 
@@ -1481,36 +1485,7 @@ html {
     grid-template-columns: 1fr;
   }
   
-  .slides-section {
-    margin: 2rem 0;
-    padding: 1rem 0;
-    border-radius: 20px;
-  }
-  
-  .slides-section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .slides-section h2::before,
-  .slides-section h2::after {
-    display: none;
-  }
-  
-  .slides-container {
-    max-width: 100%;
-    padding: 0 0.25rem;
-    gap: 2rem;
-  }
-  
-  .slides-container iframe {
-    height: 70vh;
-    border-radius: 20px;
-  }
-  
-  .slides-container iframe:hover {
-    transform: translateY(-5px) scale(1.01);
-  }
+
   
   /* Mobile carousel buttons */
   .carousel-btn {
@@ -1625,6 +1600,11 @@ html {
 .status.pending {
   background: rgba(255, 190, 71, 0.2);
   color: var(--highlight);
+}
+
+.status.incomplete {
+  background: rgba(247, 97, 144, 0.2);
+  color: var(--heart-highlight);
 }
 
 .add-new {

@@ -7,8 +7,10 @@ let currentIndex = 0;
 const cardWidth = 320 + 32; // card width (320px) + gap (32px)
 let maxIndex = 2; // Will be updated dynamically based on number of characters
 
-// Initialize carousel position
-track.dataset.percentage = "0";
+// Only initialize carousel if elements exist (home page)
+if (track && prevBtn && nextBtn) {
+    // Initialize carousel position
+    track.dataset.percentage = "0";
 
 // Navigation buttons
 prevBtn.addEventListener('click', () => {
@@ -169,38 +171,45 @@ document.querySelectorAll('.character-card').forEach(card => {
 
 // Keyboard navigation for carousel
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            updateCarousel();
+    if (track && prevBtn && nextBtn) { // Only run on pages with carousel
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateCarousel();
+            }
         }
     }
 });
 
+} // Close the initial if statement for carousel elements
+
 // Initialize carousel on load
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load characters from character list for carousel
-    await loadCarouselCharacters();
-    
-    // Reset current index and update carousel
-    currentIndex = 0;
-    updateCarousel();
-    
-    // Add loading animation
-    document.querySelectorAll('.character-card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Add focus management for accessibility
-    prevBtn.setAttribute('aria-label', 'Previous character');
-    nextBtn.setAttribute('aria-label', 'Next character');
+    // Only run carousel initialization if elements exist (home page)
+    if (track && prevBtn && nextBtn) {
+        // Load characters from character list for carousel
+        await loadCarouselCharacters();
+        
+        // Reset current index and update carousel
+        currentIndex = 0;
+        updateCarousel();
+        
+        // Add loading animation
+        document.querySelectorAll('.character-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        // Add focus management for accessibility
+        prevBtn.setAttribute('aria-label', 'Previous character');
+        nextBtn.setAttribute('aria-label', 'Next character');
+    }
 });
 
 // Load characters for carousel from character list
@@ -226,6 +235,13 @@ async function loadCarouselCharacters() {
             link: 'ivan.html'
         },
         {
+            id: 'hange',
+            name: 'Hange Zoe',
+            series: 'Attack on Titan',
+            image: 'https://i.pinimg.com/736x/38/4c/6a/384c6a0e795b24a497b07a0829d94b76.jpg',
+            link: 'hange.html'
+        },
+        {
             id: 'yamada',
             name: 'Akito Yamada',
             series: 'Yamada-kun and the Seven Witches',
@@ -245,13 +261,6 @@ async function loadCarouselCharacters() {
             series: 'Horimiya',
             image: 'https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png',
             link: 'miyamura.html'
-        },
-        {
-            id: 'hange',
-            name: 'Hange Zoe',
-            series: 'Attack on Titan',
-            image: 'https://i.pinimg.com/736x/38/4c/6a/384c6a0e795b24a497b07a0829d94b76.jpg',
-            link: 'hange.html'
         }
     ];
 
@@ -332,14 +341,13 @@ async function loadCarouselCharacters() {
     // Add click handlers to the newly created card links
     document.querySelectorAll('.card-link').forEach(link => {
         link.addEventListener('click', (e) => {
-            // Only navigate if it's a direct click, not a drag
-            if (!isMouseDown) {
-                // Allow normal navigation
-                return;
-            } else {
-                // Prevent navigation during drag
+            // Only prevent navigation during drag operations
+            if (isMouseDown) {
                 e.preventDefault();
+                return;
             }
+            // Allow normal navigation for all other clicks
+            console.log('Navigating to:', link.href);
         });
     });
 }
@@ -686,4 +694,169 @@ function updateCharacterPage(character) {
     characterPages[character.id] = character;
     localStorage.setItem('characterPages', JSON.stringify(characterPages));
 }
+
+// Gallery Modal Functionality
+function initGalleryModals() {
+    console.log('Initializing gallery modals...');
+    
+    // Create modal element if it doesn't exist
+    if (!document.querySelector('.gallery-modal')) {
+        const modal = document.createElement('div');
+        modal.className = 'gallery-modal';
+        modal.innerHTML = `
+            <div class="gallery-modal-close">×</div>
+            <img src="" alt="Full size image">
+        `;
+        document.body.appendChild(modal);
+        console.log('Modal created');
+    }
+
+    // Add click event listeners to all gallery images
+    const galleryImages = document.querySelectorAll('.gallery-image img');
+    console.log('Found', galleryImages.length, 'gallery images');
+    
+    galleryImages.forEach((img, index) => {
+        // Remove any existing listeners
+        img.removeEventListener('click', handleImageClick);
+        // Add new listener
+        img.addEventListener('click', handleImageClick);
+        console.log(`Added click listener to image ${index + 1}:`, img.src);
+    });
+
+    // Set up modal event listeners
+    const modal = document.querySelector('.gallery-modal');
+    const closeBtn = document.querySelector('.gallery-modal-close');
+    
+    // Remove existing listeners
+    modal.removeEventListener('click', handleModalClick);
+    closeBtn.removeEventListener('click', closeGalleryModal);
+    
+    // Add new listeners
+    modal.addEventListener('click', handleModalClick);
+    closeBtn.addEventListener('click', closeGalleryModal);
+    
+    // Close modal with Escape key
+    document.removeEventListener('keydown', handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    console.log('Gallery modals initialized successfully');
+}
+
+function handleImageClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Image clicked:', this.src);
+    openGalleryModal(this.src, this.alt);
+}
+
+function handleModalClick(e) {
+    if (e.target === e.currentTarget) {
+        console.log('Modal background clicked');
+        closeGalleryModal();
+    }
+}
+
+function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+        console.log('Escape key pressed');
+        closeGalleryModal();
+    }
+}
+
+function openGalleryModal(src, alt) {
+    console.log('Opening modal with:', src);
+    const modal = document.querySelector('.gallery-modal');
+    const modalImg = modal.querySelector('img');
+    
+    if (!modal || !modalImg) {
+        console.error('Modal or modal image not found!');
+        return;
+    }
+    
+    modalImg.src = src;
+    modalImg.alt = alt;
+    
+    // Show modal immediately
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    
+    // Reset and animate image
+    modalImg.style.transform = 'scale(0.1)';
+    modalImg.style.opacity = '0';
+    
+    modal.classList.add('active');
+    console.log('Modal active class added');
+    
+    // Trigger animation after a small delay
+    setTimeout(() => {
+        modalImg.style.transform = 'scale(1)';
+        modalImg.style.opacity = '1';
+        console.log('Modal animation triggered');
+    }, 50);
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+    console.log('Closing modal');
+    const modal = document.querySelector('.gallery-modal');
+    const modalImg = modal.querySelector('img');
+    
+    if (!modal || !modalImg) {
+        console.error('Modal or modal image not found for closing!');
+        return;
+    }
+    
+    // Animate closing
+    modalImg.style.transform = 'scale(0.1)';
+    modalImg.style.opacity = '0';
+    
+    // Remove active class and hide modal after animation
+    setTimeout(() => {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        // Restore body scroll
+        document.body.style.overflow = '';
+        console.log('Modal closed');
+    }, 400);
+}
+
+// Initialize gallery modals when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing gallery modals...');
+    initGalleryModals();
+    
+    // Also initialize after a short delay to ensure all content is loaded
+    setTimeout(() => {
+        console.log('Delayed initialization...');
+        initGalleryModals();
+    }, 1000);
+    
+    // Re-initialize when new content is loaded (for dynamic content)
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // Check if gallery images were added
+                const hasGalleryImages = Array.from(mutation.addedNodes).some(node => 
+                    node.nodeType === 1 && (
+                        node.classList?.contains('gallery-image') ||
+                        node.querySelector?.('.gallery-image')
+                    )
+                );
+                
+                if (hasGalleryImages) {
+                    console.log('New gallery images detected, re-initializing...');
+                    setTimeout(initGalleryModals, 100);
+                }
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
 
