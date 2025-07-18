@@ -4,8 +4,8 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
 let currentIndex = 0;
-const cardWidth = 250 + 32; // card width + gap
-const maxIndex = 2; // 3 cards total (0, 1, 2)
+const cardWidth = 320 + 32; // card width (320px) + gap (32px)
+let maxIndex = 2; // Will be updated dynamically based on number of characters
 
 // Initialize carousel position
 track.dataset.percentage = "0";
@@ -38,7 +38,11 @@ function updateCarousel() {
     
     // Update button styles
     prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-    prevBtn.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
+    nextBtn.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
+    
+    // Update button cursor
+    prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+    nextBtn.style.cursor = currentIndex === maxIndex ? 'not-allowed' : 'pointer';
 }
 
 // Mouse drag functionality
@@ -161,40 +165,80 @@ document.querySelectorAll('.character-card').forEach(card => {
     });
 });
 
-// Handle card clicks while preserving carousel drag functionality
-document.querySelectorAll('.card-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        // Only navigate if it's a direct click, not a drag
-        if (!isMouseDown) {
-            // Allow normal navigation
-            return;
-        } else {
-            // Prevent navigation during drag
-            e.preventDefault();
+// Card link click handlers are now added dynamically in loadCarouselCharacters()
+
+// Keyboard navigation for carousel
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
         }
-    });
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+        }
+    }
 });
 
 // Initialize carousel on load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Load characters from character list for carousel
-    loadCarouselCharacters();
+    await loadCarouselCharacters();
+    
+    // Reset current index and update carousel
+    currentIndex = 0;
     updateCarousel();
     
     // Add loading animation
     document.querySelectorAll('.character-card').forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
     });
+    
+    // Add focus management for accessibility
+    prevBtn.setAttribute('aria-label', 'Previous character');
+    nextBtn.setAttribute('aria-label', 'Next character');
 });
 
 // Load characters for carousel from character list
-function loadCarouselCharacters() {
+async function loadCarouselCharacters() {
     const carouselTrack = document.getElementById('image-track');
     if (!carouselTrack) return;
 
     // Get all characters (static + dynamic)
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
+        {
+            id: 'leeknow',
+            name: 'Lee Know',
+            series: 'Stray Kids',
+            image: 'https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg',
+            link: 'minho.html'
+        },
+        {
+            id: 'ivan',
+            name: 'Ivan',
+            series: 'Alien Stage',
+            image: 'https://i.pinimg.com/736x/1b/ef/e1/1befe1790551b1b34361b1268cf51c08.jpg',
+            link: 'ivan.html'
+        },
+        {
+            id: 'yamada',
+            name: 'Akito Yamada',
+            series: 'Yamada-kun and the Seven Witches',
+            image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
+            link: 'yamada.html'
+        },
+        {
+            id: 'dazai',
+            name: 'Osamu Dazai',
+            series: 'Bungou Stray Dogs',
+            image: 'https://i.pinimg.com/736x/1e/32/76/1e3276d446f3de6ef84f3149f1cdf8c0.jpg',
+            link: 'dazai.html'
+        },
         {
             id: 'miyamura',
             name: 'Izumi Miyamura',
@@ -203,55 +247,100 @@ function loadCarouselCharacters() {
             link: 'miyamura.html'
         },
         {
-            id: 'yamada',
-            name: 'Yamada',
-            series: 'Yamada-kun and the Seven Witches',
-            image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
-            link: 'yamada.html'
-        },
-        {
-            id: 'minho',
-            name: 'Minho',
-            series: 'The Maze Runner',
-            image: 'https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg',
-            link: 'minho.html'
+            id: 'hange',
+            name: 'Hange Zoe',
+            series: 'Attack on Titan',
+            image: 'https://i.pinimg.com/736x/38/4c/6a/384c6a0e795b24a497b07a0829d94b76.jpg',
+            link: 'hange.html'
         }
     ];
 
-    // Combine and sort by creation date (newest first)
+    // Combine characters and sort with custom order
     const allCharacters = [...staticCharacters, ...characters];
+    
+    // Custom sorting: Lee Know first, then new characters, then others
     const sortedCharacters = allCharacters.sort((a, b) => {
+        // Lee Know always comes first
+        if (a.id === 'leeknow') return -1;
+        if (b.id === 'leeknow') return 1;
+        
+        // New characters (with createdAt) come after Lee Know but before others
+        if (a.createdAt && !b.createdAt) return -1;
+        if (!a.createdAt && b.createdAt) return 1;
+        
+        // Among new characters, sort by creation date (newest first)
         if (a.createdAt && b.createdAt) {
             return new Date(b.createdAt) - new Date(a.createdAt);
         }
+        
+        // Among static characters, maintain their order in the array
         return 0;
     });
 
-    // Take the top 3 characters for carousel
-    const carouselCharacters = sortedCharacters.slice(0, 3);
+    // Take all characters for carousel
+    const carouselCharacters = sortedCharacters;
+
+    // Update maxIndex based on number of characters
+    maxIndex = Math.max(0, carouselCharacters.length - 1);
 
     // Clear existing content
     carouselTrack.innerHTML = '';
 
-    // Add character cards to carousel
-    carouselCharacters.forEach(character => {
+    // Add character cards to carousel with dynamic data loading
+    for (const character of carouselCharacters) {
+        try {
+            // Try to fetch updated data from the character page
+            const response = await fetch(character.link);
+            if (response.ok) {
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract updated information from the character page
+                const updatedName = doc.querySelector('.character-info h1')?.textContent || character.name;
+                const updatedSeries = doc.querySelector('.character-series')?.textContent || character.series;
+                const updatedImage = doc.querySelector('.character-image img')?.src || character.image;
+                
+                // Update character data
+                character.name = updatedName;
+                character.series = updatedSeries;
+                character.image = updatedImage;
+            }
+        } catch (error) {
+            console.log(`Could not fetch updated data for ${character.name}, using cached data`);
+        }
+
         const card = document.createElement('div');
         card.className = 'character-card';
         card.dataset.character = character.id;
         
         card.innerHTML = `
             <a href="${character.link}" class="card-link">
+                <div class="card-image">
+                    <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}">
+                </div>
                 <div class="card-content">
-                    <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}" class="image">
-                    <div class="card-info">
-                        <h3>${character.name}</h3>
-                        <p>${character.series}</p>
-                    </div>
+                    <h3>${character.name}</h3>
+                    <p>${character.series}</p>
                 </div>
             </a>
         `;
         
         carouselTrack.appendChild(card);
+    }
+    
+    // Add click handlers to the newly created card links
+    document.querySelectorAll('.card-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Only navigate if it's a direct click, not a drag
+            if (!isMouseDown) {
+                // Allow normal navigation
+                return;
+            } else {
+                // Prevent navigation during drag
+                e.preventDefault();
+            }
+        });
     });
 }
 

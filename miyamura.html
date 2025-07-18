@@ -13,12 +13,9 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="miyamura.html" class="active">Miyamura</a></li>
-                    <li><a href="yamada.html">Yamada</a></li>
-                    <li><a href="minho.html">Minho</a></li>
                     <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="abouts.html">About</a></li>
-                    <li><a href="admin.html">Admin</a></li>
                 </ul>
             </div>
             <div class="nav-controls">
@@ -55,7 +52,7 @@
                         <span class="stat-value">Sweet & Caring</span>
                     </div>
                 </div>
-                <button class="edit-character-btn" onclick="editCharacter('miyamura')">Edit Character</button>
+
             </div>
         </div>
 
@@ -89,74 +86,7 @@
         </div>
     </main>
 
-    <!-- Edit Character Modal -->
-    <div class="modal-overlay" id="editCharacterModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Edit Character</h2>
-                <button class="modal-close" id="closeEditModal">&times;</button>
-            </div>
-            <form id="editCharacterForm">
-                <input type="hidden" id="editCharacterId" value="miyamura">
-                <div class="form-group">
-                    <label class="form-label" for="editCharacterName">Character Name *</label>
-                    <input type="text" id="editCharacterName" class="form-input" value="Izumi Miyamura" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="editCharacterSeries">Series/Source *</label>
-                        <input type="text" id="editCharacterSeries" class="form-input" value="Horimiya" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="editCharacterAge">Age</label>
-                        <input type="text" id="editCharacterAge" class="form-input" value="17">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="editCharacterRole">Role</label>
-                        <input type="text" id="editCharacterRole" class="form-input" value="Male Protagonist">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="editCharacterPersonality">Personality</label>
-                        <input type="text" id="editCharacterPersonality" class="form-input" value="Sweet & Caring">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="editCharacterImage">Image URL</label>
-                    <input type="url" id="editCharacterImage" class="form-input" value="https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="editCharacterDescription">Description *</label>
-                    <textarea id="editCharacterDescription" class="form-textarea" required>Izumi Miyamura is the male protagonist of "Horimiya", a beautiful romance anime and manga series. He's a quiet, mysterious student who hides his true self behind glasses and long hair. His relationship with Kyoko Hori reveals his sweet, caring personality and helps him open up to others.</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="editCharacterAnalysis">Character Analysis</label>
-                    <textarea id="editCharacterAnalysis" class="form-textarea">Miyamura's character is defined by his dual nature - the quiet, mysterious student at school versus his true self with piercings and tattoos. His journey focuses on self-acceptance and learning to be comfortable with who he really is. His relationship with Hori helps him break out of his shell and form meaningful connections.</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="editCharacterReasons">Why You Love This Character</label>
-                    <textarea id="editCharacterReasons" class="form-textarea">Complex character development
-Sweet and caring personality
-Beautiful romance story
-Relatable struggles with self-identity
-Amazing character growth arc</textarea>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn btn-danger" id="deleteCharacter">Delete Character</button>
-                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Character</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <script src="script.js"></script>    
 </body>
