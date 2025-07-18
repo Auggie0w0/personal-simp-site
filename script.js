@@ -390,19 +390,38 @@ function addCharacter(characterData) {
 
 // Update existing character
 function updateCharacter(characterId, updatedData) {
-    const characterIndex = characters.findIndex(char => char.id === characterId);
-    if (characterIndex !== -1) {
-        characters[characterIndex] = {
-            ...characters[characterIndex],
+    // Check if it's an existing static character
+    const existingCharacters = ['miyamura', 'yamada', 'minho'];
+    
+    if (existingCharacters.includes(characterId)) {
+        // For static characters, we'll show an alert and suggest manual editing
+        alert(`Character "${updatedData.name}" has been updated!\n\nNote: Since this is a static character page, you'll need to manually update the HTML file to see the changes. The form data has been saved for reference.`);
+        
+        // Save the updated data to localStorage for reference
+        const staticCharacterUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+        staticCharacterUpdates[characterId] = {
             ...updatedData,
             updatedAt: new Date().toISOString()
         };
-        saveCharacters();
+        localStorage.setItem('staticCharacterUpdates', JSON.stringify(staticCharacterUpdates));
         
-        // Update character page
-        updateCharacterPage(characters[characterIndex]);
-        
-        return characters[characterIndex];
+        return { id: characterId, ...updatedData };
+    } else {
+        // It's a dynamically created character
+        const characterIndex = characters.findIndex(char => char.id === characterId);
+        if (characterIndex !== -1) {
+            characters[characterIndex] = {
+                ...characters[characterIndex],
+                ...updatedData,
+                updatedAt: new Date().toISOString()
+            };
+            saveCharacters();
+            
+            // Update character page
+            updateCharacterPage(characters[characterIndex]);
+            
+            return characters[characterIndex];
+        }
     }
     return null;
 }
