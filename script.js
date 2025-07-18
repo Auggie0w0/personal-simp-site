@@ -177,6 +177,8 @@ document.querySelectorAll('.card-link').forEach(link => {
 
 // Initialize carousel on load
 document.addEventListener('DOMContentLoaded', () => {
+    // Load characters from character list for carousel
+    loadCarouselCharacters();
     updateCarousel();
     
     // Add loading animation
@@ -184,6 +186,67 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.animationDelay = `${index * 0.1}s`;
     });
 });
+
+// Load characters for carousel from character list
+function loadCarouselCharacters() {
+    const carouselTrack = document.getElementById('image-track');
+    if (!carouselTrack) return;
+
+    // Define the characters to show in carousel (latest simps)
+    const carouselCharacters = [
+        {
+            id: 'miyamura',
+            name: 'Izumi Miyamura',
+            series: 'Horimiya',
+            image: 'https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png',
+            link: 'miyamura.html'
+        },
+        {
+            id: 'yamada',
+            name: 'Yamada',
+            series: 'Yamada-kun and the Seven Witches',
+            image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
+            link: 'yamada.html'
+        },
+        {
+            id: 'minho',
+            name: 'Minho',
+            series: 'The Maze Runner',
+            image: 'https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg',
+            link: 'minho.html'
+        }
+    ];
+
+    // Clear existing carousel content
+    carouselTrack.innerHTML = '';
+
+    // Add character cards to carousel
+    carouselCharacters.forEach(character => {
+        const characterCard = document.createElement('div');
+        characterCard.className = 'character-card';
+        characterCard.setAttribute('data-character', character.id);
+        
+        characterCard.innerHTML = `
+            <a href="${character.link}" class="card-link">
+                <div class="card-image">
+                    <img src="${character.image}" alt="${character.name}" class="image">
+                </div>
+                <div class="card-content">
+                    <h3>${character.name}</h3>
+                    <p>From ${character.series}</p>
+                    <span class="card-button">Learn More</span>
+                </div>
+            </a>
+        `;
+        
+        carouselTrack.appendChild(characterCard);
+    });
+
+    // Update carousel variables after adding new cards
+    const cards = document.querySelectorAll('.character-card');
+    cardWidth = cards[0]?.offsetWidth || 300;
+    maxIndex = Math.max(0, cards.length - Math.floor(track.offsetWidth / cardWidth));
+}
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {

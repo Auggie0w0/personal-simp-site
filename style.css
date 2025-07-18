@@ -792,6 +792,20 @@ html {
   box-shadow: 0 10px 30px var(--shadow);
 }
 
+.character-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.list-character-card:hover .character-link {
+  background: rgba(255, 190, 71, 0.1);
+}
+
 .character-avatar {
   width: 60px;
   height: 60px;
@@ -827,12 +841,25 @@ html {
 
 .status {
   display: inline-block;
-  padding: 0.3rem 0.8rem;
-  background: var(--highlight);
-  color: var(--text-primary);
-  border-radius: 15px;
-  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+
+.status.complete,
+.status[data-status="complete"] {
+    background: var(--highlight);
+    color: var(--white);
+}
+
+.status.pending,
+.status[data-status="pending"] {
+    background: var(--other-highlight);
+    color: var(--white);
 }
 
 .add-new {

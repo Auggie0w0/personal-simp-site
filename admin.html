@@ -124,12 +124,12 @@
             // Load character stats
             const characters = JSON.parse(localStorage.getItem('characters') || '[]');
             const staticCharacters = [
-                { name: 'Izumi Miyamura', gender: 'male', series: 'Horimiya' },
-                { name: 'Yamada', gender: 'male', series: 'Yamada-kun and the Seven Witches' },
-                { name: 'Minho', gender: 'male', series: 'The Maze Runner' },
-                { name: 'Axel Gilberto', gender: 'male', series: 'Lazarus' },
-                { name: 'Huntrix', gender: 'female', series: 'K-pop Demon Hunters' },
-                { name: 'Saja', gender: 'male', series: 'K-pop Demon Hunters' }
+                { name: 'Izumi Miyamura', gender: 'male', series: 'Horimiya', status: 'Complete' },
+                { name: 'Yamada', gender: 'male', series: 'Yamada-kun and the Seven Witches', status: 'Complete' },
+                { name: 'Minho', gender: 'male', series: 'The Maze Runner', status: 'Complete' },
+                { name: 'Axel Gilberto', gender: 'male', series: 'Lazarus', status: 'Planned' },
+                { name: 'Huntrix', gender: 'female', series: 'K-pop Demon Hunters', status: 'Planned' },
+                { name: 'Saja', gender: 'male', series: 'K-pop Demon Hunters', status: 'Planned' }
             ];
 
             const allCharacters = [...staticCharacters, ...characters];
@@ -185,7 +185,7 @@
                         <div class="character-info">
                             <h3>${char.name}</h3>
                             <p>${char.series}</p>
-                            <small>${char.createdAt ? 'Created: ' + new Date(char.createdAt).toLocaleDateString() : 'Static Character'}</small>
+                            <small>${char.createdAt ? 'Created: ' + new Date(char.createdAt).toLocaleDateString() : 'Static Character'} - ${char.status || 'Complete'}</small>
                         </div>
                         <div class="character-actions">
                             <button class="btn btn-secondary" onclick="editCharacter('${char.id || char.name.toLowerCase().replace(/\s+/g, '-')}')">Edit</button>
