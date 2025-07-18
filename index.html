@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Simp Gallery</title>
+    <title>Simp Gallery - Home</title>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <a href="#" class="logo">Simp Gallery</a>
+            <a href="index.html" class="logo">Simp Gallery</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="miyamura.html">Miyamura</a></li>
-                    <li><a href="yamada.html">Yamada</a></li>
-                    <li><a href="minho.html">Minho</a></li>
+                    <li><a href="index.html" class="active">Home</a></li>
                     <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="abouts.html">About</a></li>
-                    <li><a href="admin.html">Admin</a></li>
                 </ul>
             </div>
             <div class="nav-controls">
@@ -32,59 +29,61 @@
    
     <main class="main-content">
         <div class="hero-section">
-            <h1 class="hero-title">All the Characters I simp</h1>
-            <p class="hero-subtitle">They can range from anime to kpop and everything in between. Fret not, I'll be adding more characters as I go along. This had been a long time project that I've recently picked up again. Also they could also be characters I've liked in the past! So far they are hudsbandos, but I am definitely going to add more female and androgynous characters!!!</p>
+            <h1 class="hero-title">Welcome to Simp Gallery</h1>
+            <p class="hero-subtitle">A collection of my favorite characters from anime, manga, movies, and more!</p>
         </div>
 
-        <div class="carousel-container">
-            <div class="carousel-track" id="image-track">
-                <div class="character-card" data-character="miyamura">
-                    <a href="miyamura.html" class="card-link">
-                        <div class="card-image">
-                            <img src="https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png" alt="Izumi Miyamura" class="image">
-                        </div>
-                        <div class="card-content">
-                            <h3>Izumi Miyamura</h3>
-                            <p>From Horimiya</p>
-                            <span class="card-button">Learn More</span>
-                        </div>
-                    </a>
+        <div class="carousel-section">
+            <h2>Latest Characters</h2>
+            <div class="carousel-container">
+                <button class="carousel-btn prev-btn" id="prevBtn">
+                    <span>&lt;</span>
+                </button>
+                <div class="carousel-track" id="image-track">
+                    <!-- Character cards will be loaded here dynamically -->
                 </div>
+                <button class="carousel-btn next-btn" id="nextBtn">
+                    <span>&gt;</span>
+                </button>
+            </div>
+        </div>
 
-                <div class="character-card" data-character="yamada">
-                    <a href="yamada.html" class="card-link">
-                        <div class="card-image">
-                            <img src="https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg" alt="Akito Yamada" class="image">
-                        </div>
-                        <div class="card-content">
-                            <h3>Akito Yamada</h3>
-                            <p>From My Love Story with Yamada-kun at Lv999</p>
-                            <span class="card-button">Learn More</span>
-                        </div>
-                    </a>
+        <div class="features-section">
+            <h2>What's New</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Rating System</h3>
+                    <p>Rate your favorite characters and see what others think!</p>
                 </div>
-
-                <div class="character-card" data-character="minho">
-                    <a href="minho.html" class="card-link">
-                        <div class="card-image">
-                            <img src="https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg" alt="Lee Know (Lee Minho)" class="image">
-                        </div>
-                        <div class="card-content">
-                            <h3>Lee Know (Lee Minho)</h3>
-                            <p>From Stray Kids</p>
-                            <span class="card-button">Learn More</span>
-                        </div>
-                    </a>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Comments</h3>
+                    <p>Share your thoughts and discuss characters with others.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Add Characters</h3>
+                    <p>Add your own favorite characters to the gallery!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Reviews</h3>
+                    <p>Check out reviews of shows, anime, and manga.</p>
                 </div>
             </div>
         </div>
 
-        <div class="carousel-controls">
-            <button class="control-btn prev-btn" id="prevBtn">‹</button>
-            <button class="control-btn next-btn" id="nextBtn">›</button>
+        <div class="cta-section">
+            <h2>Ready to Explore?</h2>
+            <p>Discover amazing characters and add your own favorites!</p>
+            <div class="cta-buttons">
+                <a href="character-list.html" class="btn btn-primary">Browse Characters</a>
+                <a href="reviews.html" class="btn btn-secondary">Read Reviews</a>
+            </div>
         </div>
     </main>
 
-    <script src="script.js"></script>    
+    <script src="script.js"></script>
 </body>
 </html>

@@ -13,12 +13,9 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="miyamura.html">Miyamura</a></li>
-                    <li><a href="yamada.html">Yamada</a></li>
-                    <li><a href="minho.html">Minho</a></li>
                     <li><a href="character-list.html" class="active">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="abouts.html">About</a></li>
-                    <li><a href="admin.html">Admin</a></li>
                 </ul>
             </div>
             <div class="nav-controls">
@@ -33,13 +30,13 @@
     <main class="main-content">
         <div class="hero-section">
             <h1 class="hero-title">Character List</h1>
-            <p class="hero-subtitle">Here are I am planning to build profiles for! More to come!</p>
+            <p class="hero-subtitle">Here are the characters I'm planning to build profiles for! More to come!</p>
         </div>
 
         <div class="character-list-container">
             <div class="list-section">
-                <h2>Latest Simps</h2>
-                <div class="character-grid">
+                <h2>Male Characters</h2>
+                <div class="character-grid" id="maleCharacterGrid">
                     <div class="list-character-card">
                         <div class="character-avatar">
                             <span class="avatar-placeholder">IM</span>
@@ -77,6 +74,29 @@
             </div>
 
             <div class="list-section">
+                <h2>Female Characters</h2>
+                <div class="character-grid" id="femaleCharacterGrid">
+                    <div class="list-character-card">
+                        <div class="character-avatar">
+                            <span class="avatar-placeholder">H</span>
+                        </div>
+                        <div class="character-info">
+                            <h3>Huntrix</h3>
+                            <p>K-pop Demon Hunters</p>
+                            <span class="status pending">To be added</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <h2>Other Characters</h2>
+                <div class="character-grid" id="otherCharacterGrid">
+                    <!-- Other characters will be loaded here -->
+                </div>
+            </div>
+
+            <div class="list-section">
                 <h2>Coming Soon</h2>
                 <div class="character-grid">
                     <div class="list-character-card">
@@ -91,16 +111,6 @@
                     </div>
                     <div class="list-character-card">
                         <div class="character-avatar">
-                            <span class="avatar-placeholder">H</span>
-                        </div>
-                        <div class="character-info">
-                            <h3>Huntrix</h3>
-                            <p>K-pop Demon Hunters</p>
-                            <span class="status pending">To be added</span>
-                        </div>
-                    </div>
-                    <div class="list-character-card">
-                        <div class="character-avatar">
                             <span class="avatar-placeholder">S</span>
                         </div>
                         <div class="character-info">
@@ -109,12 +119,6 @@
                             <span class="status pending">To be added</span>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="list-section">
-                <h2>Future Plans</h2>
-                <div class="character-grid">
                     <div class="list-character-card">
                         <div class="character-avatar">
                             <span class="avatar-placeholder">HZ</span>
@@ -139,151 +143,91 @@
             </div>
 
 
-
-            <div class="list-section">
-                <h2>More Characters</h2>
-                <div class="character-grid">
-                    <div class="list-character-card add-new" id="addNewCharacter">
-                        <div class="character-avatar">
-                            <span class="avatar-placeholder">+</span>
-                        </div>
-                        <div class="character-info">
-                            <h3>Add New Character</h3>
-                            <p>Click to add your favorite</p>
-                            <span class="status">Click to add!</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="add-character-section">
-            <h2>Want to add more characters?</h2>
-            <p>This list will continue to grow as you discover new favorites. Each character can have their own detailed profile page with:</p>
+            <h2>Want to interact with characters?</h2>
+            <p>While only I can add new characters, everyone can interact with the existing ones! Each character page features:</p>
             <ul class="feature-list">
                 <li>Character information and stats</li>
-                <li>Personal analysis and reasons you love them</li>
+                <li>Personal analysis and reasons I love them</li>
                 <li>Image galleries and slideshows</li>
                 <li>Links to their source material</li>
-                <li>Your personal notes and thoughts</li>
+                <li>My personal notes and thoughts</li>
+                <li>Rating system and comments (for everyone!)</li>
             </ul>
         </div>
     </main>
 
-    <!-- Add Character Modal -->
-    <div class="modal-overlay" id="addCharacterModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Add New Character</h2>
-                <button class="modal-close" id="closeModal">&times;</button>
-            </div>
-            <form id="addCharacterForm">
-                <div class="form-group">
-                    <label class="form-label" for="characterName">Character Name *</label>
-                    <input type="text" id="characterName" class="form-input" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="characterSeries">Series/Source *</label>
-                        <input type="text" id="characterSeries" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="characterAge">Age</label>
-                        <input type="text" id="characterAge" class="form-input">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="characterRole">Role</label>
-                        <input type="text" id="characterRole" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="characterPersonality">Personality</label>
-                        <input type="text" id="characterPersonality" class="form-input">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="characterGender">Gender</label>
-                    <select id="characterGender" class="form-input" required>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="characterImage">Image URL</label>
-                    <input type="url" id="characterImage" class="form-input" placeholder="https://example.com/image.jpg">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="characterDescription">Description *</label>
-                    <textarea id="characterDescription" class="form-textarea" required placeholder="Tell us about this character..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="characterAnalysis">Character Analysis</label>
-                    <textarea id="characterAnalysis" class="form-textarea" placeholder="Your personal analysis of the character..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="characterReasons">Why You Love This Character</label>
-                    <textarea id="characterReasons" class="form-textarea" placeholder="List the reasons you love this character (one per line)..."></textarea>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="cancelAdd">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Character</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <script src="script.js"></script>
     <script>
         // Load and display dynamic characters from localStorage
         function loadDynamicCharacters() {
             const characters = JSON.parse(localStorage.getItem('characters') || '[]');
-            const moreCharactersSection = document.querySelector('.list-section:last-of-type');
             
-            // Remove existing dynamic section if it exists
-            const existingDynamicSection = document.getElementById('dynamicCharacterSection');
-            if (existingDynamicSection) {
-                existingDynamicSection.remove();
-            }
+            // Clear existing dynamic characters
+            const maleGrid = document.getElementById('maleCharacterGrid');
+            const femaleGrid = document.getElementById('femaleCharacterGrid');
+            const otherGrid = document.getElementById('otherCharacterGrid');
+            
+            // Remove existing dynamic characters (keep static ones)
+            const existingDynamicMale = maleGrid.querySelectorAll('.dynamic-character');
+            const existingDynamicFemale = femaleGrid.querySelectorAll('.dynamic-character');
+            const existingDynamicOther = otherGrid.querySelectorAll('.dynamic-character');
+            
+            existingDynamicMale.forEach(el => el.remove());
+            existingDynamicFemale.forEach(el => el.remove());
+            existingDynamicOther.forEach(el => el.remove());
             
             if (characters.length > 0) {
-                // Create a new section for dynamic characters
-                const dynamicSection = document.createElement('div');
-                dynamicSection.className = 'list-section';
-                dynamicSection.id = 'dynamicCharacterSection';
-                dynamicSection.innerHTML = `
-                    <h2>Your Added Characters</h2>
-                    <div class="character-grid" id="dynamicCharacterGrid">
-                        ${characters.map(char => `
-                            <div class="list-character-card">
-                                <div class="character-avatar">
-                                    <span class="avatar-placeholder">${char.name.split(' ').map(n => n[0]).join('').toUpperCase()}</span>
-                                </div>
-                                <div class="character-info">
-                                    <h3>${char.name}</h3>
-                                    <p>${char.series}</p>
-                                    <span class="status complete">Added by you</span>
-                                </div>
-                                <a href="${char.id}.html" class="character-link"></a>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                // Group characters by gender
+                const maleCharacters = characters.filter(char => char.gender === 'male');
+                const femaleCharacters = characters.filter(char => char.gender === 'female');
+                const otherCharacters = characters.filter(char => !char.gender || char.gender === 'other');
                 
-                // Insert before the "More Characters" section
-                moreCharactersSection.parentNode.insertBefore(dynamicSection, moreCharactersSection);
+                // Add male characters
+                maleCharacters.forEach(char => {
+                    const characterCard = createCharacterCard(char);
+                    characterCard.classList.add('dynamic-character');
+                    maleGrid.appendChild(characterCard);
+                });
+                
+                // Add female characters
+                femaleCharacters.forEach(char => {
+                    const characterCard = createCharacterCard(char);
+                    characterCard.classList.add('dynamic-character');
+                    femaleGrid.appendChild(characterCard);
+                });
+                
+                // Add other characters
+                otherCharacters.forEach(char => {
+                    const characterCard = createCharacterCard(char);
+                    characterCard.classList.add('dynamic-character');
+                    otherGrid.appendChild(characterCard);
+                });
             }
         }
+
+        function createCharacterCard(character) {
+            const card = document.createElement('div');
+            card.className = 'list-character-card';
+            card.innerHTML = `
+                <div class="character-avatar">
+                    <span class="avatar-placeholder">${character.name.split(' ').map(n => n[0]).join('').toUpperCase()}</span>
+                </div>
+                <div class="character-info">
+                    <h3>${character.name}</h3>
+                    <p>${character.series}</p>
+                    <span class="status complete">Added by you</span>
+                </div>
+                <a href="${character.id}.html" class="character-link"></a>
+            `;
+            return card;
+        }
+
+
 
         // Load dynamic characters when page loads
         document.addEventListener('DOMContentLoaded', () => {
