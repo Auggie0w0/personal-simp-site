@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Dashboard - Simp Gallery</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="miyamura.html">Miyamura</a></li>
+                    <li><a href="yamada.html">Yamada</a></li>
+                    <li><a href="minho.html">Minho</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                    <li><a href="admin.html" class="active">Admin</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="hero-section">
+            <h1 class="hero-title">Admin Dashboard</h1>
+            <p class="hero-subtitle">Manage your character collection</p>
+            
+            <div class="admin-controls">
+                <div class="admin-buttons">
+                    <button class="btn btn-primary" onclick="authenticateAdmin()" id="loginBtn">Admin Login</button>
+                    <button class="btn btn-secondary" onclick="logoutAdmin()" id="logoutBtn" style="display: none;">Logout</button>
+                    <span id="adminIndicator" style="display: none; color: var(--highlight); font-weight: bold;">🔐 Admin Mode</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-dashboard">
+            <div class="dashboard-section">
+                <h2>Character Management</h2>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>Total Characters</h3>
+                        <p id="totalCharacters">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Static Characters</h3>
+                        <p>3</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Dynamic Characters</h3>
+                        <p id="dynamicCharacters">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Dynamic Characters</h2>
+                <div id="characterList" class="character-management-list">
+                    <p class="no-characters">No dynamic characters added yet.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Static Character Updates</h2>
+                <div id="staticUpdates" class="static-updates-list">
+                    <p class="no-updates">No pending updates for static characters.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='character-list.html'">Add New Character</button>
+                    <button class="btn btn-secondary" onclick="exportCharacters()">Export Characters</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">Clear All Data</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Admin dashboard specific functions
+        function loadDashboard() {
+            if (!isAdmin) {
+                document.getElementById('loginBtn').style.display = 'inline-block';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminIndicator').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+            document.getElementById('adminIndicator').style.display = 'inline-block';
+
+            // Load character stats
+            const characters = JSON.parse(localStorage.getItem('characters') || '[]');
+            document.getElementById('totalCharacters').textContent = characters.length + 3; // +3 for static characters
+            document.getElementById('dynamicCharacters').textContent = characters.length;
+
+            // Load dynamic characters
+            const characterList = document.getElementById('characterList');
+            if (characters.length === 0) {
+                characterList.innerHTML = '<p class="no-characters">No dynamic characters added yet.</p>';
+            } else {
+                characterList.innerHTML = characters.map(char => `
+                    <div class="character-item">
+                        <div class="character-info">
+                            <h3>${char.name}</h3>
+                            <p>${char.series}</p>
+                            <small>Created: ${new Date(char.createdAt).toLocaleDateString()}</small>
+                        </div>
+                        <div class="character-actions">
+                            <button class="btn btn-secondary" onclick="editCharacter('${char.id}')">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Load static character updates
+            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+            const staticUpdatesList = document.getElementById('staticUpdates');
+            const updateKeys = Object.keys(staticUpdates);
+            
+            if (updateKeys.length === 0) {
+                staticUpdatesList.innerHTML = '<p class="no-updates">No pending updates for static characters.</p>';
+            } else {
+                staticUpdatesList.innerHTML = updateKeys.map(key => {
+                    const update = staticUpdates[key];
+                    return `
+                        <div class="update-item">
+                            <div class="update-info">
+                                <h3>${update.name}</h3>
+                                <p>${update.series}</p>
+                                <small>Updated: ${new Date(update.updatedAt).toLocaleDateString()}</small>
+                            </div>
+                            <div class="update-actions">
+                                <button class="btn btn-secondary" onclick="viewUpdate('${key}')">View Changes</button>
+                                <button class="btn btn-danger" onclick="clearUpdate('${key}')">Clear</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function exportCharacters() {
+            const characters = JSON.parse(localStorage.getItem('characters') || '[]');
+            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+            
+            const exportData = {
+                dynamicCharacters: characters,
+                staticUpdates: staticUpdates,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'simp-gallery-characters.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('Character data exported successfully!');
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all character data? This action cannot be undone.')) {
+                localStorage.removeItem('characters');
+                localStorage.removeItem('staticCharacterUpdates');
+                localStorage.removeItem('isAdmin');
+                alert('All data cleared successfully!');
+                loadDashboard();
+            }
+        }
+
+        function viewUpdate(characterId) {
+            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+            const update = staticUpdates[characterId];
+            
+            if (update) {
+                alert(`Character: ${update.name}\nSeries: ${update.series}\nAge: ${update.age}\nRole: ${update.role}\nPersonality: ${update.personality}\n\nDescription: ${update.description}\n\nAnalysis: ${update.analysis}\n\nReasons: ${update.reasons}`);
+            }
+        }
+
+        function clearUpdate(characterId) {
+            const staticUpdates = JSON.parse(localStorage.getItem('staticCharacterUpdates') || '{}');
+            delete staticUpdates[characterId];
+            localStorage.setItem('staticCharacterUpdates', JSON.stringify(staticUpdates));
+            loadDashboard();
+        }
+
+        // Override the showAdminFeatures function for the admin page
+        const originalShowAdminFeatures = showAdminFeatures;
+        showAdminFeatures = function() {
+            originalShowAdminFeatures();
+            loadDashboard();
+        };
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboard();
+        });
+    </script>
+</body>
+</html> 

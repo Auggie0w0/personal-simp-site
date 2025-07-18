@@ -1344,3 +1344,168 @@ html {
         flex-direction: column;
     }
 }
+
+/* Admin Dashboard Styles */
+.admin-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+}
+
+.dashboard-section h2 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.8rem;
+    color: var(--highlight);
+    margin-bottom: 20px;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--black);
+    color: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-card h3 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1rem;
+    color: var(--highlight);
+    margin-bottom: 10px;
+}
+
+.stat-card p {
+    font-family: 'DM Serif Text', serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.character-management-list,
+.static-updates-list {
+    display: grid;
+    gap: 15px;
+}
+
+.character-item,
+.update-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.character-info,
+.update-info h3 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.2rem;
+    color: var(--highlight);
+    margin-bottom: 5px;
+}
+
+.character-info p,
+.update-info p {
+    font-family: 'DM Serif Text', serif;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.character-info small,
+.update-info small {
+    font-family: 'DM Serif Text', serif;
+    font-size: 0.8rem;
+    color: var(--other-highlight);
+}
+
+.character-actions,
+.update-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.character-actions .btn,
+.update-actions .btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.no-characters,
+.no-updates {
+    text-align: center;
+    font-family: 'DM Serif Text', serif;
+    font-size: 1.1rem;
+    color: var(--other-highlight);
+    font-style: italic;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quick-actions .btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.quick-actions .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive Design for Admin Dashboard */
+@media (max-width: 768px) {
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-item,
+    .update-item {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .character-actions,
+    .update-actions {
+        justify-content: center;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -324,6 +324,7 @@ function showAdminFeatures() {
     const editButtons = document.querySelectorAll('.edit-character-btn');
     const adminIndicator = document.getElementById('adminIndicator');
     
+    // Always show the add new character box
     if (addNewCharacter) {
         addNewCharacter.style.display = 'flex';
     }
@@ -342,8 +343,9 @@ function hideAdminFeatures() {
     const editButtons = document.querySelectorAll('.edit-character-btn');
     const adminIndicator = document.getElementById('adminIndicator');
     
+    // Always show the add new character box, but hide edit buttons
     if (addNewCharacter) {
-        addNewCharacter.style.display = 'none';
+        addNewCharacter.style.display = 'flex';
     }
     
     editButtons.forEach(btn => {
@@ -391,7 +393,7 @@ function addCharacter(characterData) {
 // Update existing character
 function updateCharacter(characterId, updatedData) {
     // Check if it's an existing static character
-    const existingCharacters = ['miyamura', 'yamada', 'minho'];
+    const existingCharacters = ['miyamura', 'yamada', 'minho', 'axel-gilberto', 'huntrix', 'saja'];
     
     if (existingCharacters.includes(characterId)) {
         // For static characters, we'll show an alert and suggest manual editing
@@ -638,6 +640,39 @@ function editCharacter(characterId) {
             description: 'Minho is a key character in "The Maze Runner" series, known for his bravery and loyalty.',
             analysis: 'Minho represents loyalty and courage in the face of danger.',
             reasons: 'Brave character\nLoyal friend\nStrong leadership'
+        },
+        'axel-gilberto': {
+            name: 'Axel Gilberto',
+            series: 'Lazarus',
+            age: 'Unknown',
+            role: 'Main Character',
+            personality: 'Complex & Mysterious',
+            image: 'https://example.com/axel-gilberto.jpg',
+            description: 'Axel Gilberto is the main character from "Lazarus", a complex and mysterious figure.',
+            analysis: 'Axel Gilberto represents the complexity of human nature and survival.',
+            reasons: 'Complex character\nMysterious personality\nCompelling story'
+        },
+        'huntrix': {
+            name: 'Huntrix',
+            series: 'K-pop Demon Hunters',
+            age: 'Unknown',
+            role: 'Demon Hunter',
+            personality: 'Fierce & Determined',
+            image: 'https://example.com/huntrix.jpg',
+            description: 'Huntrix is a powerful demon hunter from the K-pop Demon Hunters series.',
+            analysis: 'Huntrix embodies strength and determination in the face of supernatural threats.',
+            reasons: 'Strong character\nFierce personality\nPowerful abilities'
+        },
+        'saja': {
+            name: 'Saja',
+            series: 'K-pop Demon Hunters',
+            age: 'Unknown',
+            role: 'Demon Hunter',
+            personality: 'Skilled & Strategic',
+            image: 'https://example.com/saja.jpg',
+            description: 'Saja is a skilled demon hunter from the K-pop Demon Hunters series.',
+            analysis: 'Saja represents strategic thinking and skill in demon hunting.',
+            reasons: 'Skilled character\nStrategic mind\nCool abilities'
         }
     };
     
@@ -694,6 +729,12 @@ function closeEditModal() {
 // Initialize admin features
 document.addEventListener('DOMContentLoaded', () => {
     checkAdminStatus();
+    
+    // Ensure add new character box is always visible
+    const addNewCharacter = document.getElementById('addNewCharacter');
+    if (addNewCharacter) {
+        addNewCharacter.style.display = 'flex';
+    }
     
     // Add admin login button to character list page
     if (window.location.pathname.includes('character-list.html')) {
