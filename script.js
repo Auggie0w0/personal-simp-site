@@ -266,6 +266,11 @@ if (addCharacterForm) {
     addCharacterForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
+        if (!isAdmin) {
+            authenticateAdmin();
+            return;
+        }
+        
         const formData = {
             name: document.getElementById('characterName').value,
             series: document.getElementById('characterSeries').value,
@@ -278,10 +283,426 @@ if (addCharacterForm) {
             reasons: document.getElementById('characterReasons').value
         };
         
-        // For now, we'll just show an alert with the data
-        // In a real implementation, this would save to a database or localStorage
-        alert(`Character "${formData.name}" from "${formData.series}" has been added to your collection!\n\nThis is a demo - in a real implementation, this would create a new character page.`);
+        const newCharacter = addCharacter(formData);
+        alert(`Character "${newCharacter.name}" from "${newCharacter.series}" has been added to your collection!\n\nA character page has been downloaded. Upload it to your Vercel project to make it live.`);
         
         closeModalFunction();
     });
 }
+
+// Access Control System
+const ADMIN_PASSWORD = 'simp2024'; // You can change this password
+let isAdmin = false;
+
+// Check if user is admin on page load
+function checkAdminStatus() {
+    const savedAdminStatus = localStorage.getItem('isAdmin');
+    if (savedAdminStatus === 'true') {
+        isAdmin = true;
+        showAdminFeatures();
+    } else {
+        hideAdminFeatures();
+    }
+}
+
+// Admin authentication
+function authenticateAdmin() {
+    const password = prompt('Enter admin password to access character management:');
+    if (password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        localStorage.setItem('isAdmin', 'true');
+        showAdminFeatures();
+        alert('Admin access granted! You can now add and edit characters.');
+    } else if (password !== null) {
+        alert('Incorrect password. Access denied.');
+    }
+}
+
+// Show/hide admin features
+function showAdminFeatures() {
+    const addNewCharacter = document.getElementById('addNewCharacter');
+    const editButtons = document.querySelectorAll('.edit-character-btn');
+    const adminIndicator = document.getElementById('adminIndicator');
+    
+    if (addNewCharacter) {
+        addNewCharacter.style.display = 'flex';
+    }
+    
+    editButtons.forEach(btn => {
+        btn.style.display = 'inline-block';
+    });
+    
+    if (adminIndicator) {
+        adminIndicator.style.display = 'inline-block';
+    }
+}
+
+function hideAdminFeatures() {
+    const addNewCharacter = document.getElementById('addNewCharacter');
+    const editButtons = document.querySelectorAll('.edit-character-btn');
+    const adminIndicator = document.getElementById('adminIndicator');
+    
+    if (addNewCharacter) {
+        addNewCharacter.style.display = 'none';
+    }
+    
+    editButtons.forEach(btn => {
+        btn.style.display = 'none';
+    });
+    
+    if (adminIndicator) {
+        adminIndicator.style.display = 'none';
+    }
+}
+
+// Logout function
+function logoutAdmin() {
+    isAdmin = false;
+    localStorage.removeItem('isAdmin');
+    hideAdminFeatures();
+    alert('Logged out of admin mode.');
+}
+
+// Character data storage (in localStorage for demo)
+let characters = JSON.parse(localStorage.getItem('characters') || '[]');
+
+// Save characters to localStorage
+function saveCharacters() {
+    localStorage.setItem('characters', JSON.stringify(characters));
+}
+
+// Add new character
+function addCharacter(characterData) {
+    const newCharacter = {
+        id: Date.now().toString(),
+        ...characterData,
+        createdAt: new Date().toISOString()
+    };
+    
+    characters.push(newCharacter);
+    saveCharacters();
+    
+    // Create character page
+    createCharacterPage(newCharacter);
+    
+    return newCharacter;
+}
+
+// Update existing character
+function updateCharacter(characterId, updatedData) {
+    const characterIndex = characters.findIndex(char => char.id === characterId);
+    if (characterIndex !== -1) {
+        characters[characterIndex] = {
+            ...characters[characterIndex],
+            ...updatedData,
+            updatedAt: new Date().toISOString()
+        };
+        saveCharacters();
+        
+        // Update character page
+        updateCharacterPage(characters[characterIndex]);
+        
+        return characters[characterIndex];
+    }
+    return null;
+}
+
+// Create character page HTML
+function createCharacterPage(character) {
+    const characterHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>${character.name} - Simp Gallery</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="miyamura.html">Miyamura</a></li>
+                    <li><a href="yamada.html">Yamada</a></li>
+                    <li><a href="minho.html">Minho</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="character-profile">
+            <div class="character-header">
+                <div class="character-image">
+                    <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='">
+                </div>
+                <div class="character-info">
+                    <h1 class="character-name">${character.name}</h1>
+                    <p class="character-series">${character.series}</p>
+                    <div class="character-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Age</span>
+                            <span class="stat-value">${character.age || 'Unknown'}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Role</span>
+                            <span class="stat-value">${character.role || 'Unknown'}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Personality</span>
+                            <span class="stat-value">${character.personality || 'Unknown'}</span>
+                        </div>
+                    </div>
+                    <button class="edit-character-btn" onclick="editCharacter('${character.id}')" style="display: none;">Edit Character</button>
+                </div>
+            </div>
+            
+            <div class="character-content">
+                <div class="content-section">
+                    <h2>Description</h2>
+                    <p>${character.description}</p>
+                </div>
+                
+                ${character.analysis ? `
+                <div class="content-section">
+                    <h2>Character Analysis</h2>
+                    <p>${character.analysis}</p>
+                </div>
+                ` : ''}
+                
+                ${character.reasons ? `
+                <div class="content-section">
+                    <h2>Why I Love This Character</h2>
+                    <ul class="reasons-list">
+                        ${character.reasons.split('\n').filter(reason => reason.trim()).map(reason => `<li>${reason.trim()}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Character Modal -->
+    <div class="modal-overlay" id="editCharacterModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Character</h2>
+                <button class="modal-close" id="closeEditModal">&times;</button>
+            </div>
+            <form id="editCharacterForm">
+                <input type="hidden" id="editCharacterId">
+                <div class="form-group">
+                    <label class="form-label" for="editCharacterName">Character Name *</label>
+                    <input type="text" id="editCharacterName" class="form-input" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="editCharacterSeries">Series/Source *</label>
+                        <input type="text" id="editCharacterSeries" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="editCharacterAge">Age</label>
+                        <input type="text" id="editCharacterAge" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="editCharacterRole">Role</label>
+                        <input type="text" id="editCharacterRole" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="editCharacterPersonality">Personality</label>
+                        <input type="text" id="editCharacterPersonality" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editCharacterImage">Image URL</label>
+                    <input type="url" id="editCharacterImage" class="form-input" placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editCharacterDescription">Description *</label>
+                    <textarea id="editCharacterDescription" class="form-textarea" required placeholder="Tell us about this character..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editCharacterAnalysis">Character Analysis</label>
+                    <textarea id="editCharacterAnalysis" class="form-textarea" placeholder="Your personal analysis of the character..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editCharacterReasons">Why You Love This Character</label>
+                    <textarea id="editCharacterReasons" class="form-textarea" placeholder="List the reasons you love this character (one per line)..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-danger" id="deleteCharacter">Delete Character</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Character</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>`;
+    
+    // Create a blob and download the file (for demo purposes)
+    const blob = new Blob([characterHtml], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${character.name.toLowerCase().replace(/\s+/g, '-')}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Update character page (would need server-side implementation for real use)
+function updateCharacterPage(character) {
+    // For demo purposes, we'll just show an alert
+    alert(`Character "${character.name}" has been updated!`);
+}
+
+// Edit character function
+function editCharacter(characterId) {
+    if (!isAdmin) {
+        authenticateAdmin();
+        return;
+    }
+    
+    const character = characters.find(char => char.id === characterId);
+    if (!character) {
+        alert('Character not found!');
+        return;
+    }
+    
+    // Populate edit form
+    document.getElementById('editCharacterId').value = character.id;
+    document.getElementById('editCharacterName').value = character.name;
+    document.getElementById('editCharacterSeries').value = character.series;
+    document.getElementById('editCharacterAge').value = character.age || '';
+    document.getElementById('editCharacterRole').value = character.role || '';
+    document.getElementById('editCharacterPersonality').value = character.personality || '';
+    document.getElementById('editCharacterImage').value = character.image || '';
+    document.getElementById('editCharacterDescription').value = character.description;
+    document.getElementById('editCharacterAnalysis').value = character.analysis || '';
+    document.getElementById('editCharacterReasons').value = character.reasons || '';
+    
+    // Show edit modal
+    document.getElementById('editCharacterModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Delete character function
+function deleteCharacter(characterId) {
+    if (confirm('Are you sure you want to delete this character? This action cannot be undone.')) {
+        characters = characters.filter(char => char.id !== characterId);
+        saveCharacters();
+        alert('Character deleted successfully!');
+        closeEditModal();
+        // Redirect to character list
+        window.location.href = 'character-list.html';
+    }
+}
+
+// Close edit modal
+function closeEditModal() {
+    document.getElementById('editCharacterModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    document.getElementById('editCharacterForm').reset();
+}
+
+// Initialize admin features
+document.addEventListener('DOMContentLoaded', () => {
+    checkAdminStatus();
+    
+    // Add admin login button to character list page
+    if (window.location.pathname.includes('character-list.html')) {
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection && !document.getElementById('adminControls')) {
+            const adminControls = document.createElement('div');
+            adminControls.id = 'adminControls';
+            adminControls.className = 'admin-controls';
+            adminControls.innerHTML = `
+                <div class="admin-buttons">
+                    <button class="btn btn-primary" onclick="authenticateAdmin()" id="loginBtn">Admin Login</button>
+                    <button class="btn btn-secondary" onclick="logoutAdmin()" id="logoutBtn" style="display: none;">Logout</button>
+                    <span id="adminIndicator" style="display: none; color: var(--highlight); font-weight: bold;">🔐 Admin Mode</span>
+                </div>
+            `;
+            heroSection.appendChild(adminControls);
+        }
+    }
+    
+    // Edit modal functionality
+    const editCharacterModal = document.getElementById('editCharacterModal');
+    const closeEditModal = document.getElementById('closeEditModal');
+    const cancelEdit = document.getElementById('cancelEdit');
+    const editCharacterForm = document.getElementById('editCharacterForm');
+    const deleteCharacterBtn = document.getElementById('deleteCharacter');
+    
+    if (closeEditModal) {
+        closeEditModal.addEventListener('click', closeEditModal);
+    }
+    
+    if (cancelEdit) {
+        cancelEdit.addEventListener('click', closeEditModal);
+    }
+    
+    if (editCharacterModal) {
+        editCharacterModal.addEventListener('click', (e) => {
+            if (e.target === editCharacterModal) {
+                closeEditModal();
+            }
+        });
+    }
+    
+    if (deleteCharacterBtn) {
+        deleteCharacterBtn.addEventListener('click', () => {
+            const characterId = document.getElementById('editCharacterId').value;
+            deleteCharacter(characterId);
+        });
+    }
+    
+    if (editCharacterForm) {
+        editCharacterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const characterId = document.getElementById('editCharacterId').value;
+            const updatedData = {
+                name: document.getElementById('editCharacterName').value,
+                series: document.getElementById('editCharacterSeries').value,
+                age: document.getElementById('editCharacterAge').value,
+                role: document.getElementById('editCharacterRole').value,
+                personality: document.getElementById('editCharacterPersonality').value,
+                image: document.getElementById('editCharacterImage').value,
+                description: document.getElementById('editCharacterDescription').value,
+                analysis: document.getElementById('editCharacterAnalysis').value,
+                reasons: document.getElementById('editCharacterReasons').value
+            };
+            
+            const updatedCharacter = updateCharacter(characterId, updatedData);
+            if (updatedCharacter) {
+                alert(`Character "${updatedCharacter.name}" has been updated successfully!`);
+                closeEditModal();
+                // Reload the page to show updated content
+                window.location.reload();
+            }
+        });
+    }
+});
