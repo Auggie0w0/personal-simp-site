@@ -224,8 +224,22 @@ async function loadCarouselCharacters() {
             id: 'leeknow',
             name: 'Lee Know',
             series: 'Stray Kids',
-            image: 'https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg',
+            image: 'https://i.pinimg.com/736x/c7/e8/e0/c7e8e0ec5ebd4f9b5540a66bc3fc8db3.jpg',
             link: 'minho.html'
+        },
+        {
+            id: 'huntrix',
+            name: 'Huntrix',
+            series: 'K-pop Demon Hunters',
+            image: 'https://i.pinimg.com/1200x/55/29/5c/55295c15acd0598ac4be54d1c554bdeb.jpg',
+            link: 'huntrix.html'
+        },
+        {
+            id: 'axel',
+            name: 'Axel Gilberto',
+            series: 'Lazarus',
+            image: 'https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg',
+            link: 'axel.html'
         },
         {
             id: 'ivan',
@@ -244,7 +258,7 @@ async function loadCarouselCharacters() {
         {
             id: 'yamada',
             name: 'Akito Yamada',
-            series: 'Yamada-kun and the Seven Witches',
+            series: 'My Love Story with Yamada-kun at Lv999',
             image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
             link: 'yamada.html'
         },
@@ -267,8 +281,8 @@ async function loadCarouselCharacters() {
     // Combine characters and sort with custom order
     const allCharacters = [...staticCharacters, ...characters];
     
-    // Custom sorting: Lee Know first, then new characters, then others
-    const sortedCharacters = allCharacters.sort((a, b) => {
+    // Custom sorting for carousel: Lee Know first, then new characters, then others
+    const carouselCharacters = allCharacters.sort((a, b) => {
         // Lee Know always comes first
         if (a.id === 'leeknow') return -1;
         if (b.id === 'leeknow') return 1;
@@ -286,8 +300,32 @@ async function loadCarouselCharacters() {
         return 0;
     });
 
-    // Take all characters for carousel
-    const carouselCharacters = sortedCharacters;
+    // Custom sorting for gallery: Lee Know first, then others in original order
+    const galleryCharacters = allCharacters.sort((a, b) => {
+        // Lee Know always comes first
+        if (a.id === 'leeknow') return -1;
+        if (b.id === 'leeknow') return 1;
+        
+        // For others, maintain the original order from staticCharacters array
+        const aIndex = staticCharacters.findIndex(char => char.id === a.id);
+        const bIndex = staticCharacters.findIndex(char => char.id === b.id);
+        
+        // If both are static characters, maintain their order
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+        
+        // If only one is static, static comes first
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        
+        // If both are dynamic, sort by creation date (newest first)
+        if (a.createdAt && b.createdAt) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        
+        return 0;
+    });
 
     // Update maxIndex based on number of characters
     maxIndex = Math.max(0, carouselCharacters.length - 1);
@@ -347,6 +385,71 @@ async function loadCarouselCharacters() {
                 return;
             }
             // Allow normal navigation for all other clicks
+            console.log('Navigating to:', link.href);
+        });
+    });
+
+    // Load gallery characters if on home page
+    const galleryContainer = document.getElementById('character-gallery');
+    if (galleryContainer) {
+        loadGalleryCharacters(galleryCharacters);
+    }
+}
+
+// Load gallery characters
+async function loadGalleryCharacters(characters) {
+    const galleryContainer = document.getElementById('character-gallery');
+    if (!galleryContainer) return;
+
+    // Clear existing content
+    galleryContainer.innerHTML = '';
+
+    // Add character cards to gallery
+    for (const character of characters) {
+        try {
+            // Try to fetch updated data from the character page
+            const response = await fetch(character.link);
+            if (response.ok) {
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract updated information from the character page
+                const updatedName = doc.querySelector('.character-info h1')?.textContent || character.name;
+                const updatedSeries = doc.querySelector('.character-series')?.textContent || character.series;
+                const updatedImage = doc.querySelector('.character-image img')?.src || character.image;
+                
+                // Update character data
+                character.name = updatedName;
+                character.series = updatedSeries;
+                character.image = updatedImage;
+            }
+        } catch (error) {
+            console.log(`Could not fetch updated data for ${character.name}, using cached data`);
+        }
+
+        const card = document.createElement('div');
+        card.className = 'gallery-character-card';
+        card.dataset.character = character.id;
+        
+        card.innerHTML = `
+            <a href="${character.link}" class="gallery-card-link">
+                <div class="gallery-card-image">
+                    <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}">
+                </div>
+                <div class="gallery-card-content">
+                    <h3>${character.name}</h3>
+                    <p>${character.series}</p>
+                </div>
+            </a>
+        `;
+        
+        galleryContainer.appendChild(card);
+    }
+    
+    // Add click handlers to the newly created gallery card links
+    document.querySelectorAll('.gallery-card-link').forEach(link => {
+        link.addEventListener('click', (e) => {
             console.log('Navigating to:', link.href);
         });
     });
