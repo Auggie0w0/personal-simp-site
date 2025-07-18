@@ -291,7 +291,7 @@ if (addCharacterForm) {
 }
 
 // Access Control System
-const ADMIN_PASSWORD = 'simp2024'; // You can change this password
+const ADMIN_PASSWORD = 'SIMP2025'; // You can change this password
 let isAdmin = false;
 
 // Check if user is admin on page load
