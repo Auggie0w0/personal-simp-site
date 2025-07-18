@@ -1,3 +1,7 @@
+/* Import Barriecito, DM Serif Text, Luckiest Guy, and Sour Gummy fonts */
+@import url('https://fonts.googleapis.com/css2?family=Barriecito&family=DM+Serif+Text:ital@0;1&family=Luckiest+Guy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -5,34 +9,40 @@
   box-sizing: border-box;
   text-decoration: none;
   list-style: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "DM Serif Text", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* CSS Variables for theming */
 :root {
-  --bg-primary: #FDFFFC;
-  --text-primary: #272727;
-  --highlight: #F3B61F;
-  --nav-bg: rgba(39, 39, 39, 0.9);
-  --nav-text: #FDFFFC;
-  --card-bg: rgba(39, 39, 39, 0.05);
-  --card-border: rgba(39, 39, 39, 0.2);
-  --text-secondary: rgba(39, 39, 39, 0.8);
-  --text-tertiary: rgba(39, 39, 39, 0.7);
-  --shadow: rgba(39, 39, 39, 0.2);
+  --bg-primary: #FFFFFF;
+  --text-primary: #1a1a1a;
+  --highlight: #FFBE47;
+  --heart-highlight: #F76190;
+  --other-highlight: #2DDAD7;
+  --nav-bg: rgba(26, 26, 26, 0.9);
+  --nav-text: #FFFFFF;
+  --card-bg: rgba(26, 26, 26, 0.05);
+  --card-border: rgba(255, 190, 71, 0.2);
+  --text-secondary: rgba(26, 26, 26, 0.8);
+  --text-tertiary: rgba(26, 26, 26, 0.7);
+  --shadow: rgba(26, 26, 26, 0.2);
 }
 
 /* Dark theme variables */
 [data-theme="dark"] {
-  --bg-primary: #272727;
-  --text-primary: #FDFFFC;
-  --highlight: #F3B61F;
-  --nav-bg: rgba(253, 255, 252, 0.9);
-  --nav-text: #272727;
-  --card-bg: rgba(253, 255, 252, 0.05);
-  --card-border: rgba(253, 255, 252, 0.2);
-  --text-secondary: rgba(253, 255, 252, 0.8);
-  --text-tertiary: rgba(253, 255, 252, 0.7);
+  --bg-primary: #1a1a1a;
+  --text-primary: #FFFFFF;
+  --highlight: #FFBE47;
+  --heart-highlight: #F76190;
+  --other-highlight: #2DDAD7;
+  --nav-bg: rgba(255, 255, 255, 0.9);
+  --nav-text: #1a1a1a;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 190, 71, 0.2);
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.7);
   --shadow: rgba(0, 0, 0, 0.3);
 }
 
@@ -53,7 +63,7 @@ header {
   z-index: 1000;
   background: var(--nav-bg);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(243, 182, 31, 0.3);
+  border-bottom: 1px solid rgba(255, 190, 71, 0.3);
   transition: background-color 0.3s ease;
 }
 
@@ -83,12 +93,12 @@ header {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(243, 182, 31, 0.3);
+  box-shadow: 0 2px 10px rgba(255, 190, 71, 0.3);
 }
 
 .theme-toggle:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(243, 182, 31, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 190, 71, 0.4);
 }
 
 .theme-icon {
@@ -169,9 +179,11 @@ header {
 
 .hero-title {
   font-size: 3.5rem;
-  font-weight: bold;
+  font-weight: 400;
+  font-style: normal;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  font-family: "Barriecito", system-ui;
 }
 
 .hero-subtitle {
@@ -274,7 +286,7 @@ header {
 
 .card-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(243, 182, 31, 0.3);
+  box-shadow: 0 10px 20px rgba(255, 190, 71, 0.3);
 }
 
 /* Carousel Controls */
@@ -301,7 +313,7 @@ header {
 }
 
 .control-btn:hover {
-  background: rgba(243, 182, 31, 0.8);
+  background: rgba(255, 190, 71, 0.8);
   transform: scale(1.1);
 }
 
@@ -427,6 +439,9 @@ html {
   font-size: 3rem;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
+  font-family: "Barriecito", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-series {
@@ -434,13 +449,18 @@ html {
   color: var(--text-secondary);
   margin-bottom: 1rem;
   font-style: italic;
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
 }
 
 .character-description {
-  font-size: 1.1rem;
+  font-size: 1.6rem;
   line-height: 1.6;
   margin-bottom: 2rem;
   color: var(--text-secondary);
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-stats {
@@ -454,21 +474,28 @@ html {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  background: var(--card-bg);
+  background: #1a1a1a;
   border-radius: 10px;
   min-width: 100px;
+  border: 1px solid var(--card-border);
 }
 
 .stat-label {
   font-size: 0.9rem;
-  color: var(--text-tertiary);
+  color: #FFFFFF;
   margin-bottom: 0.5rem;
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .stat-value {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--highlight);
+  color: var(--other-highlight);
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
 
 .character-details {
@@ -481,12 +508,15 @@ html {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-details h3 {
   font-size: 1.8rem;
   margin: 2rem 0 1rem 0;
-  color: var(--highlight);
+  color: var(--heart-highlight);
 }
 
 .character-details p {
@@ -494,6 +524,9 @@ html {
   line-height: 1.7;
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-reasons {
@@ -506,13 +539,16 @@ html {
   border-bottom: 1px solid var(--card-border);
   position: relative;
   padding-left: 2rem;
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-reasons li::before {
   content: '♥';
   position: absolute;
   left: 0;
-  color: var(--highlight);
+  color: var(--heart-highlight);
   font-size: 1.2rem;
 }
 
@@ -527,6 +563,9 @@ html {
   font-size: 3.5rem;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  font-family: "Barriecito", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .about-subtitle {
@@ -534,6 +573,9 @@ html {
   opacity: 0.9;
   max-width: 600px;
   margin: 0 auto;
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .about-content {
@@ -555,6 +597,9 @@ html {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .about-section h3 {
@@ -568,6 +613,9 @@ html {
   line-height: 1.7;
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
+  font-family: "Sour Gummy", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .character-grid {
@@ -632,6 +680,9 @@ html {
   margin-bottom: 2rem;
   color: var(--text-primary);
   text-align: center;
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .slides-container {
@@ -692,5 +743,171 @@ html {
   
   .slides-section {
     padding: 0 1rem;
+  }
+}
+
+/* Character List Page Styles */
+.character-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.list-section {
+  margin-bottom: 3rem;
+}
+
+.list-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--highlight);
+  padding-bottom: 0.5rem;
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.list-character-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 15px;
+  border: 1px solid var(--card-border);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.list-character-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--highlight);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.character-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-placeholder {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.character-info {
+  flex: 1;
+}
+
+.character-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.character-info p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: var(--highlight);
+  color: var(--text-primary);
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.add-new {
+  border-style: dashed;
+  border-color: var(--highlight);
+  background: rgba(255, 190, 71, 0.05);
+}
+
+.add-new:hover {
+  background: rgba(255, 190, 71, 0.1);
+}
+
+.add-character-section {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  text-align: center;
+}
+
+.add-character-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.add-character-section p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.feature-list li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--card-border);
+  position: relative;
+  padding-left: 2rem;
+}
+
+.feature-list li::before {
+  content: '✨';
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+/* Mobile responsive for character list */
+@media screen and (max-width: 768px) {
+  .character-list-container {
+    padding: 0 1rem;
+  }
+  
+  .list-character-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .character-avatar {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .list-section h2 {
+    font-size: 2rem;
   }
 }
