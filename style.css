@@ -1506,3 +1506,44 @@ html {
 .quick-actions .btn:hover {
     transform: translateY(-2px);
 }
+
+/* Responsive Design for Admin Dashboard */
+@media (max-width: 768px) {
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .character-item,
+    .update-item {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .character-actions,
+    .update-actions {
+        justify-content: center;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .dashboard-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .dashboard-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-card p {
+        font-size: 1.5rem;
+    }
+}
