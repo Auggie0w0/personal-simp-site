@@ -243,6 +243,52 @@
         </div>
     </div>
 
-    <script src="script.js"></script>    
+    <script src="script.js"></script>
+    <script>
+        // Load and display dynamic characters from localStorage
+        function loadDynamicCharacters() {
+            const characters = JSON.parse(localStorage.getItem('characters') || '[]');
+            const moreCharactersSection = document.querySelector('.list-section:last-of-type');
+            
+            // Remove existing dynamic section if it exists
+            const existingDynamicSection = document.getElementById('dynamicCharacterSection');
+            if (existingDynamicSection) {
+                existingDynamicSection.remove();
+            }
+            
+            if (characters.length > 0) {
+                // Create a new section for dynamic characters
+                const dynamicSection = document.createElement('div');
+                dynamicSection.className = 'list-section';
+                dynamicSection.id = 'dynamicCharacterSection';
+                dynamicSection.innerHTML = `
+                    <h2>Your Added Characters</h2>
+                    <div class="character-grid" id="dynamicCharacterGrid">
+                        ${characters.map(char => `
+                            <div class="list-character-card">
+                                <div class="character-avatar">
+                                    <span class="avatar-placeholder">${char.name.split(' ').map(n => n[0]).join('').toUpperCase()}</span>
+                                </div>
+                                <div class="character-info">
+                                    <h3>${char.name}</h3>
+                                    <p>${char.series}</p>
+                                    <span class="status complete">Added by you</span>
+                                </div>
+                                <a href="${char.id}.html" class="character-link"></a>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // Insert before the "More Characters" section
+                moreCharactersSection.parentNode.insertBefore(dynamicSection, moreCharactersSection);
+            }
+        }
+
+        // Load dynamic characters when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDynamicCharacters();
+        });
+    </script>
 </body>
 </html> 

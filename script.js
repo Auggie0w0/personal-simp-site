@@ -509,6 +509,11 @@ function addCharacter(characterData) {
     // Create character page
     createCharacterPage(newCharacter);
     
+    // Refresh character list if on character list page
+    if (typeof loadDynamicCharacters === 'function') {
+        loadDynamicCharacters();
+    }
+    
     return newCharacter;
 }
 
@@ -842,8 +847,14 @@ function deleteCharacter(characterId) {
         saveCharacters();
         alert('Character deleted successfully!');
         closeEditModal();
-        // Redirect to character list
-        window.location.href = 'character-list.html';
+        
+        // Refresh character list if on character list page
+        if (typeof loadDynamicCharacters === 'function') {
+            loadDynamicCharacters();
+        } else {
+            // Redirect to character list
+            window.location.href = 'character-list.html';
+        }
     }
 }
 

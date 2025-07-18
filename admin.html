@@ -189,7 +189,7 @@
                         </div>
                         <div class="character-actions">
                             <button class="btn btn-secondary" onclick="editCharacter('${char.id}')">Edit</button>
-                            ${char.id && !char.status ? `<button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>` : ''}
+                            ${char.id && char.createdAt ? `<button class="btn btn-danger" onclick="deleteCharacter('${char.id}')">Delete</button>` : ''}
                         </div>
                     </div>
                 `).join('');
