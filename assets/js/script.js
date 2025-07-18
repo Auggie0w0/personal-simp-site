@@ -225,63 +225,63 @@ async function loadCarouselCharacters() {
             name: 'Lee Know',
             series: 'Stray Kids',
             image: 'https://i.pinimg.com/736x/c7/e8/e0/c7e8e0ec5ebd4f9b5540a66bc3fc8db3.jpg',
-            link: 'minho.html'
+            link: 'pages/characters/minho.html'
         },
         {
             id: 'saja',
             name: 'Saja',
             series: 'K-pop Demon Hunters',
             image: 'https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg',
-            link: 'saja.html'
+            link: 'pages/characters/saja.html'
         },
         {
             id: 'huntrix',
             name: 'Huntrix',
             series: 'K-pop Demon Hunters',
             image: 'https://i.pinimg.com/1200x/55/29/5c/55295c15acd0598ac4be54d1c554bdeb.jpg',
-            link: 'huntrix.html'
+            link: 'pages/characters/huntrix.html'
         },
         {
             id: 'axel',
             name: 'Axel Gilberto',
             series: 'Lazarus',
-            image: 'https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg',
-            link: 'axel.html'
+            image: 'https://i.pinimg.com/736x/2e/4f/55/2e4f55c57d6c96a0f9e24cff88d39b4f.jpg',
+            link: 'pages/characters/axel.html'
         },
         {
             id: 'ivan',
             name: 'Ivan',
-            series: 'Alien Stage',
-            image: 'https://i.pinimg.com/736x/1b/ef/e1/1befe1790551b1b34361b1268cf51c08.jpg',
-            link: 'ivan.html'
+            series: 'Lazarus',
+            image: 'https://i.pinimg.com/736x/12/2b/93/122b9343a59c96c4a82d1b402171bfd2.jpg',
+            link: 'pages/characters/ivan.html'
+        },
+        {
+            id: 'yamada',
+            name: 'Yamada',
+            series: 'Horimiya',
+            image: 'https://i.pinimg.com/736x/86/4c/8c/864c8cab53cfe8bca9ac09afc22b72ad.jpg',
+            link: 'pages/characters/yamada.html'
+        },
+        {
+            id: 'dazai',
+            name: 'Dazai',
+            series: 'Bungou Stray Dogs',
+            image: 'https://i.pinimg.com/736x/fb/7d/7c/fb7d7cc16047c088c583d793d9a0c550.jpg',
+            link: 'pages/characters/dazai.html'
+        },
+        {
+            id: 'miyamura',
+            name: 'Miyamura',
+            series: 'Horimiya',
+            image: 'https://i.pinimg.com/736x/60/60/82/6060828cd9508dbec57df2f1902fee4c.jpg',
+            link: 'pages/characters/miyamura.html'
         },
         {
             id: 'hange',
             name: 'Hange Zoe',
             series: 'Attack on Titan',
-            image: 'https://i.pinimg.com/736x/38/4c/6a/384c6a0e795b24a497b07a0829d94b76.jpg',
-            link: 'hange.html'
-        },
-        {
-            id: 'yamada',
-            name: 'Akito Yamada',
-            series: 'My Love Story with Yamada-kun at Lv999',
-            image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
-            link: 'yamada.html'
-        },
-        {
-            id: 'dazai',
-            name: 'Osamu Dazai',
-            series: 'Bungou Stray Dogs',
-            image: 'https://i.pinimg.com/736x/1e/32/76/1e3276d446f3de6ef84f3149f1cdf8c0.jpg',
-            link: 'dazai.html'
-        },
-        {
-            id: 'miyamura',
-            name: 'Izumi Miyamura',
-            series: 'Horimiya',
-            image: 'https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png',
-            link: 'miyamura.html'
+            image: 'https://i.pinimg.com/736x/90/47/0c/90470c5fce28d1f43a5698dcd38d6801.jpg',
+            link: 'pages/characters/hange.html'
         }
     ];
 

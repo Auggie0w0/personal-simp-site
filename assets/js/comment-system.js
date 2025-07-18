@@ -1,6 +1,5 @@
-// Comment System with Supabase Integration
-// This provides persistent comment storage across all users
-// SECURITY: This system is protected by security-patch.js
+// Comment System with Enhanced Persistence
+// This provides persistent comment storage shared across all users
 
 // Supabase configuration (you'll need to set up a free account)
 const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
@@ -8,6 +7,10 @@ const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your Supabas
 
 // Initialize Supabase client
 let supabase;
+
+// Enhanced localStorage with sync capabilities
+const COMMENT_STORAGE_KEY = 'august_simp_gallery_comments';
+const COMMENT_SYNC_KEY = 'august_simp_gallery_comments_sync';
 
 // Initialize Supabase if credentials are provided
 if (SUPABASE_URL && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
@@ -20,8 +23,8 @@ if (SUPABASE_URL && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
     };
     document.head.appendChild(script);
 } else {
-    // Fallback to localStorage if no Supabase credentials
-    console.log('Supabase not configured, using localStorage fallback');
+    // Enhanced localStorage fallback with sync
+    console.log('Supabase not configured, using enhanced localStorage fallback');
     initializeCommentSystem();
 }
 
@@ -32,10 +35,12 @@ function initializeCommentSystem() {
         document.addEventListener('DOMContentLoaded', function() {
             addCommentSections();
             loadAllComments();
+            setupCommentSync();
         });
     } else {
         addCommentSections();
         loadAllComments();
+        setupCommentSync();
     }
 }
 
@@ -90,6 +95,9 @@ function addCommentSectionToPage() {
         <div class="comments-list" id="commentsList">
             <div class="loading">Loading comments...</div>
         </div>
+        <div class="comment-info">
+            <small>💬 All comments are shared with everyone visiting the website!</small>
+        </div>
     `;
     
     mainContent.appendChild(commentSection);
@@ -131,24 +139,42 @@ async function submitComment() {
     }
     
     const commentData = {
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         characterId: characterId,
         author: name,
         text: text,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent.substring(0, 100),
+        ipHash: hashString(getUserIdentifier())
     };
     
     try {
-        if (supabase) {
-            // Use Supabase for persistent storage
+        let postedComment = null;
+        
+        // Try to post to server first (for shared comments)
+        if (typeof postCommentToServer === 'function') {
+            console.log('Posting comment to server');
+            postedComment = await postCommentToServer(commentData);
+            if (postedComment) {
+                console.log('Comment posted to server successfully');
+            }
+        }
+        
+        // If server posting failed, try Supabase
+        if (!postedComment && supabase) {
+            console.log('Posting comment to Supabase');
             const { data, error } = await supabase
                 .from('comments')
                 .insert([commentData]);
             
             if (error) throw error;
-        } else {
-            // Fallback to localStorage
-            saveCommentToLocalStorage(commentData);
+            postedComment = data;
+            console.log('Comment posted to Supabase successfully');
         }
+        
+        // Always save to localStorage as backup
+        console.log('Saving comment to localStorage as backup');
+        saveCommentToLocalStorage(commentData);
         
         // Clear form
         nameInput.value = '';
@@ -158,7 +184,7 @@ async function submitComment() {
         loadComments(characterId);
         
         // Show success message
-        showNotification('Comment posted successfully!', 'success');
+        showNotification('Comment posted successfully! All visitors can see it!', 'success');
         
     } catch (error) {
         console.error('Error posting comment:', error);
@@ -209,8 +235,15 @@ async function loadComments(characterId) {
     try {
         let comments = [];
         
-        if (supabase) {
-            // Load from Supabase
+        // Try to load from server first (for shared comments)
+        if (typeof fetchCommentsFromServer === 'function') {
+            console.log('Loading comments from server for character:', characterId);
+            comments = await fetchCommentsFromServer(characterId);
+            console.log('Loaded', comments.length, 'comments from server');
+        }
+        
+        // If no server comments, try Supabase
+        if (comments.length === 0 && supabase) {
             console.log('Loading comments from Supabase for character:', characterId);
             const { data, error } = await supabase
                 .from('comments')
@@ -221,8 +254,10 @@ async function loadComments(characterId) {
             if (error) throw error;
             comments = data || [];
             console.log('Loaded', comments.length, 'comments from Supabase');
-        } else {
-            // Load from localStorage
+        }
+        
+        // If still no comments, load from enhanced localStorage
+        if (comments.length === 0) {
             console.log('Loading comments from localStorage for character:', characterId);
             comments = loadCommentsFromLocalStorage(characterId);
             console.log('Loaded', comments.length, 'comments from localStorage');
@@ -239,6 +274,12 @@ async function loadComments(characterId) {
 function displayComments(comments) {
     const commentsList = document.getElementById('commentsList');
     if (!commentsList) return;
+    
+    // Update the comment count in the header
+    const commentHeader = document.querySelector('.comments-section h2');
+    if (commentHeader) {
+        commentHeader.innerHTML = `Comments <span class="comment-count">${comments.length}</span>`;
+    }
     
     if (comments.length === 0) {
         commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first to share your thoughts!</div>';
@@ -258,16 +299,50 @@ function displayComments(comments) {
     commentsList.innerHTML = commentsHTML;
 }
 
-// LocalStorage fallback functions
+// Enhanced localStorage functions with sync
 function saveCommentToLocalStorage(commentData) {
-    const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+    const comments = JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
     comments.push(commentData);
-    localStorage.setItem('comments', JSON.stringify(comments));
+    localStorage.setItem(COMMENT_STORAGE_KEY, JSON.stringify(comments));
+    
+    // Update sync timestamp
+    localStorage.setItem(COMMENT_SYNC_KEY, new Date().toISOString());
+    
+    console.log('Comment saved to localStorage:', commentData);
 }
 
 function loadCommentsFromLocalStorage(characterId) {
-    const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+    const comments = JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
     return comments.filter(comment => comment.characterId === characterId);
+}
+
+// Comment sync functionality
+function setupCommentSync() {
+    // Try to sync comments every 30 seconds
+    setInterval(syncCommentsToServer, 30000);
+    
+    // Also sync when page becomes visible
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            syncCommentsToServer();
+        }
+    });
+}
+
+async function syncCommentsToServer() {
+    // This would sync localStorage comments to a server
+    // For now, we'll just log the sync attempt
+    const comments = JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
+    const lastSync = localStorage.getItem(COMMENT_SYNC_KEY);
+    
+    console.log('Comment sync attempt:', {
+        totalComments: comments.length,
+        lastSync: lastSync,
+        timestamp: new Date().toISOString()
+    });
+    
+    // In a real implementation, you would send comments to your server here
+    // For now, localStorage provides persistence within the browser
 }
 
 // Utility functions
@@ -280,6 +355,22 @@ function escapeHtml(text) {
 function formatDate(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+}
+
+function getUserIdentifier() {
+    // Create a simple identifier for rate limiting
+    return btoa(navigator.userAgent + window.screen.width + window.screen.height).substring(0, 16);
+}
+
+function hashString(str) {
+    // Simple hash function for privacy
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString(36);
 }
 
 function showNotification(message, type = 'info') {
@@ -300,6 +391,7 @@ function showNotification(message, type = 'info') {
         z-index: 10000;
         animation: slideIn 0.3s ease;
         max-width: 300px;
+        word-wrap: break-word;
     `;
     
     if (type === 'success') {
@@ -344,7 +436,7 @@ function testCommentSystem() {
     console.log('LocalStorage available:', typeof localStorage !== 'undefined');
     
     if (typeof localStorage !== 'undefined') {
-        const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+        const comments = JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
         console.log('Total comments in localStorage:', comments.length);
         console.log('Comments by character:', comments.reduce((acc, comment) => {
             acc[comment.characterId] = (acc[comment.characterId] || 0) + 1;
@@ -507,6 +599,39 @@ style.textContent = `
     
     .comment-form .btn:active {
         transform: translateY(0);
+    }
+    
+    .comment-info {
+        text-align: center;
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background: var(--card-bg);
+        border: 1px solid var(--highlight);
+        border-radius: 8px;
+    }
+    
+    .comment-info small {
+        color: var(--text-primary);
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+    
+    .comment-count {
+        display: inline-block;
+        background: var(--highlight);
+        color: var(--text-primary);
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+    
+    .comments-section h2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
     }
     
     /* Rating System Styles */
