@@ -4,37 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Izumi Miyamura</title>
+    <title>Simp Gallery</title>
 </head>
 <body>
-
     <header>
         <nav class="navbar">
-            <a href="#" class="logo">Personal Simp page</a>
-            <div class="nav-links" >
+            <a href="#" class="logo">Simp Gallery</a>
+            <div class="nav-links">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="info.html">Simp info</a></li>
-                    <li><a href="abouts.html">Abouts</a></li>
-                    <li><a href="credits.html">Credits (to be worked on)</a></li>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="miyamura.html">Miyamura</a></li>
+                    <li><a href="yamada.html">Yamada</a></li>
+                    <li><a href="minho.html">Minho</a></li>
+                    <li><a href="abouts.html">About</a></li>
                 </ul>
             </div>
-            <img src="menulogo.png" alt="menulogo" class="menulogo">
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
         </nav>
-    
     </header>
    
-    <div class="simplist">
-        <ul>
-            <li>
-                <!-- <a href="miyamura.html"><img src="https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png" alt="">Izumi Miyamura</a>
-                <a href="yamada.html"><img src="https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg" alt="">Akito Yamada</a>
-                <a href="minho.html"><img src="https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg" alt="">Lee Know (Lee Minho)</a> -->
-            </li>
-        </ul>
-    </div>
+    <main class="main-content">
+        <div class="hero-section">
+            <h1 class="hero-title">All the Characters I simp</h1>
+            <p class="hero-subtitle">They can range from anime to kpop and everything in between. Fret not, I'll be adding more characters as I go along. This had been a long time project that I've recently picked up again.<br> So far they are hudsbandos, but I am definitely going to add more female and androgynous characters!!!</p>
+        </div>
 
-    <!-- create a home page to scroll thru for all of the simp charcters, startign with Miyamura, eventually use blender to make 3D movdles of all of them?? :>>  -->
+        <div class="carousel-container">
+            <div class="carousel-track" id="image-track">
+                <div class="character-card" data-character="miyamura">
+                    <a href="miyamura.html" class="card-link">
+                        <div class="card-image">
+                            <img src="https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png" alt="Izumi Miyamura" class="image">
+                        </div>
+                        <div class="card-content">
+                            <h3>Izumi Miyamura</h3>
+                            <p>From Horimiya</p>
+                            <span class="card-button">Learn More</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="character-card" data-character="yamada">
+                    <a href="yamada.html" class="card-link">
+                        <div class="card-image">
+                            <img src="https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg" alt="Akito Yamada" class="image">
+                        </div>
+                        <div class="card-content">
+                            <h3>Akito Yamada</h3>
+                            <p>From My Love Story with Yamada-kun at Lv999</p>
+                            <span class="card-button">Learn More</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="character-card" data-character="minho">
+                    <a href="minho.html" class="card-link">
+                        <div class="card-image">
+                            <img src="https://i.pinimg.com/564x/08/be/67/08be672b231f39853b4203368049746b.jpg" alt="Lee Know (Lee Minho)" class="image">
+                        </div>
+                        <div class="card-content">
+                            <h3>Lee Know (Lee Minho)</h3>
+                            <p>From Stray Kids</p>
+                            <span class="card-button">Learn More</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-controls">
+            <button class="control-btn prev-btn" id="prevBtn">‹</button>
+            <button class="control-btn next-btn" id="nextBtn">›</button>
+        </div>
+    </main>
 
     <script src="script.js"></script>    
 </body>
