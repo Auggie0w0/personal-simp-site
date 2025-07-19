@@ -2203,3 +2203,106 @@ body.dark-theme {
   --text-tertiary: rgba(255, 255, 255, 0.7);
   --shadow: rgba(0, 0, 0, 0.3);
 }
+
+/* Resource and Contact Sections */
+.resource-links,
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.resource-item,
+.contact-item {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 15px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.resource-item::before,
+.contact-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--highlight), var(--heart-highlight));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.resource-item:hover::before,
+.contact-item:hover::before {
+  opacity: 0.1;
+}
+
+.resource-item:hover,
+.contact-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--highlight);
+  box-shadow: 0 15px 30px var(--shadow);
+}
+
+.resource-item h3,
+.contact-item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+.resource-item a,
+.contact-item a {
+  color: var(--highlight);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.resource-item a:hover,
+.contact-item a:hover {
+  color: var(--heart-highlight);
+  text-decoration: underline;
+}
+
+.resource-item p,
+.contact-item p {
+  color: var(--text-secondary);
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Responsive design for resource and contact sections */
+@media screen and (max-width: 768px) {
+  .resource-links,
+  .contact-links {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .resource-item,
+  .contact-item {
+    padding: 1.5rem;
+  }
+  
+  .resource-item h3,
+  .contact-item h3 {
+    font-size: 1.3rem;
+  }
+}
