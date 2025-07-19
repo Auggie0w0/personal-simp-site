@@ -225,70 +225,150 @@ async function loadCarouselCharacters() {
             name: 'Lee Know',
             series: 'Stray Kids',
             image: 'https://i.pinimg.com/736x/c7/e8/e0/c7e8e0ec5ebd4f9b5540a66bc3fc8db3.jpg',
-            link: 'minho.html'
+            link: 'minho.html',
+            birthday: 'October 25, 1998',
+            funFacts: [
+                'His real name is Lee Minho',
+                'He\'s known as the "Cat Dad" of Stray Kids',
+                'He was a backup dancer before joining Stray Kids',
+                'He has a unique sense of humor and loves pranks',
+                'His stage name "Lee Know" means "I know" in Korean'
+            ]
         },
         {
             id: 'huntrix',
             name: 'Huntrix',
             series: 'K-pop Demon Hunters',
             image: 'https://i.pinimg.com/1200x/55/29/5c/55295c15acd0598ac4be54d1c554bdeb.jpg',
-            link: 'huntrix.html'
+            link: 'huntrix.html',
+            birthday: 'March 15, 1995',
+            funFacts: [
+                'He\'s the leader of the K-pop Demon Hunters',
+                'His demon hunting abilities are enhanced by his K-pop powers',
+                'He can transform his microphone into a weapon',
+                'He\'s known for his powerful vocals and stage presence',
+                'He has a mysterious past that connects to ancient demon lore'
+            ]
         },
         {
             id: 'axel',
             name: 'Axel Gilberto',
             series: 'Lazarus',
             image: 'https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg',
-            link: 'axel.html'
+            link: 'axel.html',
+            birthday: 'December 3, 1993',
+            funFacts: [
+                'He\'s a skilled hacker and computer expert',
+                'His code name "Lazarus" refers to his ability to "resurrect" data',
+                'He has a photographic memory for code',
+                'He\'s fluent in multiple programming languages',
+                'He can hack into any system in under 30 seconds'
+            ]
         },
         {
             id: 'ivan',
             name: 'Ivan',
             series: 'Alien Stage',
             image: 'https://i.pinimg.com/736x/1b/ef/e1/1befe1790551b1b34361b1268cf51c08.jpg',
-            link: 'ivan.html'
+            link: 'ivan.html',
+            birthday: 'July 7, 2000',
+            funFacts: [
+                'He\'s an alien from a distant planet',
+                'He can communicate telepathically with other aliens',
+                'His eyes change color based on his emotions',
+                'He\'s learning about Earth culture through music',
+                'He has the ability to manipulate gravity slightly'
+            ]
         },
         {
             id: 'hange',
             name: 'Hange Zoe',
             series: 'Attack on Titan',
             image: 'https://i.pinimg.com/736x/38/4c/6a/384c6a0e795b24a497b07a0829d94b76.jpg',
-            link: 'hange.html'
+            link: 'hange.html',
+            birthday: 'September 5, 1985',
+            funFacts: [
+                'They are the 14th Commander of the Survey Corps',
+                'They have an obsession with studying Titans',
+                'Their gender is intentionally ambiguous in the series',
+                'They invented the Thunder Spear weapon',
+                'They have a unique laugh that sounds like "kukuku"'
+            ]
         },
         {
             id: 'yamada',
             name: 'Akito Yamada',
             series: 'My Love Story with Yamada-kun at Lv999',
             image: 'https://i.pinimg.com/564x/89/8f/0e/898f0e6fc27ec350f17866c321db45e8.jpg',
-            link: 'yamada.html'
+            link: 'yamada.html',
+            birthday: 'November 11, 1999',
+            funFacts: [
+                'He\'s a professional gamer and streamer',
+                'His gaming handle is "Yamada"',
+                'He\'s known for being blunt and straightforward',
+                'He has a soft spot for cats',
+                'He\'s actually quite caring despite his cold exterior'
+            ]
         },
         {
             id: 'dazai',
             name: 'Osamu Dazai',
             series: 'Bungou Stray Dogs',
             image: 'https://i.pinimg.com/736x/1e/32/76/1e3276d446f3de6ef84f3149f1cdf8c0.jpg',
-            link: 'dazai.html'
+            link: 'dazai.html',
+            birthday: 'June 19, 1909',
+            funFacts: [
+                'He\'s based on the real Japanese author Osamu Dazai',
+                'His ability is "No Longer Human"',
+                'He has a bandage fetish and is always wrapped in them',
+                'He constantly tries to commit suicide (comically)',
+                'He\'s actually very intelligent and strategic'
+            ]
         },
         {
             id: 'miyamura',
             name: 'Izumi Miyamura',
             series: 'Horimiya',
             image: 'https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png',
-            link: 'miyamura.html'
+            link: 'miyamura.html',
+            birthday: 'April 17, 2000',
+            funFacts: [
+                'He has multiple piercings and tattoos',
+                'He\'s actually very kind and caring',
+                'He\'s skilled at cooking and housework',
+                'He has a secret side that he hides from most people',
+                'He\'s deeply in love with Hori and very protective of her'
+            ]
         },
         {
             id: 'saja',
             name: 'Saja',
             series: 'K-pop Demon Hunters',
             image: 'https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg',
-            link: 'saja.html'
+            link: 'saja.html',
+            birthday: 'August 22, 1996',
+            funFacts: [
+                'He\'s the main vocalist of the K-pop Demon Hunters',
+                'His voice has supernatural properties against demons',
+                'He can sense demon presence through music',
+                'He\'s known for his charismatic stage performances',
+                'He has a mysterious connection to ancient demon hunting families'
+            ]
         },
         {
             id: 'wolfgang',
             name: 'Wolfgang Goldenleonard',
             series: 'King\'s Maker: Triple Crown',
             image: 'https://i.pinimg.com/736x/91/ff/ca/91ffcaf02269e4db693ca02a77e790ad.jpg',
-            link: 'wolfgang.html'
+            link: 'wolfgang.html',
+            birthday: 'July 26, 1998',
+            funFacts: [
+                'He\'s the 4th Prince and current King of Goldenleonard',
+                'He lived as a beggar on the streets after his mother\'s death',
+                'He has golden hair and eyes, a royal trait',
+                'He\'s known as the "God of Horse-racing"',
+                'He sacrificed himself to save other boys named Wolfgang'
+            ]
         }
     ];
 
