@@ -1,6 +1,6 @@
 # Simp Archive Gallery - version 1
 
-Currently creating a backend so that images saved by any users can be seen by all other users as well...
+Currently creating a backend so that images saved by any users can be seen by all other users as well... also reviews needs fixing still AHHHT T_T_T_T__T 
 
 ---
 
