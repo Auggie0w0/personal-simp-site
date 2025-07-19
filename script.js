@@ -603,8 +603,14 @@ function saveCharacters() {
     localStorage.setItem('characters', JSON.stringify(characters));
 }
 
-// Add new character
+// Add new character - DISABLED
 function addCharacter(characterData) {
+    console.warn("Character addition is disabled");
+    alert("Adding new characters is not allowed");
+    return null;
+    
+    // Original function code below (disabled)
+    /*
     const newCharacter = {
         id: Date.now().toString(),
         ...characterData,
@@ -625,6 +631,7 @@ function addCharacter(characterData) {
     }
     
     return newCharacter;
+    */
 }
 
 // Update existing character
