@@ -69,17 +69,7 @@
                 <li>He has a mysterious connection to ancient demon hunting families</li>
             </ul>
             
-            <h3>Why I Love This Character</h3>
-            <ul class="character-reasons">
-                <li>Unique concept combining K-pop and supernatural elements</li>
-                <li>Charismatic and magnetic personality</li>
-                <li>Powerful demon hunting abilities</li>
-                <li>Mysterious and intriguing character background</li>
-                <li>Beautiful character design and visual appeal</li>
-                <li>Innovative storytelling that bridges different genres</li>
-                <li>His balance of entertainment and supernatural duties</li>
-                <li>The way he represents the crossover concept perfectly</li>
-            </ul>
+
         </div>
 
         <div class="rating-section">
@@ -103,6 +93,13 @@
             <h2>Saja Gallery</h2>
             <div class="gallery-container">
                 <div class="image-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('saja')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
                     <div class="gallery-image">
                         <img src="https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg" alt="Saja">
                     </div>
@@ -132,9 +129,67 @@
                     </div>
                 </div>
             </div>
+                </div>
+
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-saja" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (1 vote)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('saja', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('saja', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('saja', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('saja', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('saja', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
         </div>
+
     </main>
 
-    <script src="script.js?v=2"></script>
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>    
 </body>
 </html> 

@@ -72,23 +72,20 @@
                 <li>He can hack into any system in under 30 seconds</li>
             </ul>
             
-            <h3>Why I Love This Character</h3>
-            <ul class="character-reasons">
-                <li>Complex and well-developed personality</li>
-                <li>Intriguing character arc and growth</li>
-                <li>Mysterious and captivating presence</li>
-                <li>Strong character design and visual appeal</li>
-                <li>Meaningful relationships with other characters</li>
-                <li>Compelling backstory and motivations</li>
-                <li>Unique perspective and worldview</li>
-                <li>Emotional depth and vulnerability</li>
-            </ul>
+
         </div>
 
         <div class="gallery-section">
             <h2>Axel Gallery</h2>
             <div class="gallery-container">
                 <div class="image-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('axel')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
                     <div class="gallery-image">
                         <img src="https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg" alt="Axel Gilberto">
                     </div>
@@ -116,8 +113,66 @@
                 </div>
             </div>
         </div>
+
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-axel" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (1 vote)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('axel', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('axel', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('axel', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('axel', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('axel', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <script src="script.js?v=2"></script>    
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>    
 </body>
 </html> 

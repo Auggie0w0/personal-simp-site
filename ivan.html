@@ -73,25 +73,20 @@
                 <li>He has the ability to manipulate gravity slightly</li>
             </ul>
             
-            <h3>Why I Love This Character</h3>
-            <ul class="character-reasons">
-                <li>Incredibly complex psychological depth and character development</li>
-                <li>Fascinating backstory from slums to idol stardom</li>
-                <li>Beautiful and tragic one-sided love story with Till</li>
-                <li>Exceptional singing talent and musical performances</li>
-                <li>Stunning character design with his signature black outfit</li>
-                <li>Deep, meaningful songs that reflect his inner turmoil</li>
-                <li>His journey of trying to become "normal" while hiding his true self</li>
-                <li>The ambiguity and complexity of his final actions</li>
-                <li>His hypocritical nature that makes him more human and relatable</li>
-                <li>The way his character represents themes of love, sacrifice, and fate</li>
-            </ul>
+
         </div>
 
         <div class="gallery-section">
             <h2>Ivan Gallery</h2>
             <div class="gallery-container">
                 <div class="image-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('ivan')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
                     <div class="gallery-image">
                         <img src="https://i.pinimg.com/736x/24/0f/e2/240fe2c42bd974bddf32526f841ede54.jpg" alt="Ivan">
                     </div>
@@ -123,8 +118,65 @@
             </div>
         </div>
 
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-ivan" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (1 vote)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('ivan', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('ivan', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('ivan', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('ivan', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('ivan', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <script src="script.js?v=2"></script>    
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>    
 </body>
 </html> 

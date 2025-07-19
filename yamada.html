@@ -72,16 +72,7 @@
                 <li>He's actually quite caring despite his cold exterior</li>
             </ul>
             
-            <h3>Why I Love This Character</h3>
-            <ul class="character-reasons">
-                <li>Relatable gamer personality and lifestyle</li>
-                <li>Sweet and genuine character development</li>
-                <li>Balanced online and offline life portrayal</li>
-                <li>Realistic modern relationship dynamics</li>
-                <li>Charming and endearing personality</li>
-                <li>Beautiful romance story development</li>
-                <li>His growth from isolation to connection</li>
-            </ul>
+
         </div>
 
         <div class="slides-section">
@@ -98,8 +89,65 @@
             </div>
         </div>
 
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-yamada" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (1 vote)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('yamada', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('yamada', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('yamada', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('yamada', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('yamada', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <script src="script.js?v=2"></script>    
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>    
 </body>
 </html>
