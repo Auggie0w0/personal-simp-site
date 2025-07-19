@@ -4,11 +4,34 @@
 // Store the original addPhotosToGallery function from script.js
 let originalAddPhotosToGallery = window.addPhotosToGallery;
 
+// Character ID mapping for special cases
+const characterIdMap = {
+    'minho': 'minho',
+    'leeknow': 'minho',
+    'lee know': 'minho',
+    'lee minho': 'minho'
+};
+
+// Function to normalize character IDs
+function normalizeCharacterId(id) {
+    if (!id) return id;
+    
+    // Convert to lowercase for consistent matching
+    const lowerId = id.toLowerCase();
+    
+    // Return the mapped ID if it exists, otherwise return the original
+    return characterIdMap[lowerId] || id;
+}
+
 // Override with our enhanced version that saves to localStorage
 window.addPhotosToGallery = function() {
     if (!currentCharacterId || selectedImages.length === 0) return;
     
+    // Normalize the character ID
+    const normalizedCharacterId = normalizeCharacterId(currentCharacterId);
+    
     console.log('Enhanced addPhotosToGallery called for character:', currentCharacterId);
+    console.log('Normalized character ID:', normalizedCharacterId);
     console.log('Saving images:', selectedImages.length);
     
     // Get the gallery container (works for both old and new structure)
@@ -35,8 +58,8 @@ window.addPhotosToGallery = function() {
         }
     });
     
-    // Save images to localStorage
-    saveImagesToLocalStorage(currentCharacterId, selectedImages);
+    // Save images to localStorage using the normalized ID
+    saveImagesToLocalStorage(normalizedCharacterId, selectedImages);
     
     // Re-initialize gallery modals for new images
     if (typeof initGalleryModals === 'function') {
@@ -55,21 +78,24 @@ window.addPhotosToGallery = function() {
 function saveImagesToLocalStorage(characterId, images) {
     if (!characterId || !images || images.length === 0) return;
     
+    // Normalize the character ID
+    const normalizedCharacterId = normalizeCharacterId(characterId);
+    
     // Get current gallery images
     const galleryImages = JSON.parse(localStorage.getItem('characterGalleryImages') || '{}');
     
     // Initialize character's gallery if it doesn't exist
-    if (!galleryImages[characterId]) {
-        galleryImages[characterId] = [];
+    if (!galleryImages[normalizedCharacterId]) {
+        galleryImages[normalizedCharacterId] = [];
     }
     
     // Add new images
-    galleryImages[characterId] = [...galleryImages[characterId], ...images];
+    galleryImages[normalizedCharacterId] = [...galleryImages[normalizedCharacterId], ...images];
     
     // Save to localStorage
     localStorage.setItem('characterGalleryImages', JSON.stringify(galleryImages));
     
-    console.log(`Saved ${images.length} images for character ${characterId}`);
+    console.log(`Saved ${images.length} images for character ${normalizedCharacterId}`);
     console.log('Current localStorage size:', new Blob([JSON.stringify(localStorage)]).size / 1024, 'KB');
 }
 
@@ -81,19 +107,25 @@ function loadImagesFromLocalStorage() {
     
     if (!filename || !filename.endsWith('.html')) return;
     
-    const characterId = filename.replace('.html', '');
-    console.log('Loading images for character:', characterId);
+    // Get the base character ID from the filename
+    const baseCharacterId = filename.replace('.html', '');
+    
+    // Normalize the character ID
+    const normalizedCharacterId = normalizeCharacterId(baseCharacterId);
+    
+    console.log('Loading images for character:', baseCharacterId);
+    console.log('Normalized character ID:', normalizedCharacterId);
     
     // Get saved images
     const galleryImages = JSON.parse(localStorage.getItem('characterGalleryImages') || '{}');
-    const characterImages = galleryImages[characterId] || [];
+    const characterImages = galleryImages[normalizedCharacterId] || [];
     
     if (characterImages.length === 0) {
         console.log('No saved images found for this character');
         return;
     }
     
-    console.log(`Found ${characterImages.length} saved images for character ${characterId}`);
+    console.log(`Found ${characterImages.length} saved images for character ${normalizedCharacterId}`);
     
     // Find the gallery container
     const galleryGrid = document.querySelector('.gallery-grid');
