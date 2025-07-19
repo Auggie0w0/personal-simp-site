@@ -31,6 +31,9 @@
         <div class="hero-section">
             <h1 class="hero-title">Character List</h1>
             <p class="hero-subtitle">Here are the characters featured in my gallery! Click on any to view their profile and gallery. More to come soon!</p>
+            <div style="text-align: right; margin-top: 10px;">
+                <a href="add-character.html" class="btn" style="display: inline-block; padding: 8px 15px; background: #0088cc; color: white; text-decoration: none; border-radius: 4px;">Add New Character</a>
+            </div>
         </div>
 
         <div class="character-list-container">
@@ -72,7 +75,7 @@
                     </div>
                     <div class="list-character-card">
                         <div class="character-avatar">
-                            <img src="https://i.pinimg.com/736x/21/8e/bd/218ebd25e9f0579d0a41bc56ce410005.jpg" alt="Wolfgang Goldenleonard">
+                            <img src="https://i.pinimg.com/1200x/f8/77/7c/f8777c0c059d5c7cc7fc001a74266e6b.jpg" alt="Wolfgang Goldenleonard">
                         </div>
                         <div class="character-info">
                             <h3>Wolfgang Goldenleonard</h3>
@@ -146,7 +149,7 @@
             </div>
 
             <div class="list-section">
-                <h2>Other Characters</h2>
+                <h2>Non-Binary & Gender-Fluid Characters</h2>
                 <div class="character-grid" id="otherCharacterGrid">
                     <div class="list-character-card">
                         <div class="character-avatar">
@@ -201,7 +204,13 @@
                 // Group characters by gender
                 const maleCharacters = characters.filter(char => char.gender === 'male');
                 const femaleCharacters = characters.filter(char => char.gender === 'female');
-                const otherCharacters = characters.filter(char => !char.gender || char.gender === 'other');
+                const otherCharacters = characters.filter(char => 
+                    !char.gender || 
+                    char.gender === 'other' || 
+                    char.gender === 'non-binary' || 
+                    char.gender === 'gender-fluid' || 
+                    char.gender === 'genderqueer' || 
+                    char.gender === 'agender');
                 
                 // Add male characters
                 maleCharacters.forEach(char => {
