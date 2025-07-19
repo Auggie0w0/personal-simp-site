@@ -236,6 +236,21 @@ async function loadCarouselCharacters() {
             ]
         },
         {
+            id: 'wolfgang',
+            name: 'Wolfgang Goldenleonard',
+            series: 'King\'s Maker: Triple Crown',
+            image: 'https://i.pinimg.com/736x/91/ff/ca/91ffcaf02269e4db693ca02a77e790ad.jpg',
+            link: 'wolfgang.html',
+            birthday: 'July 26, 1998',
+            funFacts: [
+                'He\'s the 4th Prince and current King of Goldenleonard',
+                'He lived as a beggar on the streets after his mother\'s death',
+                'He has golden hair and eyes, a royal trait',
+                'He\'s known as the "God of Horse-racing"',
+                'He sacrificed himself to save other boys named Wolfgang'
+            ]
+        },
+        {
             id: 'huntrix',
             name: 'Huntrix',
             series: 'K-pop Demon Hunters',
@@ -354,34 +369,23 @@ async function loadCarouselCharacters() {
                 'He\'s known for his charismatic stage performances',
                 'He has a mysterious connection to ancient demon hunting families'
             ]
-        },
-        {
-            id: 'wolfgang',
-            name: 'Wolfgang Goldenleonard',
-            series: 'King\'s Maker: Triple Crown',
-            image: 'https://i.pinimg.com/736x/91/ff/ca/91ffcaf02269e4db693ca02a77e790ad.jpg',
-            link: 'wolfgang.html',
-            birthday: 'July 26, 1998',
-            funFacts: [
-                'He\'s the 4th Prince and current King of Goldenleonard',
-                'He lived as a beggar on the streets after his mother\'s death',
-                'He has golden hair and eyes, a royal trait',
-                'He\'s known as the "God of Horse-racing"',
-                'He sacrificed himself to save other boys named Wolfgang'
-            ]
         }
     ];
 
     // Combine characters and sort with custom order
     const allCharacters = [...staticCharacters, ...characters];
     
-    // Custom sorting for carousel: Lee Know first, then new characters, then others
+    // Custom sorting for carousel: Lee Know first, then Wolfgang, then new characters, then others
     const carouselCharacters = allCharacters.sort((a, b) => {
         // Lee Know always comes first
         if (a.id === 'leeknow') return -1;
         if (b.id === 'leeknow') return 1;
         
-        // New characters (with createdAt) come after Lee Know but before others
+        // Wolfgang comes second
+        if (a.id === 'wolfgang') return -1;
+        if (b.id === 'wolfgang') return 1;
+        
+        // New characters (with createdAt) come after Wolfgang but before others
         if (a.createdAt && !b.createdAt) return -1;
         if (!a.createdAt && b.createdAt) return 1;
         
@@ -394,11 +398,15 @@ async function loadCarouselCharacters() {
         return 0;
     });
 
-    // Custom sorting for gallery: Lee Know first, then others in original order
+    // Custom sorting for gallery: Lee Know first, then Wolfgang, then others in original order
     const galleryCharacters = allCharacters.sort((a, b) => {
         // Lee Know always comes first
         if (a.id === 'leeknow') return -1;
         if (b.id === 'leeknow') return 1;
+        
+        // Wolfgang comes second
+        if (a.id === 'wolfgang') return -1;
+        if (b.id === 'wolfgang') return 1;
         
         // For others, maintain the original order from staticCharacters array
         const aIndex = staticCharacters.findIndex(char => char.id === a.id);
