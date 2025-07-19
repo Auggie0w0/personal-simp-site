@@ -1,4 +1,4 @@
-# Stillframe Archive
+# Simp Archive Gallery
 
 A personal character gallery website for showcasing favorite characters from anime, K-pop, and more. This project allows you to create and maintain a collection of character profiles with customizable galleries.
 
