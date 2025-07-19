@@ -282,6 +282,13 @@ async function loadCarouselCharacters() {
             series: 'K-pop Demon Hunters',
             image: 'https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg',
             link: 'saja.html'
+        },
+        {
+            id: 'wolfgang',
+            name: 'Wolfgang Goldenleonard',
+            series: 'King\'s Maker: Triple Crown',
+            image: 'https://i.pinimg.com/736x/91/ff/ca/91ffcaf02269e4db693ca02a77e790ad.jpg',
+            link: 'wolfgang.html'
         }
     ];
 
