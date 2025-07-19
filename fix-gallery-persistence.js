@@ -41,7 +41,10 @@ window.addPhotosToGallery = function() {
     
     if (!targetContainer) return;
     
-    // Add images to the DOM
+    // Find the add-photo-card
+    const addPhotoCard = targetContainer.querySelector('.add-photo-card');
+    
+    // Add images to the DOM - AFTER the add-photo-card
     selectedImages.forEach(imageData => {
         const galleryItem = document.createElement('div');
         galleryItem.className = galleryGrid ? 'gallery-item' : 'gallery-image';
@@ -49,10 +52,9 @@ window.addPhotosToGallery = function() {
             <img src="${imageData.src}" alt="Added Image" ${galleryGrid ? 'onclick="openGalleryModal(this.src, this.alt)"' : ''}>
         `;
         
-        // Insert before the add-photo-card
-        const addPhotoCard = targetContainer.querySelector('.add-photo-card');
-        if (addPhotoCard) {
-            targetContainer.insertBefore(galleryItem, addPhotoCard);
+        // Insert AFTER the add-photo-card
+        if (addPhotoCard && addPhotoCard.nextSibling) {
+            targetContainer.insertBefore(galleryItem, addPhotoCard.nextSibling);
         } else {
             targetContainer.appendChild(galleryItem);
         }
@@ -137,10 +139,15 @@ function loadImagesFromLocalStorage() {
         return;
     }
     
-    // Find the add-photo-card to insert images before it
+    // Find the add-photo-card
     const addPhotoCard = targetContainer.querySelector('.add-photo-card');
     
-    // Add saved images to the gallery
+    if (!addPhotoCard) {
+        console.log('Add photo card not found');
+        return;
+    }
+    
+    // Add saved images to the gallery AFTER the add-photo-card
     characterImages.forEach(imageData => {
         // Skip if image is already in the gallery (check by src)
         const existingImages = targetContainer.querySelectorAll('img');
@@ -159,9 +166,9 @@ function loadImagesFromLocalStorage() {
             <img src="${imageData.src}" alt="Gallery Image" ${galleryGrid ? 'onclick="openGalleryModal(this.src, this.alt)"' : ''}>
         `;
         
-        // Insert before the add-photo-card or append to container
-        if (addPhotoCard) {
-            targetContainer.insertBefore(galleryItem, addPhotoCard);
+        // Insert AFTER the add-photo-card
+        if (addPhotoCard.nextSibling) {
+            targetContainer.insertBefore(galleryItem, addPhotoCard.nextSibling);
         } else {
             targetContainer.appendChild(galleryItem);
         }

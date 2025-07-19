@@ -57,10 +57,12 @@ function initializeGallery() {
     
     if (!targetContainer) return;
     
-    // Find the add-photo-card to insert images before it
+    // Find the add-photo-card
     const addPhotoCard = targetContainer.querySelector('.add-photo-card');
     
-    // Add saved images to the gallery
+    if (!addPhotoCard) return;
+    
+    // Add saved images to the gallery AFTER the add-photo-card
     savedImages.forEach(imageData => {
         const galleryItem = document.createElement('div');
         galleryItem.className = galleryGrid ? 'gallery-item' : 'gallery-image';
@@ -68,9 +70,9 @@ function initializeGallery() {
             <img src="${imageData.src}" alt="Gallery Image" ${galleryGrid ? 'onclick="openGalleryModal(this.src, this.alt)"' : ''}>
         `;
         
-        // Insert before the add-photo-card or append to container
-        if (addPhotoCard) {
-            targetContainer.insertBefore(galleryItem, addPhotoCard);
+        // Insert AFTER the add-photo-card
+        if (addPhotoCard.nextSibling) {
+            targetContainer.insertBefore(galleryItem, addPhotoCard.nextSibling);
         } else {
             targetContainer.appendChild(galleryItem);
         }
@@ -121,6 +123,11 @@ function addPhotosToGallery() {
     
     if (!targetContainer) return;
     
+    // Find the add-photo-card
+    const addPhotoCard = targetContainer.querySelector('.add-photo-card');
+    
+    if (!addPhotoCard) return;
+    
     // Add images to the DOM
     selectedImages.forEach(imageData => {
         const galleryItem = document.createElement('div');
@@ -129,10 +136,9 @@ function addPhotosToGallery() {
             <img src="${imageData.src}" alt="Added Image" ${galleryGrid ? 'onclick="openGalleryModal(this.src, this.alt)"' : ''}>
         `;
         
-        // Insert before the add-photo-card
-        const addPhotoCard = targetContainer.querySelector('.add-photo-card');
-        if (addPhotoCard) {
-            targetContainer.insertBefore(galleryItem, addPhotoCard);
+        // Insert AFTER the add-photo-card
+        if (addPhotoCard.nextSibling) {
+            targetContainer.insertBefore(galleryItem, addPhotoCard.nextSibling);
         } else {
             targetContainer.appendChild(galleryItem);
         }
