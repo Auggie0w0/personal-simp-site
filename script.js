@@ -1055,23 +1055,26 @@ function updatePreview() {
 function addPhotosToGallery() {
     if (!currentCharacterId || selectedImages.length === 0) return;
     
-    // Get the gallery grid
+    // Get the gallery container (works for both old and new structure)
     const galleryGrid = document.querySelector('.gallery-grid');
-    if (!galleryGrid) return;
+    const imageGallery = document.querySelector('.image-gallery');
+    const targetContainer = galleryGrid || imageGallery;
+    
+    if (!targetContainer) return;
     
     selectedImages.forEach(imageData => {
         const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
+        galleryItem.className = galleryGrid ? 'gallery-item' : 'gallery-image';
         galleryItem.innerHTML = `
-            <img src="${imageData.src}" alt="Added Image" onclick="openGalleryModal(this.src, this.alt)">
+            <img src="${imageData.src}" alt="Added Image" ${galleryGrid ? 'onclick="openGalleryModal(this.src, this.alt)"' : ''}>
         `;
         
         // Insert before the add-photo-card
-        const addPhotoCard = galleryGrid.querySelector('.add-photo-card');
+        const addPhotoCard = targetContainer.querySelector('.add-photo-card');
         if (addPhotoCard) {
-            galleryGrid.insertBefore(galleryItem, addPhotoCard);
+            targetContainer.insertBefore(galleryItem, addPhotoCard);
         } else {
-            galleryGrid.appendChild(galleryItem);
+            targetContainer.appendChild(galleryItem);
         }
     });
     
