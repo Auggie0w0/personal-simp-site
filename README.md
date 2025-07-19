@@ -10,6 +10,7 @@ A personal character gallery website for showcasing favorite characters from ani
 - **Dark/Light Theme**: Toggle between dark and light modes
 - **Character List**: Browse all characters in a grid layout
 - **Image Carousel**: Showcase featured characters on the home page
+- **Shared Gallery System**: Option to use a server-based gallery system where all users can see images added by anyone
 
 ## Getting Started
 
@@ -17,6 +18,7 @@ A personal character gallery website for showcasing favorite characters from ani
 
 - Basic knowledge of HTML, CSS, and JavaScript
 - A web server or hosting service (like GitHub Pages, Vercel, Netlify, etc.)
+- For shared gallery: Node.js, MongoDB (optional)
 
 ### Installation
 
@@ -31,6 +33,11 @@ A personal character gallery website for showcasing favorite characters from ani
    ```
 
 3. Open `index.html` in your browser or deploy to your hosting service.
+
+4. (Optional) Set up the shared gallery server:
+   ```
+   ./setup-gallery-server.sh
+   ```
 
 ## Creating Your Own Character Page
 
@@ -76,23 +83,51 @@ const staticCharacters = [
 
 ## Gallery System
 
-The gallery system allows users to add images to character profiles. Images are stored in the browser's localStorage and persist across page reloads.
+The gallery system allows users to add images to character profiles. There are two options available:
 
-### How It Works
+### 1. LocalStorage Gallery (Default)
 
-1. Each character page has a gallery section with an "Add Photo" button.
-2. Users can add images by:
-   - Uploading from their device
-   - Pasting an image URL
-   - Drag and drop
-   - Copy and paste
-3. Added images are stored in localStorage and loaded when the page is visited.
+Images are stored in the browser's localStorage and persist across page reloads, but are only visible to the user who added them.
 
-### Key Files
-
+#### Key Files
 - `fix-gallery-persistence.js`: Handles saving and loading images from localStorage
 - `gallery.js`: Core gallery functionality
 - `fix_gallery_ordering.js`: Ensures proper ordering of gallery items
+
+### 2. Shared Gallery System (Optional)
+
+Images are stored on a server and are visible to all users. This requires setting up a backend server.
+
+#### Key Files
+- `shared-gallery.js`: Client-side code for the shared gallery system
+- `setup-gallery-server.sh`: Script to set up the backend server
+
+#### Setting Up the Shared Gallery Server
+
+1. Run the setup script:
+   ```
+   ./setup-gallery-server.sh
+   ```
+
+2. Start MongoDB (if using locally):
+   ```
+   mongod --dbpath=/data/db
+   ```
+
+3. Start the server:
+   ```
+   cd gallery-server
+   npm start
+   ```
+
+4. Update character HTML files to use the shared gallery system:
+   - Remove references to `fix-gallery-persistence.js` and `gallery.js`
+   - Add `<script src="shared-gallery.js"></script>`
+
+5. If deploying to a hosting service, update the API_BASE_URL in `shared-gallery.js`:
+   ```javascript
+   const API_BASE_URL = 'https://your-deployed-api-url.com/api';
+   ```
 
 ## Troubleshooting
 
@@ -103,6 +138,13 @@ If gallery images aren't persisting:
 1. Check that localStorage is available in your browser.
 2. Ensure the character ID in the HTML matches the ID used in localStorage.
 3. Look for console errors related to storage limits.
+
+### Shared Gallery Issues
+
+1. Make sure MongoDB is running if using the shared gallery system.
+2. Check the server console for any error messages.
+3. Verify that the API_BASE_URL in `shared-gallery.js` is correct.
+4. Check browser console for CORS or network errors.
 
 ## Customization
 
