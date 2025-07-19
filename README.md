@@ -1,4 +1,8 @@
-# Simp Archive Gallery
+# Simp Archive Gallery - version 1
+
+Currently creating a backend so that images saved by any users can be seen by all other users as well...
+
+---
 
 A personal character gallery website for showcasing favorite characters from anime, K-pop, and more. This project allows you to create and maintain a collection of character profiles with customizable galleries.
 
