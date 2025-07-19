@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Reset All Data - Simp Archive Gallery</title>
+    <style>
+        .reset-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .reset-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+        
+        .reset-button {
+            padding: 0.75rem 1.5rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 1rem;
+        }
+        
+        .reset-button:hover {
+            background: #c0392b;
+        }
+        
+        .reset-button.all {
+            background: #c0392b;
+        }
+        
+        .reset-button.all:hover {
+            background: #962d22;
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .reset-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 128, 0, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Archive Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="reset-container">
+            <h1>Reset Site Data</h1>
+            <p>This page allows you to reset various data in the site. Please use these options carefully as the actions cannot be undone.</p>
+            
+            <div class="reset-box">
+                <h2>Reset Options</h2>
+                <p>Select what you want to reset:</p>
+                
+                <div class="reset-options">
+                    <div>
+                        <button id="resetRatingsBtn" class="reset-button">Reset All Ratings</button>
+                        <div id="ratingsSuccess" class="success-message">Ratings reset successfully!</div>
+                    </div>
+                    
+                    <div>
+                        <button id="resetGalleriesBtn" class="reset-button">Reset All Gallery Images</button>
+                        <div id="galleriesSuccess" class="success-message">Galleries reset successfully!</div>
+                    </div>
+                </div>
+                
+                <hr style="margin: 2rem 0; border-color: rgba(0,0,0,0.1);">
+                
+                <div>
+                    <p class="warning">⚠️ WARNING: The following action will reset EVERYTHING!</p>
+                    <button id="resetAllBtn" class="reset-button all">Reset ALL Site Data</button>
+                    <div id="allSuccess" class="success-message">All site data reset successfully!</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="index.html" class="btn" style="display: inline-block; padding: 10px 20px; background: #0088cc; color: white; text-decoration: none; border-radius: 4px;">Return to Home Page</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js?v=3"></script>
+    
+    <script>
+        // Reset ratings
+        document.getElementById('resetRatingsBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all character ratings? This action cannot be undone!')) {
+                // Remove all ratings data
+                localStorage.removeItem('characterRatings');
+                localStorage.removeItem('userVotes');
+                
+                // Show success message
+                document.getElementById('ratingsSuccess').style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('ratingsSuccess').style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Reset galleries
+        document.getElementById('resetGalleriesBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all character galleries? All user-added images will be permanently removed. This action cannot be undone!')) {
+                // Remove all gallery images data
+                localStorage.removeItem('characterGalleryImages');
+                
+                // Show success message
+                document.getElementById('galleriesSuccess').style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('galleriesSuccess').style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Reset all site data
+        document.getElementById('resetAllBtn').addEventListener('click', function() {
+            if (confirm('WARNING: This will reset ALL site data including ratings and gallery images. This action cannot be undone! Are you absolutely sure?')) {
+                // Remove all data
+                localStorage.removeItem('characterRatings');
+                localStorage.removeItem('userVotes');
+                localStorage.removeItem('characterGalleryImages');
+                
+                // Show success message
+                document.getElementById('allSuccess').style.display = 'block';
+                
+                // Redirect back to home page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Simp Archive Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
