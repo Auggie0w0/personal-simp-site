@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Ivan - Simp Archive Gallery</title>
+    <title>Saja - Simp Archive Gallery</title>
 </head>
 <body>
     <header>
@@ -13,73 +13,86 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="character-list.html">Characters</a></li>
                     <li><a href="reviews.html">Reviews</a></li>
                     <li><a href="abouts.html">About</a></li>
                 </ul>
             </div>
-            <div class="nav-controls">
-                <button class="theme-toggle" id="themeToggle">
-                    <span class="theme-icon">☀️</span>
-                </button>
-                <img src="menulogo.png" alt="menu" class="menulogo">
+            <div class="menulogo">
+                <img src="menulogo.png" alt="Menu">
             </div>
         </nav>
     </header>
-   
+
     <main class="main-content">
         <div class="character-hero">
             <div class="character-image">
-                <img src="https://i.pinimg.com/736x/1b/ef/e1/1befe1790551b1b34361b1268cf51c08.jpg" alt="Ivan">
+                <img src="https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg" alt="Saja">
             </div>
             <div class="character-info">
-                <h1>Ivan</h1>
-                <p class="character-series">From Alien Stage</p>
+                <h1>Saja</h1>
+                <p class="character-series">From K-pop Demon Hunters</p>
                 <p class="character-description">
-                    Ivan (이반) is a complex and enigmatic participant in Alien Stage, known for his exceptional singing talent and deep, one-sided attachment to Till. Despite his outwardly cheerful persona, he harbors a deep sorrow and fatalistic view of the world. His journey from a quiet child in the slums to a polished idol reveals the tragic nature of his character and his ultimate sacrifice for love.
+                    Saja embodies the perfect fusion of K-pop idol charisma and supernatural warrior strength. His character represents the innovative concept of "K-pop Demon Hunters" where entertainment and demon hunting coexist. With his magnetic personality and powerful abilities, Saja stands out as a compelling character who navigates both the glamorous world of K-pop and the dangerous realm of supernatural threats.
                 </p>
                 <div class="character-stats">
                     <div class="stat">
                         <span class="stat-label">Age</span>
-                        <span class="stat-value">22</span>
+                        <span class="stat-value">Unknown</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Birthday</span>
-                        <span class="stat-value">July 7, 2000</span>
+                        <span class="stat-value">August 22, 1996</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Role</span>
-                        <span class="stat-value">Idol</span>
+                        <span class="stat-value">Demon Hunter</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Personality</span>
-                        <span class="stat-value">Complex & Tragic</span>
+                        <span class="stat-value">Charismatic & Powerful</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="character-details">
             <h2>Character Analysis</h2>
-            <p>Ivan's character is a masterful study in contrasts and tragedy. As a child, he was quiet and off-putting due to his slum upbringing, but he developed a deep fascination with Till that would define his entire life. His journey shows a desperate attempt to become "normal" - practicing his smile in the Anakt Garden pond and adopting a cheerful persona that made him seem "too perfect to get close to." However, beneath this facade lies a deep sorrow and fatalistic worldview that permeates his songs "Black Sorrow" and "Cure." His relationship with Till is the heart of his character - a one-sided love that he seems resigned to, even when they were close to escaping together. His final act in Round 6, where he kisses Till and then appears to choke him, is ambiguous but speaks to his complex nature and ultimate sacrifice.</p>
+            <p>Saja embodies the perfect fusion of K-pop idol charisma and supernatural warrior strength. His character represents the innovative concept of "K-pop Demon Hunters" where entertainment and demon hunting coexist. With his magnetic personality and powerful abilities, Saja stands out as a compelling character who navigates both the glamorous world of K-pop and the dangerous realm of supernatural threats. His mysterious background and dual nature make him an intriguing addition to this unique series.</p>
             
             <h3>Fun Facts</h3>
             <ul class="character-reasons">
-                <li>Birthday: Unknown</li>
-                <li>Age: Unknown</li>
-                <li>Role: Contestant performer on Alien Stage: Prologue, known for "Black Sorrow" and reaching Top 3</li>
-                <li>Personality: Not officially documented; fan discussions focus more on visual appeal</li>
+                <li>Birthday: N/A (fictional demon band)</li>
+                <li>Age: N/A</li>
+                <li>Role: Antagonistic demon-boy band aiming to break the Honmoon barrier</li>
+                <li>Personality: Villainous, high-energy idols entwined with demonic intent</li>
             </ul>
                                     
 
         </div>
 
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-saja" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (1 vote)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('saja', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('saja', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('saja', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('saja', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('saja', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
         <div class="gallery-section">
-            <h2>Ivan Gallery</h2>
+            <h2>Saja Gallery</h2>
             <div class="gallery-container">
                 <div class="image-gallery">
-                    <div class="add-photo-card" onclick="openAddPhotoModal('ivan')">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('saja')">
                         <div class="add-photo-content">
                             <span class="add-photo-icon">📷</span>
                             <span class="add-photo-text">Add Photo</span>
@@ -87,49 +100,49 @@
                         </div>
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/24/0f/e2/240fe2c42bd974bddf32526f841ede54.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/1b/ef/e1/1befe1790551b1b34361b1268cf51c08.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/59/68/78/596878455e601687574b32687496c5a2.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/c7/56/81/c75681c206e7e91ecbf59b2436c68e10.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/c0/31/02/c0310219bd3f99777ba2b93bf65ce310.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/1200x/54/57/83/5457834f1bc6fed45e2d10244e213c8c.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/34/01/b8/3401b8ae579f495a1c5e4c502371af4a.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/1200x/94/24/c1/9424c17989da4eefaa4207611d7bbfdc.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/b1/bf/82/b1bf82d766416e2fbf5870a6e8ab7886.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/fd/3f/38/fd3f38fd99d75e5658e664234cf4f436.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/cc/aa/3d/ccaa3de9a5be12c3734f6b80246ede94.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/73/b3/78/73b3784b07faeac9d89273f9fc82046a.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/2f/4e/b0/2f4eb01322e466fe8e4a55a6cdb9e938.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/6b/01/31/6b0131fc0c42a54024ccf938941f0e77.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/eb/da/98/ebda987e1ee47ec94a4995d95d4a3c23.jpg" alt="Saja">
                     </div>
                     <div class="gallery-image">
-                        <img src="https://i.pinimg.com/736x/42/d7/34/42d734e437d2d09c618234404b03d44b.jpg" alt="Ivan">
+                        <img src="https://i.pinimg.com/736x/fd/29/bd/fd29bd62f5ecf4d69cd24025f7546eb4.jpg" alt="Saja">
                     </div>
                 </div>
             </div>
-        </div>
+                </div>
 
         <div class="rating-section">
             <h2>Rating</h2>
-            <div id="rating-ivan" class="rating-container">
+            <div id="rating-saja" class="rating-container">
                 <div class="rating-display">
                     <span class="stars">★★★★★</span>
                     <span class="rating-text">5.0/5 (1 vote)</span>
                 </div>
                 <div class="rating-buttons">
-                    <button onclick="rateCharacter('ivan', 1)" class="star-btn">1★</button>
-                    <button onclick="rateCharacter('ivan', 2)" class="star-btn">2★</button>
-                    <button onclick="rateCharacter('ivan', 3)" class="star-btn">3★</button>
-                    <button onclick="rateCharacter('ivan', 4)" class="star-btn">4★</button>
-                    <button onclick="rateCharacter('ivan', 5)" class="star-btn">5★</button>
+                    <button onclick="rateCharacter('saja', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('saja', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('saja', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('saja', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('saja', 5)" class="star-btn">5★</button>
                 </div>
             </div>
         </div>
@@ -201,6 +214,5 @@
         </div>
     
 </footer>
-<script src="ratings.js"></script>
 </body>
 </html> 
