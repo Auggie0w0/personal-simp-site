@@ -1147,6 +1147,7 @@ html {
   margin: 0 auto;
   position: relative;
   padding: 0 2rem;
+  overflow: hidden;
 }
 
 
@@ -1157,6 +1158,8 @@ html {
   gap: 1.5rem;
   width: 100%;
   margin: 0 auto;
+  align-items: start;
+  grid-auto-rows: 1fr;
 }
 
 /* Slides Section Styles for Google Slides embeds */
@@ -1196,6 +1199,10 @@ html {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   aspect-ratio: 1;
   background: var(--card-bg);
+  width: 100%;
+  height: auto;
+  min-height: 300px;
+  display: block;
 }
 
 .gallery-image img {
@@ -1203,6 +1210,7 @@ html {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  display: block;
 }
 
 .gallery-image::before {
@@ -1237,7 +1245,10 @@ html {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 200px;
+  min-height: 300px;
+  aspect-ratio: 1;
+  width: 100%;
+  height: auto;
 }
 
 .add-photo-card:hover {
@@ -1609,10 +1620,16 @@ html {
   .image-gallery {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
+    align-items: start;
   }
   
   .gallery-image {
     aspect-ratio: 1;
+    min-height: 250px;
+  }
+  
+  .add-photo-card {
+    min-height: 250px;
   }
   
   .gallery-container {
@@ -1634,6 +1651,15 @@ html {
 @media screen and (min-width: 1400px) {
   .image-gallery {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    align-items: start;
+  }
+  
+  .gallery-image {
+    min-height: 350px;
+  }
+  
+  .add-photo-card {
+    min-height: 350px;
   }
   
   .slides-section h2 {
