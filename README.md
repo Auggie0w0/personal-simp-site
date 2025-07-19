@@ -96,14 +96,6 @@ The gallery system allows users to add images to character profiles. Images are 
 
 ## Troubleshooting
 
-### Blank Page on Vercel
-
-If you're deploying to Vercel and experiencing blank pages:
-
-1. Make sure the `vercel-debug.js` and `vercel-fix.js` scripts are included in your HTML files.
-2. Check browser console for errors.
-3. Ensure all paths are relative and correct for a production environment.
-
 ### Images Not Persisting
 
 If gallery images aren't persisting:
