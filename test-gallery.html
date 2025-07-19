@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Test Gallery - Stillframe Archive</title>
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+        .test-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .test-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .test-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .gallery-image img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .gallery-image img:hover {
+            transform: scale(1.05);
+        }
+        .add-photo-card {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .add-photo-card:hover {
+            border-color: #0088cc;
+            background-color: rgba(0, 136, 204, 0.05);
+        }
+        .add-photo-content {
+            text-align: center;
+        }
+        .add-photo-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .add-photo-text {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .add-photo-hint {
+            font-size: 12px;
+            color: #666;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e9f7ff;
+            border-radius: 8px;
+            border-left: 4px solid #0088cc;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Stillframe Archive</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="test-container">
+            <h1>Gallery System Test</h1>
+            <p>This page tests the new gallery system that saves images for character profiles.</p>
+            
+            <div class="test-section">
+                <div class="test-header">
+                    <img src="https://i.pinimg.com/736x/21/8e/bd/218ebd25e9f0579d0a41bc56ce410005.jpg" alt="Wolfgang">
+                    <h2>Wolfgang Gallery Test</h2>
+                </div>
+                <p>This is a test gallery for Wolfgang. Images added here will be saved to localStorage.</p>
+                
+                <div class="image-gallery" id="test-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('wolfgang')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>Current Gallery Images in LocalStorage</h3>
+                <pre id="gallery-data">Loading...</pre>
+                <button onclick="displayGalleryData()" class="btn">Refresh Gallery Data</button>
+                <button onclick="clearGalleryData('wolfgang')" class="btn btn-secondary">Clear Wolfgang Gallery</button>
+                <button onclick="clearAllGalleryData()" class="btn btn-secondary">Clear All Galleries</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Stillframe Archive. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=3"></script>
+    <script src="gallery.js"></script>
+    <script>
+        // Variables needed by the gallery system
+        let currentCharacterId = null;
+        let selectedImages = [];
+        
+        // Display current gallery data
+        function displayGalleryData() {
+            const galleryData = JSON.parse(localStorage.getItem('characterGalleryImages') || '{}');
+            document.getElementById('gallery-data').textContent = JSON.stringify(galleryData, null, 2);
+        }
+        
+        // Clear gallery data for a specific character
+        function clearGalleryData(characterId) {
+            if (confirm(`Are you sure you want to clear ${characterId}'s gallery?`)) {
+                const galleryData = JSON.parse(localStorage.getItem('characterGalleryImages') || '{}');
+                if (galleryData[characterId]) {
+                    delete galleryData[characterId];
+                    localStorage.setItem('characterGalleryImages', JSON.stringify(galleryData));
+                    alert(`${characterId}'s gallery has been cleared.`);
+                    displayGalleryData();
+                    location.reload();
+                }
+            }
+        }
+        
+        // Clear all gallery data
+        function clearAllGalleryData() {
+            if (confirm('Are you sure you want to clear all gallery data?')) {
+                localStorage.removeItem('characterGalleryImages');
+                alert('All gallery data has been cleared.');
+                displayGalleryData();
+                location.reload();
+            }
+        }
+        
+        // Display gallery data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayGalleryData();
+            
+            // Initialize gallery modals
+            if (typeof initGalleryModals === 'function') {
+                initGalleryModals();
+            }
+        });
+    </script>
+</body>
+</html> 
