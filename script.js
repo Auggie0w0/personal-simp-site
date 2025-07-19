@@ -275,6 +275,13 @@ async function loadCarouselCharacters() {
             series: 'Horimiya',
             image: 'https://i.pinimg.com/originals/08/38/c0/0838c09105f683d3d6f68fe101f0a69f.png',
             link: 'miyamura.html'
+        },
+        {
+            id: 'saja',
+            name: 'Saja',
+            series: 'K-pop Demon Hunters',
+            image: 'https://i.pinimg.com/736x/de/6b/b4/de6bb44a43104f4011b6041fc7e9bc61.jpg',
+            link: 'saja.html'
         }
     ];
 
