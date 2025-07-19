@@ -197,18 +197,7 @@
                 </div>
             </div>
 
-            <div class="content-section">
-                <h2>Comments</h2>
-                <div class="comments-section">
-                    <div class="comment-form">
-                        <textarea id="comment-input-wolfgang" placeholder="Share your thoughts about Wolfgang..."></textarea>
-                        <button onclick="addComment('wolfgang', document.getElementById('comment-input-wolfgang').value)">Add Comment</button>
-                    </div>
-                    <div id="comments-wolfgang" class="comments-list">
-                        <!-- Comments will be loaded here -->
-                    </div>
-                </div>
-            </div>
+
         </div>
     </main>
 
@@ -223,9 +212,6 @@
     <script>
         // Initialize character-specific functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load comments
-            loadComments('wolfgang');
-            
             // Initialize gallery modals
             initGalleryModals();
             

@@ -522,8 +522,7 @@ function addCharacter(characterData) {
         ...characterData,
         createdAt: new Date().toISOString(),
         rating: 0,
-        ratingCount: 0,
-        comments: []
+        ratingCount: 0
     };
     
     characters.push(newCharacter);
@@ -609,59 +608,7 @@ function updateRatingDisplay(characterId, rating, count) {
     }
 }
 
-// Comment system
-function addComment(characterId, commentText, author = 'Anonymous') {
-    const character = characters.find(char => char.id === characterId);
-    if (character && commentText.trim()) {
-        if (!character.comments) {
-            character.comments = [];
-        }
-        
-        const newComment = {
-            id: Date.now().toString(),
-            author: author,
-            text: commentText.trim(),
-            date: new Date().toISOString()
-        };
-        
-        character.comments.push(newComment);
-        saveCharacters();
-        
-        // Refresh comments display
-        loadComments(characterId);
-        
-        // Clear comment form
-        const commentForm = document.getElementById(`comment-form-${characterId}`);
-        if (commentForm) {
-            commentForm.reset();
-        }
-        
-        alert('Comment added successfully!');
-    }
-}
 
-function loadComments(characterId) {
-    const character = characters.find(char => char.id === characterId);
-    const commentsContainer = document.getElementById(`comments-${characterId}`);
-    
-    if (commentsContainer && character) {
-        const comments = character.comments || [];
-        
-        if (comments.length === 0) {
-            commentsContainer.innerHTML = '<p class="no-comments">No comments yet. Be the first to comment!</p>';
-        } else {
-            commentsContainer.innerHTML = comments.map(comment => `
-                <div class="comment">
-                    <div class="comment-header">
-                        <strong>${comment.author}</strong>
-                        <small>${new Date(comment.date).toLocaleDateString()}</small>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                </div>
-            `).join('');
-        }
-    }
-}
 
 // Create character page HTML
 function createCharacterPage(character) {
@@ -759,17 +706,7 @@ function createCharacterPage(character) {
                     </div>
                 </div>
                 
-                <div class="content-section">
-                    <h2>Comments</h2>
-                    <div id="comments-${character.id}" class="comments-section">
-                        <!-- Comments will be loaded here -->
-                    </div>
-                    <form id="comment-form-${character.id}" class="comment-form" onsubmit="event.preventDefault(); addComment('${character.id}', document.getElementById('comment-text-${character.id}').value, document.getElementById('comment-author-${character.id}').value);">
-                        <input type="text" id="comment-author-${character.id}" placeholder="Your name (optional)" class="comment-author">
-                        <textarea id="comment-text-${character.id}" placeholder="Write a comment..." class="comment-text" required></textarea>
-                        <button type="submit" class="comment-submit">Add Comment</button>
-                    </form>
-                </div>
+
             </div>
         </div>
     </main>
@@ -778,12 +715,10 @@ function createCharacterPage(character) {
 
     <script src="script.js"></script>
     <script>
-        // Load comments on page load
+        // Character page functionality
         document.addEventListener('DOMContentLoaded', () => {
-            loadComments('${character.id}');
+            // Initialize any character-specific features here
         });
-        
-
     </script>
 </body>
 </html>`;
