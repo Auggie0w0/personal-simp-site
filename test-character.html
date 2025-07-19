@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Test Character - Stillframe Archive</title>
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+        .test-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .test-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .character-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 5px;
+            min-width: 120px;
+        }
+        .stat-label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 1.1em;
+        }
+        .character-reasons {
+            padding-left: 20px;
+        }
+        .character-reasons li {
+            margin-bottom: 8px;
+        }
+        .controls {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9f7ff;
+            border-radius: 8px;
+        }
+        .btn {
+            padding: 8px 15px;
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #006699;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Stillframe Archive</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="test-container">
+            <h1>Character Display Test</h1>
+            <p>This page tests the conditional display of character information based on data availability.</p>
+            
+            <div class="test-section">
+                <div class="test-header">
+                    <img src="https://i.pinimg.com/736x/21/8e/bd/218ebd25e9f0579d0a41bc56ce410005.jpg" alt="Test Character">
+                    <h2>Test Character</h2>
+                </div>
+                
+                <div class="character-stats">
+                    <div class="stat">
+                        <span class="stat-label">Age</span>
+                        <span class="stat-value">25</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Birthday</span>
+                        <span class="stat-value">Unknown</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Role</span>
+                        <span class="stat-value">Protagonist</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Personality</span>
+                        <span class="stat-value">Friendly & Outgoing</span>
+                    </div>
+                </div>
+                
+                <div class="character-details">
+                    <h2>Character Analysis</h2>
+                    <p>This is a test character to demonstrate the conditional display of information.</p>
+                    
+                    <h3>Fun Facts</h3>
+                    <ul class="character-reasons">
+                        <li>This is a confirmed fact about the character</li>
+                        <li>This is another known fact</li>
+                        <li>This fact is uncertain?</li>
+                        <li>This is unknown</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <h3>Test Controls</h3>
+                <button class="btn" id="toggle-birthday">Toggle Birthday (Unknown/Known)</button>
+                <button class="btn" id="toggle-facts">Toggle Facts (All Uncertain/Some Known)</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Stillframe Archive. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="character-utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle birthday between unknown and known
+            document.getElementById('toggle-birthday').addEventListener('click', function() {
+                const birthdayValue = document.querySelector('.stat-label:nth-of-type(1) + .stat-value');
+                if (birthdayValue.textContent === 'Unknown') {
+                    birthdayValue.textContent = 'January 1, 2000';
+                } else {
+                    birthdayValue.textContent = 'Unknown';
+                }
+                // Re-run the display update
+                updateCharacterDisplay();
+            });
+            
+            // Toggle facts between all uncertain and some known
+            document.getElementById('toggle-facts').addEventListener('click', function() {
+                const factsList = document.querySelector('.character-reasons');
+                const currentFacts = Array.from(factsList.querySelectorAll('li')).map(li => li.textContent);
+                
+                if (currentFacts[0].includes('confirmed')) {
+                    // Switch to all uncertain facts
+                    factsList.innerHTML = `
+                        <li>This fact is uncertain?</li>
+                        <li>This is not confirmed</li>
+                        <li>This is unknown</li>
+                    `;
+                } else {
+                    // Switch to some known facts
+                    factsList.innerHTML = `
+                        <li>This is a confirmed fact about the character</li>
+                        <li>This is another known fact</li>
+                        <li>This fact is uncertain?</li>
+                        <li>This is unknown</li>
+                    `;
+                }
+                // Re-run the display update
+                updateCharacterDisplay();
+            });
+        });
+    </script>
+</body>
+</html> 
