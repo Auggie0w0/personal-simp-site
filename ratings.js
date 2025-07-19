@@ -11,8 +11,37 @@ function saveRatings(ratings) {
     localStorage.setItem('characterRatings', JSON.stringify(ratings));
 }
 
+// Get user votes from localStorage
+function getUserVotes() {
+    return JSON.parse(localStorage.getItem('userVotes') || '{}');
+}
+
+// Save user votes to localStorage
+function saveUserVotes(votes) {
+    localStorage.setItem('userVotes', JSON.stringify(votes));
+}
+
+// Check if user has already voted for a character
+function hasUserVoted(characterId) {
+    const userVotes = getUserVotes();
+    return userVotes.hasOwnProperty(characterId);
+}
+
+// Get user's vote for a character
+function getUserVote(characterId) {
+    const userVotes = getUserVotes();
+    return userVotes[characterId] || null;
+}
+
 // Rate a character
 function rateCharacter(characterId, rating) {
+    // Check if user has already voted
+    if (hasUserVoted(characterId)) {
+        const previousVote = getUserVote(characterId);
+        alert(`You've already rated this character with ${previousVote} stars! You can only vote once per character.`);
+        return;
+    }
+    
     // Get current ratings
     const ratings = getRatings();
     
@@ -30,8 +59,16 @@ function rateCharacter(characterId, rating) {
     // Save to localStorage
     saveRatings(ratings);
     
+    // Save user's vote
+    const userVotes = getUserVotes();
+    userVotes[characterId] = rating;
+    saveUserVotes(userVotes);
+    
     // Update rating display
     updateRatingDisplay(characterId, characterRating.average, characterRating.count);
+    
+    // Update button states
+    updateRatingButtons(characterId, rating);
     
     // Show confirmation
     alert(`Thank you for rating! Current average: ${characterRating.average.toFixed(1)}/5 (${characterRating.count} votes)`);
@@ -49,6 +86,33 @@ function updateRatingDisplay(characterId, rating, count) {
                 <span class="stars">${'★'.repeat(Math.floor(rating))}${'☆'.repeat(5 - Math.floor(rating))}</span>
                 <span class="rating-text">${rating.toFixed(1)}/5 (${count} votes)</span>
             `;
+        }
+    }
+}
+
+// Update rating buttons to show which one was selected
+function updateRatingButtons(characterId, selectedRating) {
+    const ratingElement = document.getElementById(`rating-${characterId}`);
+    if (ratingElement) {
+        const buttons = ratingElement.querySelectorAll('.star-btn');
+        buttons.forEach((button, index) => {
+            const buttonRating = index + 1;
+            if (buttonRating === selectedRating) {
+                button.classList.add('selected');
+                button.disabled = true;
+            } else {
+                button.disabled = true;
+                button.classList.add('disabled');
+            }
+        });
+        
+        // Add message about voting once
+        const ratingButtons = ratingElement.querySelector('.rating-buttons');
+        if (ratingButtons) {
+            const voteMessage = document.createElement('div');
+            voteMessage.className = 'vote-message';
+            voteMessage.textContent = 'You can only vote once per character.';
+            ratingButtons.appendChild(voteMessage);
         }
     }
 }
@@ -76,6 +140,12 @@ function initializeRatings() {
                     <span class="rating-text">${ratingData.average.toFixed(1)}/5 (${ratingData.count} votes)</span>
                 `;
             }
+        }
+        
+        // Check if user has already voted for this character
+        if (hasUserVoted(characterId)) {
+            const userRating = getUserVote(characterId);
+            updateRatingButtons(characterId, userRating);
         }
     });
 }
