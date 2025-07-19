@@ -875,6 +875,222 @@ function closeGalleryModal() {
     }, 400);
 }
 
+// Add Photo Modal Functions
+let currentCharacterId = null;
+let selectedImages = [];
+
+function openAddPhotoModal(characterId) {
+    currentCharacterId = characterId;
+    selectedImages = [];
+    
+    const modal = document.getElementById('add-photo-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        setupUploadArea();
+        setupPasteArea();
+        resetModal();
+    }
+}
+
+function closeAddPhotoModal() {
+    const modal = document.getElementById('add-photo-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        resetModal();
+    }
+}
+
+function resetModal() {
+    selectedImages = [];
+    document.getElementById('preview-area').style.display = 'none';
+    document.getElementById('add-photos-btn').style.display = 'none';
+    document.getElementById('preview-images').innerHTML = '';
+    document.getElementById('paste-area').value = '';
+    document.getElementById('file-input').value = '';
+}
+
+function setupUploadArea() {
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    
+    if (uploadArea) {
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+        
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }
+    
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+    }
+}
+
+function setupPasteArea() {
+    const pasteArea = document.getElementById('paste-area');
+    
+    if (pasteArea) {
+        pasteArea.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const items = Array.from(e.clipboardData.items);
+            
+            items.forEach(item => {
+                if (item.type.startsWith('image/')) {
+                    const file = item.getAsFile();
+                    handleFiles([file]);
+                }
+            });
+            
+            // Also check for URLs
+            const pastedText = e.clipboardData.getData('text');
+            if (pastedText && isValidImageUrl(pastedText)) {
+                handleImageUrl(pastedText);
+            }
+        });
+        
+        pasteArea.addEventListener('input', (e) => {
+            const value = e.target.value.trim();
+            if (value && isValidImageUrl(value)) {
+                handleImageUrl(value);
+            }
+        });
+    }
+}
+
+function handleFiles(files) {
+    files.forEach(file => {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageData = {
+                    src: e.target.result,
+                    name: file.name,
+                    type: 'file'
+                };
+                addToPreview(imageData);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+function handleImageUrl(url) {
+    const imageData = {
+        src: url,
+        name: 'Pasted Image',
+        type: 'url'
+    };
+    addToPreview(imageData);
+}
+
+function addToPreview(imageData) {
+    selectedImages.push(imageData);
+    
+    const previewArea = document.getElementById('preview-area');
+    const previewImages = document.getElementById('preview-images');
+    const addButton = document.getElementById('add-photos-btn');
+    
+    previewArea.style.display = 'block';
+    addButton.style.display = 'block';
+    
+    const previewItem = document.createElement('div');
+    previewItem.className = 'preview-item';
+    previewItem.innerHTML = `
+        <img src="${imageData.src}" alt="${imageData.name}">
+        <span class="preview-name">${imageData.name}</span>
+        <button class="remove-preview" onclick="removeFromPreview(${selectedImages.length - 1})">×</button>
+    `;
+    
+    previewImages.appendChild(previewItem);
+}
+
+function removeFromPreview(index) {
+    selectedImages.splice(index, 1);
+    updatePreview();
+}
+
+function updatePreview() {
+    const previewImages = document.getElementById('preview-images');
+    const addButton = document.getElementById('add-photos-btn');
+    
+    previewImages.innerHTML = '';
+    
+    if (selectedImages.length === 0) {
+        document.getElementById('preview-area').style.display = 'none';
+        addButton.style.display = 'none';
+        return;
+    }
+    
+    selectedImages.forEach((imageData, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'preview-item';
+        previewItem.innerHTML = `
+            <img src="${imageData.src}" alt="${imageData.name}">
+            <span class="preview-name">${imageData.name}</span>
+            <button class="remove-preview" onclick="removeFromPreview(${index})">×</button>
+        `;
+        previewImages.appendChild(previewItem);
+    });
+}
+
+function addPhotosToGallery() {
+    if (!currentCharacterId || selectedImages.length === 0) return;
+    
+    // Get the gallery grid
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (!galleryGrid) return;
+    
+    selectedImages.forEach(imageData => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `
+            <img src="${imageData.src}" alt="Added Image" onclick="openGalleryModal(this.src, this.alt)">
+        `;
+        
+        // Insert before the add-photo-card
+        const addPhotoCard = galleryGrid.querySelector('.add-photo-card');
+        if (addPhotoCard) {
+            galleryGrid.insertBefore(galleryItem, addPhotoCard);
+        } else {
+            galleryGrid.appendChild(galleryItem);
+        }
+    });
+    
+    // Re-initialize gallery modals for new images
+    initGalleryModals();
+    
+    // Close modal and show success message
+    closeAddPhotoModal();
+    alert(`Successfully added ${selectedImages.length} image(s) to the gallery!`);
+}
+
+function isValidImageUrl(url) {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const urlLower = url.toLowerCase();
+    return imageExtensions.some(ext => urlLower.includes(ext)) || 
+           urlLower.startsWith('data:image/') ||
+           urlLower.startsWith('http') && urlLower.includes('image');
+}
+
 // Initialize gallery modals when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing gallery modals...');
