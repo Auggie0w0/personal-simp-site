@@ -604,15 +604,17 @@ header {
 
 .review-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 1rem;
 }
 
 .review-header h3 {
   font-size: 1.5rem;
   color: var(--text-primary);
-  margin-right: 1rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  width: 100%;
 }
 
 .review-rating {
@@ -620,6 +622,7 @@ header {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .stars {
@@ -2666,6 +2669,20 @@ body.dark-theme {
   
   .footer-section p {
     font-size: 0.85rem;
+  }
+}
+
+/* Media query for mobile */
+@media screen and (max-width: 768px) {
+  .review-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .review-header h3 {
+    margin-right: 0;
+    margin-bottom: 0.75rem;
+    text-align: center;
   }
 }
 
