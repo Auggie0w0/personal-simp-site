@@ -245,6 +245,28 @@ If images aren't displaying correctly:
    ./site-maintenance.sh debug
    ```
 
+## Project Structure
+
+### Key Directories
+
+- `characters/`: Contains JSON files for each character
+- `js/`: Contains JavaScript files
+- `css/`: Contains CSS files
+- `templates/`: Contains HTML templates
+- `docs/`: Contains documentation
+- `tools/`: Contains utility scripts
+- `node_modules/`: Contains Node.js dependencies (automatically generated)
+
+### What is `node_modules`?
+
+The `node_modules` directory contains all the external JavaScript libraries and dependencies that the project uses. It's automatically created when you run `npm install` and is populated with packages listed in `package.json`.
+
+Key things to know about `node_modules`:
+- It should **never** be edited directly
+- It should **never** be committed to version control (it's already in `.gitignore`)
+- If you delete it, you can recreate it by running `npm install`
+- It contains the `cheerio` library which is used for HTML parsing in our scripts
+
 ## Customization
 
 ### Styling
@@ -296,6 +318,8 @@ This site is created for personal enjoyment and appreciation only. If you are a 
 - Converted all character pages to JSON format
 - Streamlined character management workflow
 - Added character comments feature for fact checking
+- Consolidated all backups into a single `final_backup` directory
+- Added JSON tutorial documentation
 
 ### Version 1.1
 - Consolidated utilities into streamlined tools:
@@ -347,11 +371,33 @@ GALLERY IMAGES (5):
 -->
 ```
 
-Redundant files have been removed and backed up for reference. 
+## Important Note About HTML and JSON Files
 
-## Cleanup Note
+The character HTML files (like mackenyu.html, axel.html, etc.) are still needed as they're what the browser displays to visitors. However, they should not be edited directly anymore.
 
-The project has been cleaned up to remove redundant files after migrating to the JSON-based character system. All removed files have been backed up to final_backup_20250724004253.
+Instead, follow this workflow:
+1. Edit the JSON files in the `characters/` directory
+2. Regenerate the HTML using `./site-maintenance.sh generate`
+3. The generated HTML files will be automatically updated with your changes
 
-Important: The character HTML files are still needed as they're what the browser displays. However, they should not be edited directly anymore. Instead, edit the JSON files in the characters/ directory and regenerate the HTML using `./site-maintenance.sh generate`.
+## Final Notes
+
+The site has been fully optimized and streamlined. Here's a quick checklist for maintaining it:
+
+1. **Adding/Updating Characters**:
+   - Edit JSON files in the `characters/` directory
+   - Run `./site-maintenance.sh generate` to update HTML
+   - Update `script.js` if needed for the carousel
+
+2. **Checking for Issues**:
+   - Run `./site-maintenance.sh debug` to check for problems
+   - Fix any issues identified by the debugger
+
+3. **Maintenance**:
+   - Run regular site debugging with `./site-maintenance.sh debug`
+   - Keep your JSON files organized in the `characters/` directory
+
+4. **Documentation**:
+   - Refer to `json-character-tutorial.md` for detailed instructions
+   - See `json-tutorial-example.md` for a practical example
 

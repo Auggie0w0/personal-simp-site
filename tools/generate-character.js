@@ -6,8 +6,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Read the template file
-const templatePath = path.join(__dirname, 'character-template.html');
+// Update template path
+const templatePath = path.join(__dirname, '..', 'templates', 'character-template.html');
 const template = fs.readFileSync(templatePath, 'utf8');
 
 /**

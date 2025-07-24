@@ -1,6 +1,6 @@
 /**
- * Site Debugger and Optimizer
- * This script checks for common issues and optimizes the site
+ * Site Debugger
+ * This script checks for issues in the site structure and optimizes it
  */
 
 const fs = require('fs');
@@ -8,12 +8,15 @@ const path = require('path');
 
 // Configuration
 const config = {
+    rootDir: path.join(__dirname, '..'),
+    charactersDir: path.join(__dirname, '..', 'characters'),
+    assetsDir: path.join(__dirname, '..', 'assets'),
+    reviewsFile: path.join(__dirname, '..', 'reviews.html'),
+    characterListFile: path.join(__dirname, '..', 'character-list.html'),
+    indexFile: path.join(__dirname, '..', 'index.html'),
+    scriptFile: path.join(__dirname, '..', 'js', 'script.js'),
     characterPages: [],
     characterJsonFiles: [],
-    reviewsFile: 'reviews.html',
-    characterListFile: 'character-list.html',
-    indexFile: 'index.html',
-    scriptFile: 'script.js',
     issuesFound: 0
 };
 
@@ -22,23 +25,28 @@ async function debugAndOptimize() {
     console.log('🔍 Starting site debug and optimization...');
     
     // Find all character HTML files
-    const files = fs.readdirSync('.');
-    config.characterPages = files.filter(file => 
-        file.endsWith('.html') && 
-        !file.startsWith('_') && 
-        !file.includes('test-') &&
-        !file.includes('reset-') &&
-        !file.includes('clear-') &&
-        !file.includes('template') &&
-        !['index.html', 'reviews.html', 'character-list.html', 'abouts.html', 'admin.html', 'character-template.html', 'footer_disclaimer_template.html'].includes(file)
-    );
+    const htmlFiles = fs.readdirSync(config.rootDir)
+        .filter(file => 
+            file.endsWith('.html') && 
+            !file.startsWith('_') && 
+            !file.includes('test-') &&
+            !file.includes('reset-') &&
+            !file.includes('clear-') &&
+            !file.includes('template') &&
+            !['index.html', 'reviews.html', 'character-list.html', 'abouts.html', 'admin.html'].includes(file)
+        )
+        .map(file => path.join(config.rootDir, file));
     
+    config.characterPages = htmlFiles;
     console.log(`Found ${config.characterPages.length} character pages`);
     
     // Find all character JSON files
-    if (fs.existsSync('characters')) {
-        const jsonFiles = fs.readdirSync('characters');
-        config.characterJsonFiles = jsonFiles.filter(file => file.endsWith('.json'));
+    if (fs.existsSync(config.charactersDir)) {
+        const jsonFiles = fs.readdirSync(config.charactersDir)
+            .filter(file => file.endsWith('.json'))
+            .map(file => path.join(config.charactersDir, file));
+        
+        config.characterJsonFiles = jsonFiles;
         console.log(`Found ${config.characterJsonFiles.length} character JSON files`);
     }
     
@@ -57,66 +65,59 @@ async function debugAndOptimize() {
     }
 }
 
-// Check character consistency between HTML and JSON files
+// Check for consistency between HTML and JSON files
 async function checkCharacterConsistency() {
     console.log('\n🔄 Checking character consistency...');
     
-    // Check for HTML pages without JSON
-    const jsonIds = config.characterJsonFiles.map(file => path.basename(file, '.json'));
-    const htmlIds = config.characterPages.map(file => path.basename(file, '.html'));
-    
-    const htmlWithoutJson = htmlIds.filter(id => !jsonIds.includes(id));
-    if (htmlWithoutJson.length > 0) {
-        config.issuesFound += htmlWithoutJson.length;
-        console.log(`⚠️ Found ${htmlWithoutJson.length} character pages without JSON files:`);
-        htmlWithoutJson.forEach(id => {
-            console.log(`   - ${id}.html (consider creating ${id}.json)`);
-        });
+    // Check for HTML files without JSON
+    for (const htmlFile of config.characterPages) {
+        const basename = path.basename(htmlFile, '.html');
+        const jsonFile = path.join(config.charactersDir, `${basename}.json`);
+        
+        if (!fs.existsSync(jsonFile)) {
+            console.log(`⚠️ Found character page without JSON file: ${basename}.html (consider creating ${basename}.json)`);
+            config.issuesFound++;
+        }
     }
     
-    // Check for JSON without HTML
-    const jsonWithoutHtml = jsonIds.filter(id => !htmlIds.includes(id));
-    if (jsonWithoutHtml.length > 0) {
-        config.issuesFound += jsonWithoutHtml.length;
-        console.log(`⚠️ Found ${jsonWithoutHtml.length} JSON files without character pages:`);
-        jsonWithoutHtml.forEach(id => {
-            console.log(`   - ${id}.json (run generator to create ${id}.html)`);
-        });
+    // Check for JSON files without HTML
+    for (const jsonFile of config.characterJsonFiles) {
+        const basename = path.basename(jsonFile, '.json');
+        const htmlFile = path.join(config.rootDir, `${basename}.html`);
+        
+        if (!fs.existsSync(htmlFile)) {
+            console.log(`⚠️ Found JSON file without character page: ${basename}.json (consider generating ${basename}.html)`);
+            config.issuesFound++;
+        }
     }
 }
 
-// Check for broken links in HTML files
+// Check for broken links
 async function checkBrokenLinks() {
     console.log('\n🔗 Checking for broken links...');
     
-    const allHtmlFiles = [
-        'index.html', 
-        'character-list.html', 
-        'reviews.html', 
-        'abouts.html',
-        ...config.characterPages
-    ];
-    
     let brokenLinks = 0;
     
-    for (const file of allHtmlFiles) {
+    for (const file of config.characterPages) {
         if (!fs.existsSync(file)) continue;
         
         const content = fs.readFileSync(file, 'utf8');
-        const hrefMatches = content.match(/href="([^"]+)"/g) || [];
+        const hrefMatches = content.match(/href="([^"]+\.html)"/g) || [];
         
         for (const hrefMatch of hrefMatches) {
             const href = hrefMatch.replace(/href="([^"]+)"/, '$1');
             
-            // Skip external links and anchors
-            if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) {
-                continue;
-            }
+            // Skip external links
+            if (href.startsWith('http')) continue;
             
-            // Check if the linked file exists
-            if (!fs.existsSync(href)) {
+            // Skip dynamic links
+            if (href.includes('${')) continue;
+            
+            // Check if the file exists
+            const targetFile = path.join(config.rootDir, href);
+            if (!fs.existsSync(targetFile)) {
                 brokenLinks++;
-                console.log(`⚠️ Broken link in ${file}: ${href}`);
+                console.log(`⚠️ Broken link in ${path.basename(file)}: ${href}`);
             }
         }
     }
@@ -158,7 +159,7 @@ async function checkImageLinks() {
                 src.endsWith('.webp') // WebP might not be supported everywhere
             ) {
                 suspiciousImageUrls++;
-                console.log(`⚠️ Suspicious image URL in ${file}: ${src}`);
+                console.log(`⚠️ Suspicious image URL in ${path.basename(file)}: ${src}`);
             }
         }
     }
@@ -240,14 +241,14 @@ async function optimizeSite() {
     }
     
     // Create assets directory if it doesn't exist
-    if (!fs.existsSync('assets')) {
-        fs.mkdirSync('assets');
+    if (!fs.existsSync(config.assetsDir)) {
+        fs.mkdirSync(config.assetsDir);
         console.log('✅ Created assets directory for future local image storage.');
     }
     
     // Create characters directory if it doesn't exist
-    if (!fs.existsSync('characters')) {
-        fs.mkdirSync('characters');
+    if (!fs.existsSync(config.charactersDir)) {
+        fs.mkdirSync(config.charactersDir);
         console.log('✅ Created characters directory for JSON configuration files.');
     }
 }
@@ -256,4 +257,4 @@ async function optimizeSite() {
 debugAndOptimize().catch(err => {
     console.error('Error during debug and optimization:', err);
     process.exit(1);
-}); 
+});
