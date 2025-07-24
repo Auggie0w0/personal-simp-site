@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Panel - Simp Archive Gallery</title>
+    <style>
+        .admin-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+        
+        .admin-section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--highlight);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-button {
+            background-color: var(--card-bg);
+            border: 2px solid var(--highlight);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-button:hover {
+            background-color: var(--highlight);
+            color: var(--bg-primary);
+            transform: translateY(-2px);
+        }
+        
+        .admin-button.danger {
+            border-color: #ff5757;
+        }
+        
+        .admin-button.danger:hover {
+            background-color: #ff5757;
+        }
+        
+        .confirmation-dialog {
+            display: none;
+            background-color: var(--card-bg);
+            border: 2px solid var(--highlight);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .confirmation-dialog p {
+            margin-top: 0;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .confirmation-yes {
+            background-color: #ff5757;
+            color: white;
+        }
+        
+        .confirmation-no {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+        }
+        
+        .result-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result-message.success {
+            background-color: rgba(75, 181, 67, 0.2);
+            color: #4bb543;
+        }
+        
+        .result-message.error {
+            background-color: rgba(255, 87, 87, 0.2);
+            color: #ff5757;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Archive Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="hero-section">
+            <h1 class="hero-title">Admin Panel</h1>
+            <p class="hero-subtitle">Manage site data and perform maintenance tasks</p>
+        </div>
+
+        <div class="admin-container">
+            <div class="admin-section">
+                <h2>Gallery Management</h2>
+                <p>Manage character image galleries.</p>
+                
+                <div class="admin-buttons">
+                    <button class="admin-button" onclick="showConfirmation('resetGallery')">Reset All Galleries</button>
+                    <button class="admin-button" onclick="fixGalleryOrdering()">Fix Gallery Ordering</button>
+                    <button class="admin-button" onclick="fixGalleryPersistence()">Fix Gallery Persistence</button>
+                </div>
+                
+                <div id="resetGalleryConfirmation" class="confirmation-dialog">
+                    <p><strong>Warning:</strong> This will delete all gallery images for all characters. This action cannot be undone.</p>
+                    <p>Are you sure you want to continue?</p>
+                    <div class="confirmation-buttons">
+                        <button class="admin-button confirmation-yes" onclick="resetGalleries()">Yes, Reset All Galleries</button>
+                        <button class="admin-button confirmation-no" onclick="hideConfirmation('resetGallery')">Cancel</button>
+                    </div>
+                </div>
+                
+                <div id="galleryResultMessage" class="result-message"></div>
+            </div>
+            
+            <div class="admin-section">
+                <h2>Rating Management</h2>
+                <p>Manage character ratings.</p>
+                
+                <div class="admin-buttons">
+                    <button class="admin-button" onclick="showConfirmation('resetRatings')">Reset All Ratings</button>
+                </div>
+                
+                <div id="resetRatingsConfirmation" class="confirmation-dialog">
+                    <p><strong>Warning:</strong> This will delete all ratings for all characters. This action cannot be undone.</p>
+                    <p>Are you sure you want to continue?</p>
+                    <div class="confirmation-buttons">
+                        <button class="admin-button confirmation-yes" onclick="resetRatings()">Yes, Reset All Ratings</button>
+                        <button class="admin-button confirmation-no" onclick="hideConfirmation('resetRatings')">Cancel</button>
+                    </div>
+                </div>
+                
+                <div id="ratingsResultMessage" class="result-message"></div>
+            </div>
+            
+            <div class="admin-section">
+                <h2>Site Maintenance</h2>
+                <p>Perform site maintenance tasks.</p>
+                
+                <div class="admin-buttons">
+                    <button class="admin-button" onclick="checkBrokenImages()">Check for Broken Images</button>
+                    <button class="admin-button danger" onclick="showConfirmation('resetAll')">Reset All Data</button>
+                </div>
+                
+                <div id="resetAllConfirmation" class="confirmation-dialog">
+                    <p><strong>Warning:</strong> This will delete all galleries, ratings, and other user data. This action cannot be undone.</p>
+                    <p>Are you sure you want to continue?</p>
+                    <div class="confirmation-buttons">
+                        <button class="admin-button confirmation-yes" onclick="resetAllData()">Yes, Reset All Data</button>
+                        <button class="admin-button confirmation-no" onclick="hideConfirmation('resetAll')">Cancel</button>
+                    </div>
+                </div>
+                
+                <div id="maintenanceResultMessage" class="result-message"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="site-utils.js"></script>
+    <script>
+        // Show confirmation dialog
+        function showConfirmation(type) {
+            document.getElementById(`${type}Confirmation`).style.display = 'block';
+        }
+        
+        // Hide confirmation dialog
+        function hideConfirmation(type) {
+            document.getElementById(`${type}Confirmation`).style.display = 'none';
+        }
+        
+        // Reset all galleries
+        function resetGalleries() {
+            try {
+                const count = siteUtils.galleryUtils.resetGalleryImages();
+                showResultMessage('gallery', 'success', `Successfully reset ${count} galleries.`);
+                hideConfirmation('resetGallery');
+            } catch (error) {
+                showResultMessage('gallery', 'error', `Error resetting galleries: ${error.message}`);
+            }
+        }
+        
+        // Fix gallery ordering
+        function fixGalleryOrdering() {
+            try {
+                const galleries = siteUtils.galleryUtils.fixGalleryOrdering();
+                const count = Object.keys(galleries).length;
+                showResultMessage('gallery', 'success', `Successfully fixed ordering for ${count} galleries.`);
+            } catch (error) {
+                showResultMessage('gallery', 'error', `Error fixing gallery ordering: ${error.message}`);
+            }
+        }
+        
+        // Fix gallery persistence
+        function fixGalleryPersistence() {
+            try {
+                const result = siteUtils.galleryUtils.fixGalleryPersistence();
+                showResultMessage('gallery', 'success', `Successfully fixed ${result.fixed} galleries. ${result.alreadyFixed} galleries were already in the correct format.`);
+            } catch (error) {
+                showResultMessage('gallery', 'error', `Error fixing gallery persistence: ${error.message}`);
+            }
+        }
+        
+        // Reset all ratings
+        function resetRatings() {
+            try {
+                const count = siteUtils.ratingUtils.resetRatings();
+                showResultMessage('ratings', 'success', `Successfully reset ${count} ratings.`);
+                hideConfirmation('resetRatings');
+            } catch (error) {
+                showResultMessage('ratings', 'error', `Error resetting ratings: ${error.message}`);
+            }
+        }
+        
+        // Check for broken images
+        function checkBrokenImages() {
+            try {
+                const brokenImages = siteUtils.debugUtils.checkBrokenImages();
+                if (brokenImages.length > 0) {
+                    showResultMessage('maintenance', 'error', `Found ${brokenImages.length} broken images.`);
+                } else {
+                    showResultMessage('maintenance', 'success', 'No broken images found.');
+                }
+            } catch (error) {
+                showResultMessage('maintenance', 'error', `Error checking images: ${error.message}`);
+            }
+        }
+        
+        // Reset all data
+        function resetAllData() {
+            try {
+                const galleryCount = siteUtils.galleryUtils.resetGalleryImages();
+                const ratingCount = siteUtils.ratingUtils.resetRatings();
+                
+                showResultMessage('maintenance', 'success', `Successfully reset all data: ${galleryCount} galleries and ${ratingCount} ratings.`);
+                hideConfirmation('resetAll');
+            } catch (error) {
+                showResultMessage('maintenance', 'error', `Error resetting data: ${error.message}`);
+            }
+        }
+        
+        // Show result message
+        function showResultMessage(section, type, message) {
+            const messageElement = document.getElementById(`${section}ResultMessage`);
+            messageElement.textContent = message;
+            messageElement.className = `result-message ${type}`;
+            messageElement.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Simp Archive Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
