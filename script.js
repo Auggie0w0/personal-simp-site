@@ -221,6 +221,21 @@ async function loadCarouselCharacters() {
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
         {
+            id: 'mackenyu',
+            name: 'Mackenyu',
+            series: 'Actor & Martial Artist',
+            image: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2023/09/11143622/mackenyu-facts-to-know.jpg',
+            link: 'mackenyu.html',
+            birthday: 'November 16, 1996',
+            funFacts: [
+                'Son of legendary martial artist and actor Sonny Chiba',
+                'Born in Los Angeles but moved to Japan to pursue acting',
+                'Portrayed Roronoa Zoro in Netflix\'s One Piece live action',
+                'Starred as Seiya in Knights of the Zodiac',
+                'Fluent in both English and Japanese'
+            ]
+        },
+        {
             id: 'leeknow',
             name: 'Lee Know',
             series: 'Stray Kids',
