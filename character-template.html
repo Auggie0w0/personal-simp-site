@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>{{CHARACTER_NAME}} - Simp Archive Gallery</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Archive Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="character-hero">
+            <div class="character-image">
+                <img src="{{MAIN_IMAGE_URL}}" alt="{{CHARACTER_NAME}}">
+            </div>
+            <div class="character-info">
+                <h1>{{CHARACTER_NAME}}</h1>
+                <p class="character-series">From {{SERIES_NAME}}</p>
+                <p class="character-description">
+                    {{CHARACTER_DESCRIPTION}}
+                </p>
+                <div class="character-stats">
+                    <div class="stat">
+                        <span class="stat-label">Age</span>
+                        <span class="stat-value">{{CHARACTER_AGE}}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Birthday</span>
+                        <span class="stat-value">{{CHARACTER_BIRTHDAY}}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Role</span>
+                        <span class="stat-value">{{CHARACTER_ROLE}}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Personality</span>
+                        <span class="stat-value">{{CHARACTER_PERSONALITY}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="character-details">
+            <h2>Character Analysis</h2>
+            <p>{{CHARACTER_ANALYSIS}}</p>
+            
+            <h3>Fun Facts</h3>
+            <ul class="character-reasons">
+                {{CHARACTER_FUN_FACTS}}
+            </ul>
+                                    
+        </div>
+
+        <div class="gallery-section">
+            <h2>{{CHARACTER_NAME}} Gallery</h2>
+            <div class="gallery-container">
+                <div class="image-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('{{CHARACTER_ID}}')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
+                    {{GALLERY_IMAGES}}
+                </div>
+            </div>
+        </div>
+
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-{{CHARACTER_ID}}" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (0 votes)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('{{CHARACTER_ID}}', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('{{CHARACTER_ID}}', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('{{CHARACTER_ID}}', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('{{CHARACTER_ID}}', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('{{CHARACTER_ID}}', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>
+    <script src="gallery.js"></script>
+    <script src="character-utils.js"></script>
+    <script src="fix-gallery-persistence.js"></script>
+    <script src="fix_gallery_ordering.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Simp Archive Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="ratings.js"></script>
+</body>
+</html> 
