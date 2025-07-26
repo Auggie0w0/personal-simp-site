@@ -107,13 +107,10 @@ function updateRatingButtons(characterId, selectedRating) {
         });
         
         // Add message about voting once
-        const ratingButtons = ratingElement.querySelector('.rating-buttons');
-        if (ratingButtons) {
-            const voteMessage = document.createElement('div');
-            voteMessage.className = 'vote-message';
-            voteMessage.textContent = 'You can only vote once per character.';
-            ratingButtons.appendChild(voteMessage);
-        }
+        const voteMessage = document.createElement('div');
+        voteMessage.className = 'vote-message';
+        voteMessage.textContent = 'You can only vote once per character.';
+        ratingElement.appendChild(voteMessage);
     }
 }
 

@@ -796,6 +796,9 @@ header {
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-style: italic;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 /* Mobile menu functionality */
