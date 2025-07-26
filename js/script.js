@@ -281,6 +281,21 @@ async function loadCarouselCharacters() {
             ]
         },
         {
+            id: 'gojo',
+            name: 'Gojo Satoru',
+            series: 'Jujutsu Kaisen',
+            image: 'https://i.pinimg.com/736x/fd/9d/4f/fd9d4f14a74382a28a36fb73f2e275b6.jpg',
+            link: 'gojo.html',
+            birthday: 'December 7',
+            funFacts: [
+                'Possesses the Six Eyes and Limitless Technique',
+                'Always wears a blindfold or sunglasses to control his Six Eyes',
+                'Has a sweet tooth and is often seen enjoying junk food',
+                'His favorite phrase is "Throughout Heaven and Earth, I alone am the honored one"',
+                'Known for his playful and sometimes childish personality despite his immense power'
+            ]
+        },
+        {
             id: 'axel',
             name: 'Axel Gilberto',
             series: 'Lazarus',
