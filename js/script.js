@@ -224,7 +224,7 @@ async function loadCarouselCharacters() {
             id: 'suho',
             name: 'Suho Kim (Lloyd Frontera)',
             series: 'The Greatest Estate Developer',
-            image: 'https://i.pinimg.com/1200x/88/9f/31/889f3155906b5773534425a6e2dc14e9.jpg',
+            image: 'https://i.pinimg.com/736x/1e/7a/54/1e7a54129a2a6c04cf8039aeb72202b6.jpg',
             link: 'suho.html',
             birthday: 'Unknown',
             funFacts: [
