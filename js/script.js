@@ -221,6 +221,21 @@ async function loadCarouselCharacters() {
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
         {
+            id: 'suho',
+            name: 'Suho Kim (Lloyd Frontera)',
+            series: 'The Greatest Estate Developer',
+            image: 'https://i.pinimg.com/1200x/88/9f/31/889f3155906b5773534425a6e2dc14e9.jpg',
+            link: 'suho.html',
+            birthday: 'Unknown',
+            funFacts: [
+                'Originally from modern Earth before being transported to a fantasy world',
+                'Possesses extensive knowledge of architecture and real estate development',
+                'Takes the identity of Lloyd Frontera, the third son of the Frontera family',
+                'Transforms the declining Frontera territory using modern development concepts',
+                'Often breaks the fourth wall by commenting on typical novel tropes'
+            ]
+        },
+        {
             id: 'mackenyu',
             name: 'Mackenyu',
             series: 'Actor & Martial Artist',
