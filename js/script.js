@@ -224,7 +224,7 @@ async function loadCarouselCharacters() {
             id: 'cheongmyeong',
             name: 'Cheongmyeong',
             series: 'Return of the Blossoming Blade',
-            image: 'https://i.pinimg.com/736x/46/d7/2e/46d72e480e116d5ccceb6f304a1a4f4a.jpg',
+            image: 'https://i.pinimg.com/1200x/2e/35/7d/2e357d234eafd40537457387c23cf6d4.jpg',
             link: 'cheongmyeong.html',
             birthday: 'Unknown',
             funFacts: [
