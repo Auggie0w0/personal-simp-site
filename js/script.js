@@ -224,7 +224,7 @@ async function loadCarouselCharacters() {
             id: 'cheongmyeong',
             name: 'Cheongmyeong',
             series: 'Return of the Blossoming Blade',
-            image: 'https://static.wikia.nocookie.net/return-of-the-mount-hua-sect/images/9/91/Cheong_Myeong_%28First_Time-Skip%29.png/revision/latest/scale-to-width-down/1000?cb=20240704065843',
+            image: 'https://i.pinimg.com/736x/46/d7/2e/46d72e480e116d5ccceb6f304a1a4f4a.jpg',
             link: 'cheongmyeong.html',
             birthday: 'Unknown',
             funFacts: [
