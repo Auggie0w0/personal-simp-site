@@ -221,6 +221,21 @@ async function loadCarouselCharacters() {
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
         {
+            id: 'cheongmyeong',
+            name: 'Cheongmyeong',
+            series: 'Return of the Blossoming Blade',
+            image: 'https://static.wikia.nocookie.net/return-of-the-mount-hua-sect/images/9/91/Cheong_Myeong_%28First_Time-Skip%29.png/revision/latest/scale-to-width-down/1000?cb=20240704065843',
+            link: 'cheongmyeong.html',
+            birthday: 'Unknown',
+            funFacts: [
+                'Was known as the Plum Blossom Sword Saint in his previous life',
+                'Reincarnated 100 years after his death to restore the Mount Hua Sect',
+                'Has a signature plum blossom sword technique',
+                'Often pretends to be weaker than he actually is',
+                'Has a fondness for alcohol and gambling'
+            ]
+        },
+        {
             id: 'suho',
             name: 'Suho Kim (Lloyd Frontera)',
             series: 'The Greatest Estate Developer',
