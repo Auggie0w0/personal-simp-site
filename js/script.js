@@ -221,6 +221,21 @@ async function loadCarouselCharacters() {
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
         {
+            id: 'sunghyunjae',
+            name: 'Sung Hyunjae',
+            series: 'The S-Ranks That I Raised',
+            image: 'https://i.pinimg.com/736x/37/03/ee/3703eee4838a3a990f481fcffb4cc68a.jpg',
+            link: 'sunghyunjae.html',
+            birthday: 'August 30',
+            funFacts: [
+                'Leader of Seseong Guild and one of the strongest Korean S-rank Hunters',
+                'Known for his unpredictable and chaotic nature',
+                'Has a particular interest in the protagonist Han Yoojin',
+                'Extremely talented and skilled with a penchant for pursuing interesting things',
+                'Perceived as gentlemanly by the public but chaotic among Hunters'
+            ]
+        },
+        {
             id: 'cheongmyeong',
             name: 'Cheongmyeong',
             series: 'Return of the Blossoming Blade',
