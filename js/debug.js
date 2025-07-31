@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const galleryImages = document.querySelectorAll('.gallery-image img');
     console.log('Gallery images found:', galleryImages.length);
     
+    // Define handleImageClick function
+    function handleImageClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Image clicked:', this.src);
+        openGalleryModal(this.src, this.alt);
+    }
+    
     // Add click listeners to gallery images
     galleryImages.forEach((img, index) => {
         console.log(`Image ${index + 1}:`, img.src);
@@ -34,12 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         img.removeEventListener('click', handleImageClick);
         
         // Add new listener
-        img.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Image clicked:', this.src);
-            openGalleryModal(this.src, this.alt);
-        });
+        img.addEventListener('click', handleImageClick);
         
         console.log(`Added click listener to image ${index + 1}`);
     });
@@ -117,30 +120,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.gallery-modal-close');
     
     if (modal && closeBtn) {
+        // Define handleModalClick function
+        function handleModalClick(e) {
+            if (e.target === e.currentTarget) {
+                console.log('Modal background clicked');
+                closeGalleryModal();
+            }
+        }
+        
         // Remove existing listeners
         modal.removeEventListener('click', handleModalClick);
         closeBtn.removeEventListener('click', closeGalleryModal);
         
         // Add new listeners
-        modal.addEventListener('click', function(e) {
-            if (e.target === e.currentTarget) {
-                console.log('Modal background clicked');
-                closeGalleryModal();
-            }
-        });
-        
+        modal.addEventListener('click', handleModalClick);
         closeBtn.addEventListener('click', closeGalleryModal);
         console.log('Modal event listeners set up');
     }
     
-    // Close modal with Escape key
-    document.removeEventListener('keydown', handleEscapeKey);
-    document.addEventListener('keydown', function(e) {
+    // Define handleEscapeKey function
+    function handleEscapeKey(e) {
         if (e.key === 'Escape') {
             console.log('Escape key pressed');
             closeGalleryModal();
         }
-    });
+    }
+    
+    // Close modal with Escape key
+    document.removeEventListener('keydown', handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
     
     console.log('Debug initialization complete');
 });
