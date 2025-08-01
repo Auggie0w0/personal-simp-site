@@ -386,6 +386,21 @@ async function loadCarouselCharacters() {
             ]
         },
         {
+            id: 'marin',
+            name: 'Marin Kitagawa',
+            series: 'My Dress-Up Darling',
+            image: 'https://i.pinimg.com/1200x/ff/00/91/ff009191e1c452671958a1ae5a612cee.jpg',
+            link: 'marin.html',
+            birthday: 'March 5',
+            funFacts: [
+                'She works as an amateur model',
+                'She\'s a huge fan of anime, manga, and video games',
+                'Her name "Marin" means "sea dream" in Japanese',
+                'She\'s a passionate cosplayer',
+                'She can\'t swim despite her elegant appearance'
+            ]
+        },
+        {
             id: 'yamada',
             name: 'Akito Yamada',
             series: 'My Love Story with Yamada-kun at Lv999',
