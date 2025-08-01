@@ -10,8 +10,8 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 // Configuration
-const charactersDir = path.join(__dirname, 'characters');
-const htmlDir = __dirname;
+const charactersDir = path.join(__dirname, '..', 'characters');
+const htmlDir = path.join(__dirname, '..');
 
 // Function to extract character data from JSON file
 function getCharacterDataFromJson(characterId) {
