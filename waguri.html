@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Waguri Kaoruko - Simp Archive Gallery</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">Simp Archive Gallery</a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="character-list.html">Character List</a></li>
+                    <li><a href="reviews.html">Reviews</a></li>
+                    <li><a href="abouts.html">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <img src="menulogo.png" alt="menu" class="menulogo">
+            </div>
+        </nav>
+    </header>
+   
+    <main class="main-content">
+        <div class="character-hero">
+            <div class="character-image">
+                <img src="https://i.pinimg.com/736x/e8/e3/f8/e8e3f8c9c1e9a3e9e0b3e3e3e3e3e3e3.jpg" alt="Waguri Kaoruko">
+            </div>
+            <div class="character-info">
+                <h1>Waguri Kaoruko</h1>
+                <p class="character-series">From The Fragrant Flower Blooms with Dignity</p>
+                <p class="character-description">
+                    Waguri Kaoruko is a kind and caring student from Kikyo Private Academy who comes from a humble family and enrolled at the academy under a scholarship. She excels in her grades, leading her to be regarded highly by her peers. Her gentle nature and ability to see beyond appearances leads her to form a special bond with Rintaro Tsumugi, a student from the neighboring Chidori Public High School.
+                </p>
+                <div class="character-stats">
+                    <div class="stat">
+                        <span class="stat-label">Age</span>
+                        <span class="stat-value">16</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Birthday</span>
+                        <span class="stat-value">May 15</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Role</span>
+                        <span class="stat-value">Main Character</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Personality</span>
+                        <span class="stat-value">Kind & Caring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="character-details">
+            <h2>Character Analysis</h2>
+            <p>Kaoruko represents the theme of looking beyond appearances and societal prejudices. Despite attending the prestigious Kikyo Academy, she doesn't share her peers' disdain for students from Chidori High. Her ability to see Rintaro's true gentle nature despite his intimidating appearance showcases her exceptional empathy and open-mindedness. As a scholarship student from a modest background, she bridges the gap between different social classes, demonstrating that kindness and understanding transcend societal divisions.</p>
+            
+            <h3>Fun Facts</h3>
+            <ul class="character-reasons">
+                                <li>She's a scholarship student at the prestigious Kikyo Private Academy</li>
+                <li>She's known for being a big eater despite her petite size</li>
+                <li>She's childhood friends with Subaru Hoshina</li>
+                <li>Her mother, Fuko Waguri, has been hospitalized several times</li>
+                <li>She first met Rintaro at his family's bakery when her mother was hospitalized nearby</li>
+                <li>She's popular and well-liked at school for being cute, sweet, and kind</li>
+                <li>She's shorter than average with a petite body, often mistaken for being younger</li>
+
+            </ul>
+                                    
+        </div>
+
+        <div class="gallery-section">
+            <h2>Waguri Kaoruko Gallery</h2>
+            <div class="gallery-container">
+                <div class="image-gallery">
+                    <div class="add-photo-card" onclick="openAddPhotoModal('waguri')">
+                        <div class="add-photo-content">
+                            <span class="add-photo-icon">📷</span>
+                            <span class="add-photo-text">Add Photo</span>
+                            <span class="add-photo-hint">Click, drag, or paste images</span>
+                        </div>
+                    </div>
+                                        <div class="gallery-image">
+                        <img src="https://i.pinimg.com/736x/e8/e3/f8/e8e3f8c9c1e9a3e9e0b3e3e3e3e3e3e3.jpg" alt="Waguri Kaoruko">
+                    </div>
+                    <div class="gallery-image">
+                        <img src="https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg" alt="Waguri Kaoruko">
+                    </div>
+                    <div class="gallery-image">
+                        <img src="https://i.pinimg.com/736x/d2/bd/29/d2bd29c30819a0871aeec618fd7e0714.jpg" alt="Waguri Kaoruko">
+                    </div>
+                    <div class="gallery-image">
+                        <img src="https://i.pinimg.com/736x/76/0c/fe/760cfe930a8f998e15e45050237ae406.jpg" alt="Waguri Kaoruko">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="rating-section">
+            <h2>Rating</h2>
+            <div id="rating-waguri" class="rating-container">
+                <div class="rating-display">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">5.0/5 (0 votes)</span>
+                </div>
+                <div class="rating-buttons">
+                    <button onclick="rateCharacter('waguri', 1)" class="star-btn">1★</button>
+                    <button onclick="rateCharacter('waguri', 2)" class="star-btn">2★</button>
+                    <button onclick="rateCharacter('waguri', 3)" class="star-btn">3★</button>
+                    <button onclick="rateCharacter('waguri', 4)" class="star-btn">4★</button>
+                    <button onclick="rateCharacter('waguri', 5)" class="star-btn">5★</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div id="add-photo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Photo to Gallery</h2>
+                <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <span class="upload-icon">📷</span>
+                        <h3>Drop images here or click to browse</h3>
+                        <p>Supports: JPG, PNG, GIF, WebP</p>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                    </div>
+                </div>
+                <div class="paste-area">
+                    <h4>Or paste an image from clipboard:</h4>
+                    <textarea id="paste-area" placeholder="Paste image here (Ctrl+V) or paste image URL..."></textarea>
+                </div>
+                <div class="preview-area" id="preview-area" style="display: none;">
+                    <h4>Preview:</h4>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddPhotoModal()">Cancel</button>
+                <button class="btn btn-primary" id="add-photos-btn" onclick="addPhotosToGallery()" style="display: none;">Add to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/character-utils.js"></script>
+    <script src="js/site-utils.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 <a href="mailto:auggieldoggie@gmail.com">auggieldoggie@gmail.com</a></p>
+                <p>🐙 <a href="https://github.com/Auggie0w0" target="_blank">GitHub: Auggie0w0</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <p>📸 Instagram: @bunnie.0w0</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Simp Archive Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/ratings.js"></script>
+    <script src="js/shared-gallery.js"></script>
+
+<!--
+CHARACTER FACT CHECK INFORMATION
+============================
+
+Name: Waguri Kaoruko
+Series: From The Fragrant Flower Blooms with Dignity
+
+STATS:
+
+DESCRIPTION:
+Waguri Kaoruko is a kind and caring student from Kikyo Private Academy who comes from a humble family and enrolled at the academy under a scholarship. She excels in her grades, leading her to be regarded highly by her peers. Her gentle nature and ability to see beyond appearances leads her to form a special bond with Rintaro Tsumugi, a student from the neighboring Chidori Public High School.
+
+Last Updated: 2025-08-01T23:08:42-0700
+This comment is for fact checking only and is not visible on the website.
+-->
+</body>
+</html> 

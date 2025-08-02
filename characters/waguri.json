@@ -1,0 +1,39 @@
+{
+    "id": "waguri",
+    "name": "Waguri Kaoruko",
+    "series": "The Fragrant Flower Blooms with Dignity",
+    "mainImage": "https://i.pinimg.com/736x/e8/e3/f8/e8e3f8c9c1e9a3e9e0b3e3e3e3e3e3e3.jpg",
+    "description": "Waguri Kaoruko is a kind and caring student from Kikyo Private Academy who comes from a humble family and enrolled at the academy under a scholarship. She excels in her grades, leading her to be regarded highly by her peers. Her gentle nature and ability to see beyond appearances leads her to form a special bond with Rintaro Tsumugi, a student from the neighboring Chidori Public High School.",
+    "age": "16",
+    "birthday": "May 15",
+    "role": "Main Character",
+    "personality": "Kind & Caring",
+    "analysis": "Kaoruko represents the theme of looking beyond appearances and societal prejudices. Despite attending the prestigious Kikyo Academy, she doesn't share her peers' disdain for students from Chidori High. Her ability to see Rintaro's true gentle nature despite his intimidating appearance showcases her exceptional empathy and open-mindedness. As a scholarship student from a modest background, she bridges the gap between different social classes, demonstrating that kindness and understanding transcend societal divisions.",
+    "funFacts": [
+        "She's a scholarship student at the prestigious Kikyo Private Academy",
+        "She's known for being a big eater despite her petite size",
+        "She's childhood friends with Subaru Hoshina",
+        "Her mother, Fuko Waguri, has been hospitalized several times",
+        "She first met Rintaro at his family's bakery when her mother was hospitalized nearby",
+        "She's popular and well-liked at school for being cute, sweet, and kind",
+        "She's shorter than average with a petite body, often mistaken for being younger"
+    ],
+    "gallery": [
+        {
+            "url": "https://i.pinimg.com/736x/e8/e3/f8/e8e3f8c9c1e9a3e9e0b3e3e3e3e3e3e3.jpg",
+            "alt": "Waguri Kaoruko"
+        },
+        {
+            "url": "https://i.pinimg.com/736x/a2/8f/c3/a28fc3bbd7eeff3350ff3a1816ba2345.jpg",
+            "alt": "Waguri Kaoruko"
+        },
+        {
+            "url": "https://i.pinimg.com/736x/d2/bd/29/d2bd29c30819a0871aeec618fd7e0714.jpg",
+            "alt": "Waguri Kaoruko"
+        },
+        {
+            "url": "https://i.pinimg.com/736x/76/0c/fe/760cfe930a8f998e15e45050237ae406.jpg",
+            "alt": "Waguri Kaoruko"
+        }
+    ]
+}
