@@ -1,14 +1,20 @@
 /**
  * Character Page Generator
  * This script generates character pages from a template and JSON configuration
+ * It also updates the main page carousel and gallery with the new character
  */
 
 const fs = require('fs');
 const path = require('path');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
 
 // Update template path
 const templatePath = path.join(__dirname, '..', 'templates', 'character-template.html');
 const template = fs.readFileSync(templatePath, 'utf8');
+
+// Path to index.html
+const indexPath = path.join(__dirname, '..', 'index.html');
 
 /**
  * Generate a character page from a JSON configuration
@@ -65,6 +71,87 @@ function saveCharacterPage(characterId, content) {
 }
 
 /**
+ * Update the main page carousel and gallery with the new character
+ * @param {Object} characterData - The character data
+ */
+function updateMainPage(characterData) {
+    try {
+        // Check if index.html exists
+        if (!fs.existsSync(indexPath)) {
+            console.error(`Error: index.html not found at ${indexPath}`);
+            return;
+        }
+
+        // Read the index.html file
+        const indexHtml = fs.readFileSync(indexPath, 'utf8');
+        
+        // Parse the HTML
+        const dom = new JSDOM(indexHtml);
+        const document = dom.window.document;
+        
+        // Get the carousel track
+        const carouselTrack = document.getElementById('image-track');
+        if (!carouselTrack) {
+            console.error('Error: Carousel track not found in index.html');
+            return;
+        }
+        
+        // Create a new character card for the carousel
+        const carouselCard = document.createElement('div');
+        carouselCard.className = 'character-card';
+        carouselCard.dataset.character = characterData.id;
+        
+        carouselCard.innerHTML = `
+            <a href="${characterData.id}.html" class="card-link">
+                <div class="card-image">
+                    <img src="${characterData.mainImage}" alt="${characterData.name}">
+                </div>
+                <div class="card-content">
+                    <h3>${characterData.name}</h3>
+                    <p>${characterData.series}</p>
+                </div>
+            </a>
+        `;
+        
+        // Add the card to the carousel track
+        carouselTrack.appendChild(carouselCard);
+        
+        // Get the gallery container
+        const galleryContainer = document.getElementById('character-gallery');
+        if (!galleryContainer) {
+            console.error('Error: Gallery container not found in index.html');
+            return;
+        }
+        
+        // Create a new character card for the gallery
+        const galleryCard = document.createElement('div');
+        galleryCard.className = 'gallery-character-card';
+        galleryCard.dataset.character = characterData.id;
+        
+        galleryCard.innerHTML = `
+            <a href="${characterData.id}.html" class="gallery-card-link">
+                <div class="gallery-card-image">
+                    <img src="${characterData.mainImage}" alt="${characterData.name}">
+                </div>
+                <div class="gallery-card-content">
+                    <h3>${characterData.name}</h3>
+                    <p>${characterData.series}</p>
+                </div>
+            </a>
+        `;
+        
+        // Add the card to the gallery container
+        galleryContainer.appendChild(galleryCard);
+        
+        // Save the updated index.html
+        fs.writeFileSync(indexPath, dom.serialize());
+        console.log(`Updated main page with ${characterData.name}`);
+    } catch (error) {
+        console.error(`Error updating main page: ${error.message}`);
+    }
+}
+
+/**
  * Process a character configuration file and generate a page
  * @param {string} configPath - Path to the character JSON configuration
  */
@@ -80,6 +167,9 @@ function processCharacterConfig(configPath) {
         
         const pageContent = generateCharacterPage(characterData);
         saveCharacterPage(characterData.id, pageContent);
+        
+        // Update the main page with the new character
+        updateMainPage(characterData);
     } catch (error) {
         console.error(`Error processing ${configPath}: ${error.message}`);
     }
@@ -142,5 +232,6 @@ module.exports = {
     generateCharacterPage,
     saveCharacterPage,
     processCharacterConfig,
-    processAllCharacters
-}; 
+    processAllCharacters,
+    updateMainPage
+};
