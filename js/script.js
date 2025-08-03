@@ -194,19 +194,8 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('DOMContentLoaded', async () => {
     // Only run carousel initialization if elements exist (home page)
     if (track && prevBtn && nextBtn) {
-        // Check if we already have hardcoded Momo and Waguri cards
-        const existingCards = track.querySelectorAll('.character-card');
-        const hasHardcodedCards = existingCards.length > 0;
-        
-        // If we don't have hardcoded cards, load dynamically
-        if (!hasHardcodedCards) {
-            // Load characters from character list for carousel
-            await loadCarouselCharacters();
-        } else {
-            console.log('Using hardcoded character cards in carousel');
-            // Just update maxIndex based on existing cards
-            maxIndex = Math.max(0, existingCards.length - 1);
-        }
+        // Always load characters dynamically, but preserve Momo and Waguri
+        await loadCarouselCharacters(true);
         
         // Reset current index and update carousel
         currentIndex = 0;
@@ -224,9 +213,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Load characters for carousel from character list
-async function loadCarouselCharacters() {
+async function loadCarouselCharacters(preserveExisting = false) {
     const carouselTrack = document.getElementById('image-track');
     if (!carouselTrack) return;
+    
+    // Save existing Momo and Waguri cards if needed
+    let existingMomoCard = null;
+    let existingWaguriCard = null;
+    
+    if (preserveExisting) {
+        existingMomoCard = carouselTrack.querySelector('.character-card[data-character="momo"]');
+        existingWaguriCard = carouselTrack.querySelector('.character-card[data-character="waguri"]');
+    }
 
     // Get all characters (static + dynamic)
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
@@ -579,11 +577,27 @@ async function loadCarouselCharacters() {
     // Update maxIndex based on number of characters
     maxIndex = Math.max(0, carouselCharacters.length - 1);
 
-    // Clear existing content
-    carouselTrack.innerHTML = '';
+    // Clear existing content but save Momo and Waguri cards if needed
+    if (preserveExisting) {
+        // Remove all cards except Momo and Waguri
+        Array.from(carouselTrack.children).forEach(child => {
+            const characterId = child.dataset.character;
+            if (characterId !== 'momo' && characterId !== 'waguri') {
+                carouselTrack.removeChild(child);
+            }
+        });
+    } else {
+        carouselTrack.innerHTML = '';
+    }
 
     // Add character cards to carousel with dynamic data loading
     for (const character of carouselCharacters) {
+        // Skip Momo and Waguri if we're preserving existing cards and they exist
+        if (preserveExisting && 
+            ((character.id === 'momo' && existingMomoCard) || 
+             (character.id === 'waguri' && existingWaguriCard))) {
+            continue;
+        }
         try {
             // Try to fetch updated data from the character page
             const response = await fetch(character.link);
@@ -641,28 +655,46 @@ async function loadCarouselCharacters() {
     // Load gallery characters if on home page
     const galleryContainer = document.getElementById('character-gallery');
     if (galleryContainer) {
-        // Check if we already have hardcoded Momo and Waguri cards in gallery
-        const existingGalleryCards = galleryContainer.querySelectorAll('.gallery-character-card');
-        const hasHardcodedGalleryCards = existingGalleryCards.length > 0;
-        
-        if (!hasHardcodedGalleryCards) {
-            loadGalleryCharacters(galleryCharacters);
-        } else {
-            console.log('Using hardcoded character cards in gallery');
-        }
+        // Always load gallery characters but preserve Momo and Waguri
+        loadGalleryCharacters(galleryCharacters, true);
     }
 }
 
 // Load gallery characters
-async function loadGalleryCharacters(characters) {
+async function loadGalleryCharacters(characters, preserveExisting = false) {
     const galleryContainer = document.getElementById('character-gallery');
     if (!galleryContainer) return;
+    
+    // Save existing Momo and Waguri cards if needed
+    let existingMomoCard = null;
+    let existingWaguriCard = null;
+    
+    if (preserveExisting) {
+        existingMomoCard = galleryContainer.querySelector('.gallery-character-card[data-character="momo"]');
+        existingWaguriCard = galleryContainer.querySelector('.gallery-character-card[data-character="waguri"]');
+    }
 
-    // Clear existing content
-    galleryContainer.innerHTML = '';
+    // Clear existing content but preserve Momo and Waguri if needed
+    if (preserveExisting) {
+        // Remove all cards except Momo and Waguri
+        Array.from(galleryContainer.children).forEach(child => {
+            const characterId = child.dataset.character;
+            if (characterId !== 'momo' && characterId !== 'waguri') {
+                galleryContainer.removeChild(child);
+            }
+        });
+    } else {
+        galleryContainer.innerHTML = '';
+    }
 
     // Add character cards to gallery
     for (const character of characters) {
+        // Skip Momo and Waguri if we're preserving existing cards and they exist
+        if (preserveExisting && 
+            ((character.id === 'momo' && existingMomoCard) || 
+             (character.id === 'waguri' && existingWaguriCard))) {
+            continue;
+        }
         try {
             // Try to fetch updated data from the character page
             const response = await fetch(character.link);
