@@ -221,6 +221,36 @@ async function loadCarouselCharacters() {
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
     const staticCharacters = [
         {
+            id: 'momo',
+            name: 'Maomao',
+            series: 'The Apothecary Diaries',
+            image: 'https://i.pinimg.com/736x/b8/73/1b/b8731b8558035dcfb1627604129d19ff.jpg',
+            link: 'momo.html',
+            birthday: 'Unknown',
+            funFacts: [
+                'She has a genius-level intellect when it comes to identifying poisons and herbs',
+                'She often conducts dangerous experiments on herself out of curiosity',
+                'She paints fake freckles on her face to make herself less attractive',
+                'She was raised by her adoptive grandfather Luomen, a skilled apothecary',
+                'Despite her blunt demeanor, she has a strong sense of justice'
+            ]
+        },
+        {
+            id: 'waguri',
+            name: 'Waguri Kaoruko',
+            series: 'The Fragrant Flower Blooms with Dignity',
+            image: 'https://i.pinimg.com/736x/8c/15/8d/8c158d8479beeef75d508953cc957063.jpg',
+            link: 'waguri.html',
+            birthday: 'May 15',
+            funFacts: [
+                'She\'s a scholarship student at the prestigious Kikyo Private Academy',
+                'She\'s known for being a big eater despite her petite size',
+                'She\'s childhood friends with Subaru Hoshina',
+                'Her mother, Fuko Waguri, has been hospitalized several times',
+                'She first met Rintaro at his family\'s bakery when her mother was hospitalized nearby'
+            ]
+        },
+        {
             id: 'sunghyunjae',
             name: 'Sung Hyunjae',
             series: 'The S-Ranks That I Raised',
@@ -465,13 +495,21 @@ async function loadCarouselCharacters() {
     // Combine characters and sort with custom order
     const allCharacters = [...staticCharacters, ...characters];
     
-    // Custom sorting for carousel: Lee Know first, then Wolfgang, then new characters, then others
+    // Custom sorting for carousel: Momo and Waguri first, then Lee Know, then Wolfgang, then new characters, then others
     const carouselCharacters = allCharacters.sort((a, b) => {
-        // Lee Know always comes first
+        // Momo always comes first
+        if (a.id === 'momo') return -1;
+        if (b.id === 'momo') return 1;
+        
+        // Waguri comes second
+        if (a.id === 'waguri') return -1;
+        if (b.id === 'waguri') return 1;
+        
+        // Lee Know comes third
         if (a.id === 'leeknow') return -1;
         if (b.id === 'leeknow') return 1;
         
-        // Wolfgang comes second
+        // Wolfgang comes fourth
         if (a.id === 'wolfgang') return -1;
         if (b.id === 'wolfgang') return 1;
         
@@ -488,13 +526,21 @@ async function loadCarouselCharacters() {
         return 0;
     });
 
-    // Custom sorting for gallery: Lee Know first, then Wolfgang, then others in original order
+    // Custom sorting for gallery: Momo and Waguri first, then Lee Know, then Wolfgang, then others in original order
     const galleryCharacters = allCharacters.sort((a, b) => {
-        // Lee Know always comes first
+        // Momo always comes first
+        if (a.id === 'momo') return -1;
+        if (b.id === 'momo') return 1;
+        
+        // Waguri comes second
+        if (a.id === 'waguri') return -1;
+        if (b.id === 'waguri') return 1;
+        
+        // Lee Know comes third
         if (a.id === 'leeknow') return -1;
         if (b.id === 'leeknow') return 1;
         
-        // Wolfgang comes second
+        // Wolfgang comes fourth
         if (a.id === 'wolfgang') return -1;
         if (b.id === 'wolfgang') return 1;
         
