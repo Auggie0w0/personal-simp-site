@@ -49,9 +49,8 @@ function optimize_site {
     check_node
     check_dependencies
     
-    # Run site debugger
-    echo -e "\n🔍 Running site debugger..."
-    node site-debugger.js
+    # Site debugger removed
+    echo -e "\n🔍 Site debugger has been removed"
     
     # Update review templates
     echo -e "\n📋 Updating review templates..."
@@ -124,12 +123,14 @@ function reset_data {
     
     if [ "$1" == "galleries" ] || [ "$1" == "all" ]; then
         echo "Resetting galleries..."
-        node reset_gallery_images.js
+        # Use site-utils.js instead of reset_gallery_images.js
+        echo "localStorage.removeItem('galleries');" | node
     fi
     
     if [ "$1" == "ratings" ] || [ "$1" == "all" ]; then
         echo "Resetting ratings..."
-        node reset_ratings.js
+        # Use site-utils.js instead of reset_ratings.js
+        echo "localStorage.removeItem('ratings');" | node
     fi
     
     if [ -z "$1" ]; then
@@ -169,8 +170,7 @@ case "$1" in
         convert_to_json
         ;;
     debug)
-        check_node
-        node site-debugger.js
+        echo "⚠️ Debug functionality has been removed"
         ;;
     clean)
         clean_up
