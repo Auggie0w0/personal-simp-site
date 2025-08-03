@@ -194,8 +194,19 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('DOMContentLoaded', async () => {
     // Only run carousel initialization if elements exist (home page)
     if (track && prevBtn && nextBtn) {
-        // Load characters from character list for carousel
-        await loadCarouselCharacters();
+        // Check if we already have hardcoded Momo and Waguri cards
+        const existingCards = track.querySelectorAll('.character-card');
+        const hasHardcodedCards = existingCards.length > 0;
+        
+        // If we don't have hardcoded cards, load dynamically
+        if (!hasHardcodedCards) {
+            // Load characters from character list for carousel
+            await loadCarouselCharacters();
+        } else {
+            console.log('Using hardcoded character cards in carousel');
+            // Just update maxIndex based on existing cards
+            maxIndex = Math.max(0, existingCards.length - 1);
+        }
         
         // Reset current index and update carousel
         currentIndex = 0;
@@ -630,7 +641,15 @@ async function loadCarouselCharacters() {
     // Load gallery characters if on home page
     const galleryContainer = document.getElementById('character-gallery');
     if (galleryContainer) {
-        loadGalleryCharacters(galleryCharacters);
+        // Check if we already have hardcoded Momo and Waguri cards in gallery
+        const existingGalleryCards = galleryContainer.querySelectorAll('.gallery-character-card');
+        const hasHardcodedGalleryCards = existingGalleryCards.length > 0;
+        
+        if (!hasHardcodedGalleryCards) {
+            loadGalleryCharacters(galleryCharacters);
+        } else {
+            console.log('Using hardcoded character cards in gallery');
+        }
     }
 }
 
