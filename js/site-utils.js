@@ -1,20 +1,37 @@
 /**
  * Site Utilities
  * This file consolidates functionality from multiple utility scripts
+ * and provides a unified interface for site maintenance and utilities
  */
+
+// Configuration object for site utilities
+const SITE_CONFIG = {
+  // Enable debug mode for additional console logging
+  DEBUG: false,
+  
+  // Version information
+  VERSION: '1.0.0',
+  
+  // Storage keys
+  STORAGE_KEYS: {
+    GALLERY_PREFIX: 'gallery_',
+    RATING_PREFIX: 'rating_',
+    CHARACTER_GALLERY_IMAGES: 'characterGalleryImages'
+  }
+};
 
 // Gallery utilities
 const galleryUtils = {
     // Fix gallery ordering
     fixGalleryOrdering: function() {
-        console.log('Fixing gallery ordering...');
+        if (SITE_CONFIG.DEBUG) console.log('Fixing gallery ordering...');
         
         // Get all character galleries from localStorage
         const galleries = {};
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            if (key.startsWith('gallery_')) {
-                const characterId = key.replace('gallery_', '');
+            if (key.startsWith(SITE_CONFIG.STORAGE_KEYS.GALLERY_PREFIX)) {
+                const characterId = key.replace(SITE_CONFIG.STORAGE_KEYS.GALLERY_PREFIX, '');
                 try {
                     const galleryData = JSON.parse(localStorage.getItem(key));
                     if (Array.isArray(galleryData)) {
@@ -82,8 +99,8 @@ const galleryUtils = {
         
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            if (key.startsWith('gallery_')) {
-                const characterId = key.replace('gallery_', '');
+            if (key.startsWith(SITE_CONFIG.STORAGE_KEYS.GALLERY_PREFIX)) {
+                const characterId = key.replace(SITE_CONFIG.STORAGE_KEYS.GALLERY_PREFIX, '');
                 try {
                     const galleryData = JSON.parse(localStorage.getItem(key));
                     

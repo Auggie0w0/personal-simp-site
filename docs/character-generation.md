@@ -55,24 +55,25 @@ Run the following command to generate the character page:
 node tools/generate-character.js characters/character-id.json
 ```
 
-### Step 3: Move the Generated File
+### Step 3: Verify the Generated File
 
-The script will generate an HTML file in the `tools/` directory. Move it to the root directory:
+The script will generate an HTML file directly in the root directory. Verify that it was created correctly:
 
 ```bash
-mv tools/character-id.html ./
+ls -la character-id.html
 ```
 
-### Step 4: Update the Character List
+### Step 4: Verify Character List Updates
 
-Manually add the character to the character-list.html file in the appropriate section.
+The script will automatically update the character-list.html file. Verify that the character was added correctly to the appropriate section (male or female characters).
 
 ## What the Script Does
 
 1. Generates an HTML page for the character using the template
 2. Adds the character to the main page carousel
 3. Adds the character to the main page gallery
-4. Saves all changes
+4. Adds the character to the character-list.html page
+5. Saves all changes
 
 ## Troubleshooting
 

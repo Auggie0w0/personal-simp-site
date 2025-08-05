@@ -1,6 +1,19 @@
 {
+  "name": "personal-simp-site",
+  "version": "1.0.0",
+  "description": "Personal character fan site",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "maintain": "bash site-maintenance.sh"
+  },
   "dependencies": {
     "cheerio": "^1.1.2",
-    "jsdom": "^26.1.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsdom": "^26.1.0",
+    "mongoose": "^8.2.3",
+    "multer": "^1.4.5-lts.1"
   }
 }

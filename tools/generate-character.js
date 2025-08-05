@@ -65,7 +65,8 @@ function generateCharacterPage(characterData) {
  * @param {string} content - The HTML content
  */
 function saveCharacterPage(characterId, content) {
-    const outputPath = path.join(__dirname, `${characterId}.html`);
+    // Save directly to the root directory instead of tools/
+    const outputPath = path.join(__dirname, '..', `${characterId}.html`);
     fs.writeFileSync(outputPath, content);
     console.log(`Generated character page: ${outputPath}`);
 }
@@ -96,6 +97,13 @@ function updateMainPage(characterData) {
             return;
         }
         
+        // Check if character already exists in carousel
+        const existingCarouselCard = document.querySelector(`.character-card[data-character="${characterData.id}"]`);
+        if (existingCarouselCard) {
+            console.log(`Character ${characterData.name} already exists in carousel. Updating...`);
+            existingCarouselCard.remove();
+        }
+        
         // Create a new character card for the carousel
         const carouselCard = document.createElement('div');
         carouselCard.className = 'character-card';
@@ -123,6 +131,13 @@ function updateMainPage(characterData) {
             return;
         }
         
+        // Check if character already exists in gallery
+        const existingGalleryCard = document.querySelector(`.gallery-character-card[data-character="${characterData.id}"]`);
+        if (existingGalleryCard) {
+            console.log(`Character ${characterData.name} already exists in gallery. Updating...`);
+            existingGalleryCard.remove();
+        }
+        
         // Create a new character card for the gallery
         const galleryCard = document.createElement('div');
         galleryCard.className = 'gallery-character-card';
@@ -143,11 +158,82 @@ function updateMainPage(characterData) {
         // Add the card to the gallery container
         galleryContainer.appendChild(galleryCard);
         
+        // Also update character-list.html if it exists
+        updateCharacterList(characterData);
+        
         // Save the updated index.html
         fs.writeFileSync(indexPath, dom.serialize());
         console.log(`Updated main page with ${characterData.name}`);
     } catch (error) {
         console.error(`Error updating main page: ${error.message}`);
+    }
+}
+
+/**
+ * Update the character list page with the new character
+ * @param {Object} characterData - The character data
+ */
+function updateCharacterList(characterData) {
+    const characterListPath = path.join(__dirname, '..', 'character-list.html');
+    
+    // Skip if character-list.html doesn't exist
+    if (!fs.existsSync(characterListPath)) {
+        console.log('character-list.html not found, skipping update');
+        return;
+    }
+    
+    try {
+        // Read the character-list.html file
+        const listHtml = fs.readFileSync(characterListPath, 'utf8');
+        
+        // Parse the HTML
+        const dom = new JSDOM(listHtml);
+        const document = dom.window.document;
+        
+        // Determine which grid to add to (male or female)
+        // This is a simple heuristic - you might want to add a "gender" field to your JSON
+        const maleGrid = document.getElementById('maleCharacterGrid');
+        const femaleGrid = document.getElementById('femaleCharacterGrid');
+        
+        // Default to male grid if we can't determine
+        const targetGrid = maleGrid || document.querySelector('.character-grid');
+        
+        if (!targetGrid) {
+            console.error('Error: Character grid not found in character-list.html');
+            return;
+        }
+        
+        // Check if character already exists in list
+        const existingCard = document.querySelector(`.list-character-card a[href="${characterData.id}.html"]`);
+        if (existingCard) {
+            console.log(`Character ${characterData.name} already exists in character list. Skipping...`);
+            return;
+        }
+        
+        // Create a new character card for the list
+        const listCard = document.createElement('div');
+        listCard.className = 'list-character-card';
+        
+        listCard.innerHTML = `
+            <div class="character-avatar">
+                <img src="${characterData.mainImage}" alt="${characterData.name}">
+            </div>
+            <div class="character-info">
+                <h3>${characterData.name}</h3>
+                <p>${characterData.series}</p>
+                <span class="status incomplete">Incomplete</span>
+            </div>
+            <a href="${characterData.id}.html" class="character-link"></a>
+        `;
+        
+        // Add the card to the grid
+        targetGrid.appendChild(listCard);
+        
+        // Save the updated character-list.html
+        fs.writeFileSync(characterListPath, dom.serialize());
+        console.log(`Updated character list with ${characterData.name}`);
+    } catch (error) {
+        console.error(`Error updating character list: ${error.message}`);
     }
 }
 

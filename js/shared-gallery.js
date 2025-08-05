@@ -1,13 +1,24 @@
 // shared-gallery.js - Replaces localStorage gallery with server-based solution
 
-// API base URL - change this to your server URL when deployed
-const API_BASE_URL = 'http://localhost:3000/api';
+// Configuration object for gallery settings
+const GALLERY_CONFIG = {
+  // API base URL - change this to your server URL when deployed
+  // Default: Local development server
+  // Production: Update this when deploying
+  API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000/api',
+  
+  // Enable debug mode for additional console logging
+  DEBUG: false
+};
+
+// Use API_BASE_URL from config for backward compatibility
+const API_BASE_URL = GALLERY_CONFIG.API_BASE_URL;
 
 // Function to load images from server for a character
 async function loadImagesFromServer(characterId) {
   if (!characterId) return;
   
-  console.log('Loading images from server for character:', characterId);
+  if (GALLERY_CONFIG.DEBUG) console.log('Loading images from server for character:', characterId);
   
   try {
     const response = await fetch(`${API_BASE_URL}/images/${characterId}`);
@@ -23,7 +34,7 @@ async function loadImagesFromServer(characterId) {
       return;
     }
     
-    console.log(`Found ${images.length} images for character ${characterId}`);
+    if (GALLERY_CONFIG.DEBUG) console.log(`Found ${images.length} images for character ${characterId}`);
     
     // Find the gallery container
     const galleryGrid = document.querySelector('.gallery-grid');
@@ -31,7 +42,7 @@ async function loadImagesFromServer(characterId) {
     const targetContainer = galleryGrid || imageGallery;
     
     if (!targetContainer) {
-      console.log('No gallery container found');
+      console.error('No gallery container found');
       return;
     }
     
@@ -39,7 +50,7 @@ async function loadImagesFromServer(characterId) {
     const addPhotoCard = targetContainer.querySelector('.add-photo-card');
     
     if (!addPhotoCard) {
-      console.log('Add photo card not found');
+      console.error('Add photo card not found');
       return;
     }
     
@@ -50,11 +61,11 @@ async function loadImagesFromServer(characterId) {
       const alreadyExists = Array.from(existingImages).some(img => img.src === imageData.src);
       
       if (alreadyExists) {
-        console.log('Image already exists in gallery, skipping:', imageData.src.substring(0, 50) + '...');
+        if (GALLERY_CONFIG.DEBUG) console.log('Image already exists in gallery, skipping:', imageData.src.substring(0, 50) + '...');
         return;
       }
       
-      console.log('Adding image to gallery:', imageData.src.substring(0, 50) + '...');
+      if (GALLERY_CONFIG.DEBUG) console.log('Adding image to gallery:', imageData.src.substring(0, 50) + '...');
       
       const galleryItem = document.createElement('div');
       galleryItem.className = galleryGrid ? 'gallery-item' : 'gallery-image';
@@ -139,7 +150,7 @@ async function uploadImageFileToServer(characterId, imageFile, altText) {
 window.addPhotosToGallery = async function() {
   if (!currentCharacterId || selectedImages.length === 0) return;
   
-  console.log('Enhanced addPhotosToGallery called for character:', currentCharacterId);
+  if (GALLERY_CONFIG.DEBUG) console.log('Enhanced addPhotosToGallery called for character:', currentCharacterId);
   
   try {
     // Show loading indicator
@@ -342,7 +353,7 @@ document.head.appendChild(loadingStyle);
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('shared-gallery.js loaded');
+  if (GALLERY_CONFIG.DEBUG) console.log('shared-gallery.js loaded');
   
   // Get character ID from the current page
   const characterId = getCurrentCharacterId();
