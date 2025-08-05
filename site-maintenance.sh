@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Main site maintenance script
-# This script provides a wrapper for the tools/site-maintenance.sh script
-# and ensures it's executed from the correct directory
+# Site Maintenance Script
+# This script provides various maintenance functions for the site
 
 # Get the directory where this script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,11 +9,185 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Change to the script directory to ensure proper path resolution
 cd "$SCRIPT_DIR"
 
-# Execute the main maintenance script in the tools directory
-if [ -f "tools/site-maintenance.sh" ]; then
-    cd tools && ./site-maintenance.sh "$@"
-else
-    echo "❌ Error: tools/site-maintenance.sh not found!"
-    echo "Please ensure the tools directory and site-maintenance.sh script exist."
-    exit 1
+# Display help information
+function show_help {
+    echo "Site Maintenance Script"
+    echo "Usage: ./site-maintenance.sh [command]"
+    echo ""
+    echo "Commands:"
+    echo "  optimize     - Run site optimization tools"
+    echo "  generate     - Generate character pages from JSON"
+    echo "  convert      - Convert HTML pages to JSON"
+    echo "  clean        - Clean up temporary files"
+    echo "  reset        - Reset galleries, ratings, or both"
+    echo "  comments     - Add fact check comments to character pages"
+    echo "  help         - Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  ./site-maintenance.sh optimize"
+    echo "  ./site-maintenance.sh generate mackenyu"
+    echo "  ./site-maintenance.sh reset galleries"
+}
+
+# Check if Node.js is installed
+function check_node {
+    if ! command -v node &> /dev/null; then
+        echo "❌ Error: Node.js is required but not installed."
+        echo "Please install Node.js and try again."
+        exit 1
+    fi
+}
+
+# Install dependencies if needed
+function check_dependencies {
+    echo "📦 Checking dependencies..."
+    if ! npm list cheerio &> /dev/null; then
+        echo "Installing cheerio package..."
+        npm install cheerio
+    fi
+}
+
+# Run site optimization
+function optimize_site {
+    echo "🚀 Starting site optimization..."
+    
+    check_node
+    check_dependencies
+    
+    # Update review templates
+    echo -e "\n📋 Updating review templates..."
+    node tools/update-review-template.js
+    
+    echo -e "\n✅ Site optimization complete!"
+}
+
+# Generate character pages
+function generate_characters {
+    echo "🔄 Generating character pages..."
+    
+    check_node
+    
+    if [ -z "$1" ]; then
+        # Generate all character pages
+        echo "Generating all character pages..."
+        for file in characters/*.json; do
+            if [ -f "$file" ]; then
+                character_id=$(basename "$file" .json)
+                echo "Generating page for $character_id..."
+                node tools/generate-character.js "characters/$character_id.json"
+            fi
+        done
+    else
+        # Generate specific character page
+        echo "Generating page for $1..."
+        if [ -f "characters/$1.json" ]; then
+            node tools/generate-character.js "characters/$1.json"
+        else
+            echo "❌ Error: Character JSON file not found: characters/$1.json"
+            exit 1
+        fi
+    fi
+    
+    echo "✅ Character generation complete!"
+}
+
+# Convert HTML pages to JSON
+function convert_to_json {
+    echo "📄 Converting HTML pages to JSON..."
+    
+    check_node
+    check_dependencies
+    
+    node tools/convert-to-json.js
+    
+    echo "✅ Conversion complete!"
+}
+
+# Clean up temporary files
+function clean_up {
+    echo "🧹 Cleaning up temporary files..."
+    
+    # Remove backup files
+    find . -name "*.bak" -type f -delete
+    
+    # Remove temporary files
+    find . -name "*.tmp" -type f -delete
+    
+    # Remove log files
+    find . -name "*.log" -type f -delete
+    
+    echo "✅ Cleanup complete!"
+}
+
+# Reset galleries, ratings, or both
+function reset_data {
+    echo "🔄 Resetting data..."
+    
+    if [ "$1" == "galleries" ] || [ "$1" == "all" ]; then
+        echo "Resetting galleries..."
+        # Use site-utils.js instead of reset_gallery_images.js
+        echo "localStorage.removeItem('galleries');" | node
+    fi
+    
+    if [ "$1" == "ratings" ] || [ "$1" == "all" ]; then
+        echo "Resetting ratings..."
+        # Use site-utils.js instead of reset_ratings.js
+        echo "localStorage.removeItem('ratings');" | node
+    fi
+    
+    if [ -z "$1" ]; then
+        echo "Please specify what to reset: galleries, ratings, or all"
+        echo "Example: ./site-maintenance.sh reset galleries"
+    fi
+    
+    echo "✅ Reset complete!"
+}
+
+# Add fact check comments to character pages
+function add_character_comments {
+    echo "📝 Adding fact check comments to character pages..."
+    
+    check_node
+    check_dependencies
+    
+    node tools/add-character-comments.js
+    
+    echo "✅ Fact check comments added!"
+}
+
+# Main function
+if [ -z "$1" ]; then
+    show_help
+    exit 0
 fi
+
+case "$1" in
+    optimize)
+        optimize_site
+        ;;
+    generate)
+        generate_characters "$2"
+        ;;
+    convert)
+        convert_to_json
+        ;;
+    clean)
+        clean_up
+        ;;
+    reset)
+        reset_data "$2"
+        ;;
+    comments)
+        add_character_comments
+        ;;
+    help)
+        show_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        show_help
+        exit 1
+        ;;
+esac
+
+exit 0
