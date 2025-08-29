@@ -4,7 +4,7 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
 let currentIndex = 0;
-const cardWidth = 320 + 32; // card width (320px) + gap (32px)
+let cardWidth = window.innerWidth; // Full width of the viewport
 let maxIndex = 2; // Will be updated dynamically based on number of characters
 
 // Only initialize carousel if elements exist (home page)
@@ -29,7 +29,7 @@ nextBtn.addEventListener('click', () => {
 
 // Update carousel position
 function updateCarousel() {
-    const percentage = -currentIndex * (cardWidth / track.offsetWidth) * 100;
+    const percentage = -currentIndex * 100; // Each slide is 100% width
     track.dataset.percentage = percentage;
     
     track.style.transform = `translateX(${percentage}%)`;
@@ -217,14 +217,8 @@ async function loadCarouselCharacters(preserveExisting = false) {
     const carouselTrack = document.getElementById('image-track');
     if (!carouselTrack) return;
     
-    // Save existing Momo and Waguri cards if needed
-    let existingMomoCard = null;
-    let existingWaguriCard = null;
-    
-    if (preserveExisting) {
-        existingMomoCard = carouselTrack.querySelector('.character-card[data-character="momo"]');
-        existingWaguriCard = carouselTrack.querySelector('.character-card[data-character="waguri"]');
-    }
+    // Clear existing cards - we'll always load fresh for the hero carousel
+    carouselTrack.innerHTML = '';
 
     // Get all characters (static + dynamic)
     const characters = JSON.parse(localStorage.getItem('characters') || '[]');
@@ -504,25 +498,9 @@ async function loadCarouselCharacters(preserveExisting = false) {
     // Combine characters and sort with custom order
     const allCharacters = [...staticCharacters, ...characters];
     
-    // Custom sorting for carousel: Momo and Waguri first, then Lee Know, then Wolfgang, then new characters, then others
+    // Sort characters by newest first for the hero carousel
     const carouselCharacters = allCharacters.sort((a, b) => {
-        // Momo always comes first
-        if (a.id === 'momo') return -1;
-        if (b.id === 'momo') return 1;
-        
-        // Waguri comes second
-        if (a.id === 'waguri') return -1;
-        if (b.id === 'waguri') return 1;
-        
-        // Lee Know comes third
-        if (a.id === 'leeknow') return -1;
-        if (b.id === 'leeknow') return 1;
-        
-        // Wolfgang comes fourth
-        if (a.id === 'wolfgang') return -1;
-        if (b.id === 'wolfgang') return 1;
-        
-        // New characters (with createdAt) come after Wolfgang but before others
+        // New characters (with createdAt) come first
         if (a.createdAt && !b.createdAt) return -1;
         if (!a.createdAt && b.createdAt) return 1;
         
@@ -531,9 +509,24 @@ async function loadCarouselCharacters(preserveExisting = false) {
             return new Date(b.createdAt) - new Date(a.createdAt);
         }
         
-        // Among static characters, maintain their order in the array
+        // For static characters, use a predefined order of newest to oldest
+        const newestToOldest = ['waguri', 'momo', 'sunghyunjae', 'cheongmyeong', 'suho', 'mackenyu', 'leeknow', 'wolfgang', 'huntrix', 'gojo', 'axel', 'ivan', 'hange', 'marin', 'yamada', 'dazai', 'miyamura', 'saja'];
+        
+        const aIndex = newestToOldest.indexOf(a.id);
+        const bIndex = newestToOldest.indexOf(b.id);
+        
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+        
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        
         return 0;
     });
+    
+    // Limit to only 5 most recent characters for the hero carousel
+    const heroCarouselCharacters = carouselCharacters.slice(0, 5);
 
     // Custom sorting for gallery: Momo and Waguri first, then Lee Know, then Wolfgang, then others in original order
     const galleryCharacters = allCharacters.sort((a, b) => {
@@ -574,30 +567,11 @@ async function loadCarouselCharacters(preserveExisting = false) {
         return 0;
     });
 
-    // Update maxIndex based on number of characters
-    maxIndex = Math.max(0, carouselCharacters.length - 1);
-
-    // Clear existing content but save Momo and Waguri cards if needed
-    if (preserveExisting) {
-        // Remove all cards except Momo and Waguri
-        Array.from(carouselTrack.children).forEach(child => {
-            const characterId = child.dataset.character;
-            if (characterId !== 'momo' && characterId !== 'waguri') {
-                carouselTrack.removeChild(child);
-            }
-        });
-    } else {
-        carouselTrack.innerHTML = '';
-    }
+    // Update maxIndex based on number of characters in the hero carousel
+    maxIndex = Math.max(0, heroCarouselCharacters.length - 1);
 
     // Add character cards to carousel with dynamic data loading
-    for (const character of carouselCharacters) {
-        // Skip Momo and Waguri if we're preserving existing cards and they exist
-        if (preserveExisting && 
-            ((character.id === 'momo' && existingMomoCard) || 
-             (character.id === 'waguri' && existingWaguriCard))) {
-            continue;
-        }
+    for (const character of heroCarouselCharacters) {
         try {
             // Try to fetch updated data from the character page
             const response = await fetch(character.link);
@@ -629,9 +603,8 @@ async function loadCarouselCharacters(preserveExisting = false) {
                 <div class="card-image">
                     <img src="${character.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMzMzMzMzIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='}" alt="${character.name}">
                 </div>
-                <div class="card-content">
+                <div class="character-name-overlay">
                     <h3>${character.name}</h3>
-                    <p>${character.series}</p>
                 </div>
             </a>
         `;
@@ -1375,6 +1348,15 @@ function isValidImageUrl(url) {
            urlLower.startsWith('data:image/') ||
            urlLower.startsWith('http') && urlLower.includes('image');
 }
+
+// Update cardWidth when window resizes
+window.addEventListener('resize', () => {
+    if (track) {
+        // Update cardWidth based on new window width
+        cardWidth = window.innerWidth;
+        updateCarousel();
+    }
+});
 
 // Initialize gallery modals when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {

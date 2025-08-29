@@ -28,46 +28,42 @@
     </header>
    
     <main class="main-content">
-        <div class="hero-section">
-            <h1 class="hero-title">Simp Archive Gallery</h1>
-            <p class="hero-subtitle">Welcome to my personal Simp Gallery! Here you'll find a growing collection of my favorite characters from anime, K-pop, and more. Each profile is a celebration of the characters that have inspired, entertained, or just made me smile. More characters and content will be added over time, so check back often!</p>
-        </div>
-
-        <div class="carousel-section">
-            <h2>Latest Characters</h2>
-            <div class="carousel-container">
-                <button class="carousel-btn prev-btn" id="prevBtn">
-                    <span>&lt;</span>
-                </button>
-                <div class="carousel-track" id="image-track">
-                    <!-- Character cards will be loaded here dynamically -->
-                    <div class="character-card" data-character="waguri">
-                        <a href="waguri.html" class="card-link">
-                            <div class="card-image">
-                                <img src="https://i.pinimg.com/736x/8c/15/8d/8c158d8479beeef75d508953cc957063.jpg" alt="Waguri Kaoruko">
-                            </div>
-                            <div class="card-content">
-                                <h3>Waguri Kaoruko</h3>
-                                <p>The Fragrant Flower Blooms with Dignity</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="character-card" data-character="momo">
-                        <a href="momo.html" class="card-link">
-                            <div class="card-image">
-                                <img src="https://i.pinimg.com/736x/b8/73/1b/b8731b8558035dcfb1627604129d19ff.jpg" alt="Maomao">
-                            </div>
-                            <div class="card-content">
-                                <h3>Maomao</h3>
-                                <p>The Apothecary Diaries</p>
-                            </div>
-                        </a>
-                    </div>
+        <h1 class="site-title">Simp Archive Gallery</h1>
+        
+        <div class="hero-carousel-section">
+            <button class="carousel-btn prev-btn" id="prevBtn">
+                <span>&lt;</span>
+            </button>
+            <div class="carousel-track" id="image-track">
+                <!-- Character cards will be loaded here dynamically -->
+                <div class="character-card" data-character="waguri">
+                    <a href="waguri.html" class="card-link">
+                        <div class="card-image">
+                            <img src="https://i.pinimg.com/736x/8c/15/8d/8c158d8479beeef75d508953cc957063.jpg" alt="Waguri Kaoruko">
+                        </div>
+                        <div class="character-name-overlay">
+                            <h3>Waguri Kaoruko</h3>
+                        </div>
+                    </a>
                 </div>
-                <button class="carousel-btn next-btn" id="nextBtn">
-                    <span>&gt;</span>
-                </button>
+                <div class="character-card" data-character="momo">
+                    <a href="momo.html" class="card-link">
+                        <div class="card-image">
+                            <img src="https://i.pinimg.com/736x/b8/73/1b/b8731b8558035dcfb1627604129d19ff.jpg" alt="Maomao">
+                        </div>
+                        <div class="character-name-overlay">
+                            <h3>Maomao</h3>
+                        </div>
+                    </a>
+                </div>
             </div>
+            <button class="carousel-btn next-btn" id="nextBtn">
+                <span>&gt;</span>
+            </button>
+        </div>
+        
+        <div class="site-description">
+            <p>Welcome to my personal Simp Gallery! Here you'll find a growing collection of my favorite characters from anime, K-pop, and more. Each profile is a celebration of the characters that have inspired, entertained, or just made me smile. More characters and content will be added over time, so check back often!</p>
         </div>
 
         <div class="character-gallery-section">
@@ -124,6 +120,6 @@
 
 
 
-# this is version 1.1.0
+# this is version 2.0.0
 </body>
 </html>
