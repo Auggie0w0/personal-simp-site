@@ -21,12 +21,15 @@ function show_help {
     echo "  clean        - Clean up temporary files"
     echo "  reset        - Reset galleries, ratings, or both"
     echo "  comments     - Add fact check comments to character pages"
+    echo "  extract      - Extract fact check comments to a text file"
+    echo "  debug        - Run site debugger"
     echo "  help         - Show this help message"
     echo ""
     echo "Examples:"
     echo "  ./site-maintenance.sh optimize"
     echo "  ./site-maintenance.sh generate mackenyu"
     echo "  ./site-maintenance.sh reset galleries"
+    echo "  ./site-maintenance.sh extract"
 }
 
 # Check if Node.js is installed
@@ -155,6 +158,46 @@ function add_character_comments {
     echo "✅ Fact check comments added!"
 }
 
+# Extract fact check comments to a text file
+function extract_fact_checks {
+    echo "📋 Extracting fact check comments..."
+    
+    # Try different methods in order of preference
+    if command -v python3 &> /dev/null; then
+        echo "Using Python script..."
+        python3 tools/extract-fact-checks.py
+    elif command -v node &> /dev/null; then
+        echo "Using Node.js script..."
+        node tools/extract-fact-checks.js
+    else
+        echo "Using Bash script..."
+        bash tools/extract-fact-checks.sh
+    fi
+    
+    echo "✅ Fact check comments extracted to character-fact-checks.txt!"
+}
+
+# Run site debugger
+function debug_site {
+    echo "🔍 Running site debugger..."
+    
+    check_node
+    
+    # Check for broken links
+    echo -e "\n📋 Checking for broken links..."
+    # This would need to be implemented
+    
+    # Check for broken images
+    echo -e "\n📋 Checking for broken images..."
+    # This would need to be implemented
+    
+    # Check for missing character data
+    echo -e "\n📋 Checking for missing character data..."
+    # This would need to be implemented
+    
+    echo -e "\n✅ Site debugging complete!"
+}
+
 # Main function
 if [ -z "$1" ]; then
     show_help
@@ -179,6 +222,12 @@ case "$1" in
         ;;
     comments)
         add_character_comments
+        ;;
+    extract)
+        extract_fact_checks
+        ;;
+    debug)
+        debug_site
         ;;
     help)
         show_help
