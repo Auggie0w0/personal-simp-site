@@ -45,6 +45,9 @@ function updateCarousel() {
     // Update button cursor
     prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
     nextBtn.style.cursor = currentIndex === maxIndex ? 'not-allowed' : 'pointer';
+    
+    // Log for debugging
+    console.log(`Carousel position: ${percentage}%, Current index: ${currentIndex}, Max index: ${maxIndex}`);
 }
 
 // Mouse drag functionality
@@ -63,13 +66,15 @@ track.addEventListener('mousemove', (e) => {
     if (!isMouseDown) return;
     
     const deltaX = e.clientX - startX;
-    const deltaPercentage = (deltaX / track.offsetWidth) * 100;
+    const deltaPercentage = (deltaX / window.innerWidth) * 100;
     const newPercentage = startPercentage + deltaPercentage;
     
-    // Limit the movement
-    const limitedPercentage = Math.max(-100, Math.min(0, newPercentage));
+    // Limit the movement based on the number of cards
+    const minPercentage = -maxIndex * 100;
+    const limitedPercentage = Math.max(minPercentage, Math.min(0, newPercentage));
     
     track.style.transform = `translateX(${limitedPercentage}%)`;
+    track.dataset.percentage = limitedPercentage;
 });
 
 track.addEventListener('mouseup', () => {
@@ -80,7 +85,7 @@ track.addEventListener('mouseup', () => {
     
     // Snap to nearest card
     const currentPercentage = parseFloat(track.dataset.percentage) || 0;
-    const cardPercentage = (cardWidth / track.offsetWidth) * 100;
+    const cardPercentage = 100; // Each card is 100% viewport width
     const nearestIndex = Math.round(Math.abs(currentPercentage) / cardPercentage);
     
     currentIndex = Math.max(0, Math.min(maxIndex, nearestIndex));
@@ -107,11 +112,15 @@ track.addEventListener('touchmove', (e) => {
     e.preventDefault();
     
     const deltaX = e.touches[0].clientX - startX;
-    const deltaPercentage = (deltaX / track.offsetWidth) * 100;
+    const deltaPercentage = (deltaX / window.innerWidth) * 100;
     const newPercentage = startPercentage + deltaPercentage;
     
-    const limitedPercentage = Math.max(-100, Math.min(0, newPercentage));
+    // Limit the movement based on the number of cards
+    const minPercentage = -maxIndex * 100;
+    const limitedPercentage = Math.max(minPercentage, Math.min(0, newPercentage));
+    
     track.style.transform = `translateX(${limitedPercentage}%)`;
+    track.dataset.percentage = limitedPercentage;
 });
 
 track.addEventListener('touchend', () => {
@@ -120,7 +129,7 @@ track.addEventListener('touchend', () => {
     isMouseDown = false;
     
     const currentPercentage = parseFloat(track.dataset.percentage) || 0;
-    const cardPercentage = (cardWidth / track.offsetWidth) * 100;
+    const cardPercentage = 100; // Each card is 100% viewport width
     const nearestIndex = Math.round(Math.abs(currentPercentage) / cardPercentage);
     
     currentIndex = Math.max(0, Math.min(maxIndex, nearestIndex));

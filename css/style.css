@@ -212,6 +212,8 @@ header {
   overflow: hidden;
   box-shadow: 0 15px 40px var(--shadow);
   animation: carouselPulse 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
 }
 
 /* Carousel Container - No longer needed */
@@ -238,6 +240,8 @@ header {
   transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: grab;
   position: relative;
+  transform: translateX(0%);
+  flex-wrap: nowrap;
 }
 
 .carousel-track:active {
@@ -268,7 +272,8 @@ header {
 }
 
 .character-card {
-  min-width: 100%;
+  min-width: 100vw;
+  width: 100vw;
   height: 100%;
   background: var(--card-bg);
   overflow: hidden;
@@ -451,11 +456,13 @@ header {
 }
 
 .carousel-btn.prev-btn {
-  left: 1rem;
+  left: 2rem;
+  z-index: 20;
 }
 
 .carousel-btn.next-btn {
-  right: 1rem;
+  right: 2rem;
+  z-index: 20;
 }
 
 .carousel-btn:disabled {
