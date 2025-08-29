@@ -23,6 +23,7 @@ function show_help {
     echo "  comments     - Add fact check comments to character pages"
     echo "  extract      - Extract fact check comments to a text file"
     echo "  debug        - Run site debugger"
+    echo "  fix-loading  - Fix character loading issues"
     echo "  help         - Show this help message"
     echo ""
     echo "Examples:"
@@ -30,6 +31,7 @@ function show_help {
     echo "  ./site-maintenance.sh generate mackenyu"
     echo "  ./site-maintenance.sh reset galleries"
     echo "  ./site-maintenance.sh extract"
+    echo "  ./site-maintenance.sh fix-loading"
 }
 
 # Check if Node.js is installed
@@ -177,6 +179,29 @@ function extract_fact_checks {
     echo "✅ Fact check comments extracted to character-fact-checks.txt!"
 }
 
+# Fix character loading issues
+function fix_loading {
+    echo "🔧 Fixing character loading issues..."
+    
+    check_node
+    
+    # First analyze the issues
+    echo -e "\n📊 Analyzing character loading issues..."
+    node tools/fix-character-loading.js
+    
+    # Ask for confirmation before applying fixes
+    read -p "Do you want to apply the optimized loading solution? (y/n) " -n 1 -r
+    echo
+    
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "\n🚀 Applying optimized loading solution..."
+        node tools/optimize-character-loading.js
+        echo "✅ Character loading optimized!"
+    else
+        echo "❌ Optimization cancelled."
+    fi
+}
+
 # Run site debugger
 function debug_site {
     echo "🔍 Running site debugger..."
@@ -225,6 +250,9 @@ case "$1" in
         ;;
     extract)
         extract_fact_checks
+        ;;
+    fix-loading)
+        fix_loading
         ;;
     debug)
         debug_site

@@ -1,5 +1,5 @@
 # Character Fact Check Information
-# Generated on 2025-08-28 16:57:39
+# Generated on 2025-08-28 17:09:53
 
 ## miyamura
 
@@ -815,6 +815,9 @@ This comment is for fact checking only and is not visible on the website.
 ---
 
 # Summary
-- Total character files: 19
+- Total character HTML files: 19
+- Total character JSON files: 19
+- Total unique characters processed: 19
 - Characters with fact check comments: 19
+- Characters with placeholder info: 0
 - Characters missing fact check comments: 0
