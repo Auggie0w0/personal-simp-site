@@ -214,6 +214,7 @@ header {
   animation: carouselPulse 3s ease-in-out infinite;
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* Left-align carousel items */
 }
 
 /* Carousel Container - No longer needed */
@@ -242,6 +243,7 @@ header {
   position: relative;
   transform: translateX(0%);
   flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
 }
 
 .carousel-track:active {
@@ -284,6 +286,7 @@ header {
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
+  scroll-snap-align: start;
 }
 
 .character-card:hover {

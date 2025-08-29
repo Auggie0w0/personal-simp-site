@@ -7,16 +7,27 @@ let currentIndex = 0;
 let cardWidth = window.innerWidth; // Full width of the viewport
 let maxIndex = 2; // Will be updated dynamically based on number of characters
 
+// Auto-scroll variables
+let autoScrollInterval;
+let isHovering = false;
+
 // Only initialize carousel if elements exist (home page)
 if (track && prevBtn && nextBtn) {
     // Initialize carousel position
     track.dataset.percentage = "0";
+    
+    // Start auto-scrolling
+    startAutoScroll();
 
 // Navigation buttons
 prevBtn.addEventListener('click', () => {
     if (currentIndex > 0) {
         currentIndex--;
         updateCarousel();
+        // Reset auto-scroll timer after manual navigation
+        if (!isHovering) {
+            startAutoScroll();
+        }
     }
 });
 
@@ -24,6 +35,10 @@ nextBtn.addEventListener('click', () => {
     if (currentIndex < maxIndex) {
         currentIndex++;
         updateCarousel();
+        // Reset auto-scroll timer after manual navigation
+        if (!isHovering) {
+            startAutoScroll();
+        }
     }
 });
 
@@ -90,6 +105,11 @@ track.addEventListener('mouseup', () => {
     
     currentIndex = Math.max(0, Math.min(maxIndex, nearestIndex));
     updateCarousel();
+    
+    // Reset auto-scroll timer after manual navigation
+    if (!isHovering) {
+        startAutoScroll();
+    }
 });
 
 track.addEventListener('mouseleave', () => {
@@ -134,6 +154,9 @@ track.addEventListener('touchend', () => {
     
     currentIndex = Math.max(0, Math.min(maxIndex, nearestIndex));
     updateCarousel();
+    
+    // Reset auto-scroll timer after manual navigation
+    startAutoScroll();
 });
 
 // Mobile menu functionality
@@ -1358,12 +1381,72 @@ function isValidImageUrl(url) {
            urlLower.startsWith('http') && urlLower.includes('image');
 }
 
+// Function to start auto-scrolling
+function startAutoScroll() {
+    // Clear any existing interval
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+    }
+    
+    // Set up new interval
+    autoScrollInterval = setInterval(() => {
+        // Only auto-scroll if not hovering
+        if (!isHovering) {
+            // Go to next slide or loop back to first
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            updateCarousel();
+        }
+    }, 3000); // Scroll every 3 seconds
+}
+
+// Function to pause auto-scrolling
+function pauseAutoScroll() {
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+}
+
+// Add hover detection to pause auto-scrolling
+if (track) {
+    track.addEventListener('mouseenter', () => {
+        isHovering = true;
+    });
+    
+    track.addEventListener('mouseleave', () => {
+        isHovering = false;
+    });
+    
+    // For touch devices
+    track.addEventListener('touchstart', () => {
+        isHovering = true;
+    });
+    
+    track.addEventListener('touchend', () => {
+        // Small delay to allow user to see where they landed
+        setTimeout(() => {
+            isHovering = false;
+        }, 1000);
+    });
+}
+
 // Update cardWidth when window resizes
 window.addEventListener('resize', () => {
     if (track) {
         // Update cardWidth based on new window width
         cardWidth = window.innerWidth;
         updateCarousel();
+    }
+});
+
+// Clean up auto-scroll when leaving the page
+window.addEventListener('beforeunload', () => {
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
     }
 });
 
