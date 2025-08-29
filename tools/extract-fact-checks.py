@@ -143,6 +143,48 @@ This is an auto-generated placeholder.
     
     return None
 
+def extract_description_from_fact_check(fact_check):
+    """Extract description from fact check comment"""
+    description = ""
+    
+    # Try to extract description section
+    description_match = re.search(r'DESCRIPTION:\s*(.+?)(?:\n\n|\n[A-Z]+:|\nLast Updated:)', fact_check, re.DOTALL)
+    if description_match:
+        description = description_match.group(1).strip()
+    
+    return description
+
+def format_fact_check_for_output(fact_check_data):
+    """Format fact check data for output"""
+    character_id = fact_check_data['character_id']
+    fact_check = fact_check_data['fact_check']
+    
+    # Clean up the comment format
+    cleaned_comment = fact_check.replace('<!--', '', 1).replace('-->', '', 1).strip()
+    
+    # Extract name and series
+    name_match = re.search(r'Name:\s*(.+?)(?:\n|$)', cleaned_comment)
+    series_match = re.search(r'Series:\s*(.+?)(?:\n|$)', cleaned_comment)
+    
+    name = name_match.group(1).strip() if name_match else character_id
+    series = series_match.group(1).strip() if series_match else "Unknown"
+    
+    # Extract description
+    description = extract_description_from_fact_check(cleaned_comment)
+    
+    # Format the output
+    output = f"## {character_id}\n\n"
+    output += f"**{name}** — {series}\n\n"
+    
+    if description:
+        output += f"{description}\n\n"
+    else:
+        output += "No detailed description available.\n\n"
+    
+    output += "---\n\n"
+    
+    return output
+
 def main():
     """Main function"""
     print("Extracting fact check comments...")
@@ -178,16 +220,7 @@ def main():
             result = extract_fact_check_comments_regex(html_file)
         
         if result:
-            output_content += f"## {result['character_id']}\n\n"
-            
-            # Clean up the comment format for better readability
-            cleaned_comment = result['fact_check']
-            cleaned_comment = cleaned_comment.replace('<!--', '', 1)
-            cleaned_comment = cleaned_comment.replace('-->', '', 1)
-            cleaned_comment = cleaned_comment.strip()
-            
-            output_content += f"{cleaned_comment}\n\n"
-            output_content += "---\n\n"
+            output_content += format_fact_check_for_output(result)
             
             extracted_count += 1
             processed_characters.add(character_id)
@@ -195,9 +228,7 @@ def main():
             # If no fact check comment found, try to extract basic info
             basic_info = extract_character_info_from_html(html_file)
             if basic_info:
-                output_content += f"## {basic_info['character_id']}\n\n"
-                output_content += f"{basic_info['fact_check']}\n\n"
-                output_content += "---\n\n"
+                output_content += format_fact_check_for_output(basic_info)
                 
                 placeholder_count += 1
                 processed_characters.add(character_id)
@@ -210,13 +241,8 @@ def main():
         
         if character_id not in processed_characters:
             output_content += f"## {character_id}\n\n"
-            output_content += f"""CHARACTER FACT CHECK INFORMATION
-============================
-
-NOTE: This character has a JSON file but no HTML file or fact check information.
-Character ID: {character_id}
-
-"""
+            output_content += f"**{character_id}** — Unknown Series\n\n"
+            output_content += "This character has a JSON file but no HTML file or fact check information.\n\n"
             output_content += "---\n\n"
             
             placeholder_count += 1

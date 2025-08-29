@@ -22,6 +22,7 @@ function show_help {
     echo "  reset        - Reset galleries, ratings, or both"
     echo "  comments     - Add fact check comments to character pages"
     echo "  extract      - Extract fact check comments to a text file"
+    echo "  update-facts - Update fact check information with accurate details"
     echo "  debug        - Run site debugger"
     echo "  fix-loading  - Fix character loading issues"
     echo "  help         - Show this help message"
@@ -31,7 +32,7 @@ function show_help {
     echo "  ./site-maintenance.sh generate mackenyu"
     echo "  ./site-maintenance.sh reset galleries"
     echo "  ./site-maintenance.sh extract"
-    echo "  ./site-maintenance.sh fix-loading"
+    echo "  ./site-maintenance.sh update-facts"
 }
 
 # Check if Node.js is installed
@@ -160,6 +161,18 @@ function add_character_comments {
     echo "✅ Fact check comments added!"
 }
 
+# Update fact check information with accurate details
+function update_facts {
+    echo "🔄 Updating fact check information..."
+    
+    check_node
+    check_dependencies
+    
+    node tools/update-fact-checks.js
+    
+    echo "✅ Fact check information updated!"
+}
+
 # Extract fact check comments to a text file
 function extract_fact_checks {
     echo "📋 Extracting fact check comments..."
@@ -250,6 +263,9 @@ case "$1" in
         ;;
     extract)
         extract_fact_checks
+        ;;
+    update-facts)
+        update_facts
         ;;
     fix-loading)
         fix_loading
