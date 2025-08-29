@@ -131,11 +131,15 @@ header {
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
+  display: inline-block;
+  padding: 5px 0;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--highlight);
+  padding: 8px 0;
+  transform: scale(1.05);
 }
 
 .nav-links a::after {
@@ -202,10 +206,10 @@ header {
 .hero-carousel-section {
   width: 100vw;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  left: 0;
+  right: auto;
+  margin-left: 0;
+  margin-right: 0;
   height: 70vh;
   min-height: 400px;
   max-height: 600px;

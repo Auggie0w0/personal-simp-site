@@ -1400,7 +1400,7 @@ function startAutoScroll() {
             }
             updateCarousel();
         }
-    }, 3000); // Scroll every 3 seconds
+    }, 5000); // Scroll every 5 seconds
 }
 
 // Function to pause auto-scrolling
